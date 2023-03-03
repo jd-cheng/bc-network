@@ -30,7 +30,10 @@ function createNodes() {
       key: "node-" + i,
       attributes:{
         x: n[0]*300,
-        y: n[1]*300
+        y: n[1]*300,
+        size: 15,
+        color: "#B30000",
+        lable: "node-" + i
       }
 
     }
@@ -81,7 +84,7 @@ function createEdges() {
       source: 'node-'+edge[0],
       target: 'node-'+edge[1],
       attributes:{
-
+        size: 2
       }
     }
   });
