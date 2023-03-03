@@ -1,13 +1,12 @@
 "use client"
 
 import styles from './page.module.css'
-import BCnetwork from '@/components/BCnetwork'
-
+import Display from '@/components/Display'
 
 export default function Home() {
   return (
     <main className={styles.main}>
-      <BCnetwork/>
+      <Display/>
     </main>
   )
 }
