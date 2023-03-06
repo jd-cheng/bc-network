@@ -31,7 +31,7 @@ function createNodes() {
       attributes:{
         x: n[0]*300,
         y: n[1]*300,
-        size: 15,
+        size: 10,
         color: "#B30000",
         lable: "node-" + i
       }

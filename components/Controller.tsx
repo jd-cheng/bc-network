@@ -20,27 +20,31 @@ export default function Controller(){
 
 
   return(
-      <div className={styles.controller}>
+      <div className={styles.main}>
         <div className={styles.header}>
           BC Network
         </div>
         <div className={styles.network_controller}>
-          <p> current network type {}</p>
+          <p> current network type {type}</p>
           <label>choose network type</label>
           <select value={type} onChange={handleChangeType}>
             <option value='hyper'> hypercube </option>
             <option value='crossed'> crossed cube </option>
             <option value='twistes'> locally twisted cube </option>
           </select>
-          <div className="network-dimension-select">
-            select network dimension
-          </div>
+          <p> current network dimension {dimension}</p>
+          <label>choose network dimension</label>
+          <select value={dimension} onChange={handleChangeDimension}>
+            <option value='1'> 1 dimension </option>
+            <option value='2'> 2 dimension</option>
+            <option value='3'> 3 dimension</option>
+            <option value='4'> 4 dimension</option>
+          </select>
         </div>
         <div className={styles.node_controller}>
 
         </div>
       </div>
-
   )
 
 }

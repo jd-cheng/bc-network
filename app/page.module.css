@@ -4,3 +4,11 @@
   display: flex;
   background-color: #fff;
 }
+
+.controller {
+  flex: 0 100px;
+}
+
+.network {
+  flex: 1;
+}
