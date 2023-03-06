@@ -1,13 +1,20 @@
 import Graph from "graphology";
 import data from "@/data.json";
 
-function initNetwork(){
+export function createHypercube(){
   let graph = new Graph()
   graph.import(data)
   return graph
 }
 
-export const graph = initNetwork()
+function createCrossedcube(){
+
+}
+
+function createLocallyTwistedcube(){
+
+}
+
 
 
 

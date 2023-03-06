@@ -1,12 +1,14 @@
 "use client"
 
 import styles from './page.module.css'
-import Display from '@/components/Display'
+import Network from '@/components/Network'
+import Controller from '@/components/Controller'
 
 export default function Home() {
   return (
     <main className={styles.main}>
-      <Display/>
+      <Controller/>
+      <Network/>
     </main>
   )
 }

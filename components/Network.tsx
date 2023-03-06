@@ -1,9 +1,9 @@
 import Sigma from "sigma";
 import { useEffect, useRef, useState } from 'react'
-import { graph } from "@/libs/BCnetwork";
-import styles from './Display.module.css'
+import styles from './Network.module.css'
 import { EdgeDisplayData, NodeDisplayData } from "sigma/types";
-import Menu from "./Menu";
+import Graph from "graphology";
+import { createHypercube } from "@/lib/BCnetwork";
 
 interface State {
   selectedNode?: string;
@@ -11,16 +11,13 @@ interface State {
   selectedNeighbors?: Set<string>;
 }
 
-export default function Display() {
+
+export default function Network() {
 
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [sigma, setSigma] = useState<Sigma | null>(null)
-
+  const [network, setGraph] = useState<Graph>(createHypercube())
   const state: State = {};
-
-  // const handleClick = (evt:MouseEvent<HTMLDivElement, MouseEvent>)=>{
-
-  // }
 
   useEffect(()=>{
     let sigmaIns: Sigma | null = null
@@ -28,7 +25,7 @@ export default function Display() {
     function setSelectedNode(node?: string) {
       if (node) {
         state.selectedNode = node;
-        state.selectedNeighbors = new Set(graph.neighbors(node));
+        state.selectedNeighbors = new Set(network.neighbors(node));
       } else {
         state.selectedNode = undefined;
         state.selectedNeighbors = undefined;
@@ -39,10 +36,9 @@ export default function Display() {
     }
 
     if(containerRef.current){
-      sigmaIns = new Sigma(graph, containerRef.current)  
+      sigmaIns = new Sigma(network, containerRef.current)  
 
       // Bind graph interactions:
-
       sigmaIns.on("clickNode", ({ node }) => {
         console.log("click"+node)
         setSelectedNode(node);
@@ -53,17 +49,12 @@ export default function Display() {
         setSelectedNode();
       });
 
-
       // Render nodes accordingly to the internal state:
       // 1. If a node is selected, it is highlighted
       // 3. If there is a hovered node, all non-neighbor nodes are greyed
       sigmaIns.setSetting("nodeReducer", (node, data) => {
-
-        // if(node === state.selectedNode){
-        //   console.log(data)
-        // }
-
         const res: Partial<NodeDisplayData> = { ...data };
+        
         if (state.selectedNeighbors && !state.selectedNeighbors.has(node) && state.selectedNode !== node) {
           res.label = "";
           res.color = "#f6f6f6";
@@ -77,7 +68,8 @@ export default function Display() {
       //    node
       sigmaIns.setSetting("edgeReducer", (edge, data) => {
         const res: Partial<EdgeDisplayData> = { ...data };
-        if (state.selectedNode && !graph.hasExtremity(edge, state.selectedNode)) {
+
+        if (state.selectedNode && !network.hasExtremity(edge, state.selectedNode)) {
           res.hidden = true;
         }
 
@@ -98,7 +90,6 @@ export default function Display() {
   ,[containerRef])
 
   return (
-    <div className={styles.container} ref={containerRef}>
-    </div>
+    <div className={styles.container} ref={containerRef}></div>
   )
 }
