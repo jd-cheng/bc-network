@@ -1,38 +1,36 @@
-import { createCrossedcube } from "@/lib/BCnetwork"
-import { state } from "@/lib/sigma"
 import { 
-  ReactNode, 
   useEffect, 
   useState } from "react"
+import { 
+  EdgeDisplayData, 
+  NodeDisplayData } from "sigma/types"
+import { createCrossedcube } from "@/lib/BCnetwork"
+import { state } from "@/lib/sigma"
 import Sigma from "sigma"
-import { EdgeDisplayData, NodeDisplayData } from "sigma/types"
 import styles from './Controller.module.css'
 
 interface IProp {
   sigma: Sigma | null
-
 }
 
 export default function Controller({sigma}:IProp){
 
 
-  const [networkType, setNetworkType] = useState<string>('hyper')
+  const [network, setNetwork] = useState<string>('hyper')
   const [networkDimension, setNetworkDimension] = useState<string>('4')
   const [node, setNode] = useState<string | null>(null)
   const [nodeDimension, setNodeDimension] = useState<string>('4')
 
-  const handleChangeNetworkType = (evt:React.ChangeEvent<HTMLSelectElement>)=>{
+  const handleNetwork = (evt:React.ChangeEvent<HTMLSelectElement>)=>{
     sigma?.setGraph(createCrossedcube())
-    setNetworkType(evt.target.value)
-
+    setNetwork(evt.target.value)
   }
 
-  const handleChangeNetworkDimension = (evt:React.ChangeEvent<HTMLSelectElement>)=>{
+  const handleNetworkDimension = (evt:React.ChangeEvent<HTMLSelectElement>)=>{
     setNetworkDimension(evt.target.value)
-
   }
 
-  const setSelectedNode = (node?: string)=>{
+  const handleNode = (node?: string)=>{
     if (node) {
       state.selectedNode = node;
       state.selectedNeighbors = new Set(sigma?.getGraph().neighbors(node));
@@ -45,7 +43,7 @@ export default function Controller({sigma}:IProp){
     node && setNode(node);
   }
 
-  const handleChangeNodeDimension = (evt:React.ChangeEvent<HTMLSelectElement>) =>{
+  const handleNodeDimension = (evt:React.ChangeEvent<HTMLSelectElement>) =>{
     setNodeDimension(evt.target.value)
   }
 
@@ -53,11 +51,11 @@ export default function Controller({sigma}:IProp){
       console.log('render controller')
       // Bind graph interactions:
       sigma?.on("clickNode", ({ node }) => {
-        setSelectedNode(node);
+        handleNode(node);
       });
 
       sigma?.on("clickStage", () => {
-        setSelectedNode();
+        handleNode();
       });
 
       // Render nodes accordingly to the internal state:
@@ -99,16 +97,16 @@ export default function Controller({sigma}:IProp){
           BC Network
         </div>
         <div className={styles.network_controller}>
-          <p> current network type {networkType}</p>
+          <p> current network type {network}</p>
           <label>choose network type</label>
-          <select value={networkType} onChange={handleChangeNetworkType}>
+          <select value={network} onChange={handleNetwork}>
             <option value='hyper'> hypercube </option>
             <option value='crossed'> crossed cube </option>
             <option value='twisted'> locally twisted cube </option>
           </select>
           <p> current network dimension {networkDimension}</p>
           <label>choose network dimension</label>
-          <select value={networkDimension} onChange={handleChangeNetworkDimension}>
+          <select value={networkDimension} onChange={handleNetworkDimension}>
             <option value='1'> 1 dimension </option>
             <option value='2'> 2 dimension</option>
             <option value='3'> 3 dimension</option>
@@ -118,7 +116,7 @@ export default function Controller({sigma}:IProp){
         <div className={styles.node_controller}>
           <p> selected node {node}</p>
           <p> current node dimension {nodeDimension}</p>
-          <select value={nodeDimension} onChange={handleChangeNodeDimension}>
+          <select value={nodeDimension} onChange={handleNodeDimension}>
             <option value='1'> 1 dimension </option>
             <option value='2'> 2 dimension</option>
             <option value='3'> 3 dimension</option>
