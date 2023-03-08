@@ -31,7 +31,7 @@ function createNodes() {
       attributes:{
         x: n[0]*300,
         y: n[1]*300,
-        size: 10,
+        size: 20,
         color: "#B30000",
         lable: "node-" + i
       }
@@ -110,7 +110,7 @@ function createData(){
     edges: createEdges(),
   })
 
-  fs.writeFile(__dirname+'/data.json',network,err => {
+  fs.writeFile(__dirname+'/data_test.json',network,err => {
     if (err) {
         console.log('Error writing file', err)
     } else {

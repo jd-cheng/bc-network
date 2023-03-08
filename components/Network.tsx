@@ -14,82 +14,81 @@ interface State {
 
 export default function Network() {
 
-  const containerRef = useRef<HTMLDivElement | null>(null)
-  const [sigma, setSigma] = useState<Sigma | null>(null)
-  const [network, setGraph] = useState<Graph>(createHypercube())
-  const state: State = {};
+  // const containerRef = useRef<HTMLDivElement | null>(null)
+  // const [sigma, setSigma] = useState<Sigma | null>(null)
+  // const state: State = {};
 
-  useEffect(()=>{
-    let sigmaIns: Sigma | null = null
+  // useEffect(()=>{
+  //   let sigmaIns: Sigma | null = null
 
-    function setSelectedNode(node?: string) {
-      if (node) {
-        state.selectedNode = node;
-        state.selectedNeighbors = new Set(network.neighbors(node));
-      } else {
-        state.selectedNode = undefined;
-        state.selectedNeighbors = undefined;
-      }
+  //   function setSelectedNode(node?: string) {
+  //     if (node) {
+  //       state.selectedNode = node;
+  //       state.selectedNeighbors = new Set(network.neighbors(node));
+  //     } else {
+  //       state.selectedNode = undefined;
+  //       state.selectedNeighbors = undefined;
+  //     }
     
-      // Refresh rendering:
-      sigmaIns && sigmaIns.refresh();
-    }
+  //     // Refresh rendering:
+  //     sigmaIns && sigmaIns.refresh();
+  //   }
 
-    if(containerRef.current){
-      sigmaIns = new Sigma(network, containerRef.current)  
+  //   if(containerRef.current){
+  //     sigmaIns = new Sigma(network, containerRef.current)  
 
-      // Bind graph interactions:
-      sigmaIns.on("clickNode", ({ node }) => {
-        console.log("click"+node)
-        setSelectedNode(node);
-      });
+  //     // Bind graph interactions:
+  //     sigmaIns.on("clickNode", ({ node }) => {
+  //       console.log("click"+node)
+  //       setSelectedNode(node);
+  //     });
 
-      sigmaIns.on("clickStage", (data) => {
-        console.log(data)
-        setSelectedNode();
-      });
+  //     sigmaIns.on("clickStage", (data) => {
+  //       console.log(data)
+  //       setSelectedNode();
+  //     });
 
-      // Render nodes accordingly to the internal state:
-      // 1. If a node is selected, it is highlighted
-      // 3. If there is a hovered node, all non-neighbor nodes are greyed
-      sigmaIns.setSetting("nodeReducer", (node, data) => {
-        const res: Partial<NodeDisplayData> = { ...data };
+  //     // Render nodes accordingly to the internal state:
+  //     // 1. If a node is selected, it is highlighted
+  //     // 3. If there is a hovered node, all non-neighbor nodes are greyed
+  //     sigmaIns.setSetting("nodeReducer", (node, data) => {
+  //       const res: Partial<NodeDisplayData> = { ...data };
         
-        if (state.selectedNeighbors && !state.selectedNeighbors.has(node) && state.selectedNode !== node) {
-          res.label = "";
-          res.color = "#f6f6f6";
-        }
+  //       if (state.selectedNeighbors && !state.selectedNeighbors.has(node) && state.selectedNode !== node) {
+  //         res.label = "";
+  //         res.color = "#f6f6f6";
+  //       }
 
-        return res;
-      });
+  //       return res;
+  //     });
 
-      // Render edges accordingly to the internal state:
-      // 1. If a node is hovered, the edge is hidden if it is not connected to the
-      //    node
-      sigmaIns.setSetting("edgeReducer", (edge, data) => {
-        const res: Partial<EdgeDisplayData> = { ...data };
+  //     // Render edges accordingly to the internal state:
+  //     // 1. If a node is hovered, the edge is hidden if it is not connected to the
+  //     //    node
+  //     sigmaIns.setSetting("edgeReducer", (edge, data) => {
+  //       const res: Partial<EdgeDisplayData> = { ...data };
 
-        if (state.selectedNode && !network.hasExtremity(edge, state.selectedNode)) {
-          res.hidden = true;
-        }
+  //       if (state.selectedNode && !network.hasExtremity(edge, state.selectedNode)) {
+  //         res.hidden = true;
+  //       }
 
-        return res;
-      });
+  //       return res;
+  //     });
 
-    }
+  //   }
 
-    setSigma(sigmaIns)
+  //   setSigma(sigmaIns)
 
-    return ()=>{
-      if(sigmaIns){
-        sigmaIns.kill()
-      }
-      setSigma(null)
-    }
-  }
-  ,[containerRef])
+  //   return ()=>{
+  //     if(sigmaIns){
+  //       sigmaIns.kill()
+  //     }
+  //     setSigma(null)
+  //   }
+  // }
+  // ,[containerRef])
 
   return (
-    <div className={styles.container} ref={containerRef}></div>
+    <div className={styles.container} ></div>
   )
 }
