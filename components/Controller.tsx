@@ -15,14 +15,16 @@ interface IProp {
 
 export default function Controller({sigma}:IProp){
 
-
   const [network, setNetwork] = useState<string>('hyper')
   const [networkDimension, setNetworkDimension] = useState<string>('4')
   const [node, setNode] = useState<string | null>(null)
   const [nodeDimension, setNodeDimension] = useState<string>('4')
 
   const handleNetwork = (evt:React.ChangeEvent<HTMLSelectElement>)=>{
-    sigma?.setGraph(createCrossedcube())
+    if (!sigma){
+      return
+    }
+    sigma.setGraph(createCrossedcube())
     setNetwork(evt.target.value)
   }
 
@@ -31,16 +33,19 @@ export default function Controller({sigma}:IProp){
   }
 
   const handleNode = (node?: string)=>{
+    if (!sigma){
+      return
+    }
     if (node) {
       state.selectedNode = node;
-      state.selectedNeighbors = new Set(sigma?.getGraph().neighbors(node));
+      state.selectedNeighbors = new Set(sigma.getGraph().neighbors(node));
     } else {
       state.selectedNode = undefined;
       state.selectedNeighbors = undefined;
     }
     // Refresh rendering:
-    sigma?.refresh();
-    node && setNode(node);
+    sigma.refresh();
+    node ? setNode(node) : setNode(null);
   }
 
   const handleNodeDimension = (evt:React.ChangeEvent<HTMLSelectElement>) =>{
@@ -48,20 +53,22 @@ export default function Controller({sigma}:IProp){
   }
 
   useEffect(() => {
-      console.log('render controller')
+      if (!sigma){
+        return
+      }
       // Bind graph interactions:
-      sigma?.on("clickNode", ({ node }) => {
+      sigma.on("clickNode", ({ node }) => {
         handleNode(node);
       });
 
-      sigma?.on("clickStage", () => {
+      sigma.on("clickStage", () => {
         handleNode();
       });
 
       // Render nodes accordingly to the internal state:
       // 1. If a node is selected, it is highlighted
       // 3. If there is a hovered node, all non-neighbor nodes are greyed
-      sigma?.setSetting("nodeReducer", (node, data) => {
+      sigma.setSetting("nodeReducer", (node, data) => {
         const res: Partial<NodeDisplayData> = { ...data };
         
         if (state.selectedNeighbors && !state.selectedNeighbors.has(node) && state.selectedNode !== node) {
@@ -75,10 +82,10 @@ export default function Controller({sigma}:IProp){
       // Render edges accordingly to the internal state:
       // 1. If a node is hovered, the edge is hidden if it is not connected to the
       //    node
-      sigma?.setSetting("edgeReducer", (edge, data) => {
+      sigma.setSetting("edgeReducer", (edge, data) => {
         const res: Partial<EdgeDisplayData> = { ...data };
 
-        if (state.selectedNode && !sigma?.getGraph().hasExtremity(edge, state.selectedNode)) {
+        if (state.selectedNode && !sigma.getGraph().hasExtremity(edge, state.selectedNode)) {
           res.hidden = true;
         }
 
@@ -115,13 +122,20 @@ export default function Controller({sigma}:IProp){
         </div>
         <div className={styles.node_controller}>
           <p> selected node {node}</p>
-          <p> current node dimension {nodeDimension}</p>
-          <select value={nodeDimension} onChange={handleNodeDimension}>
-            <option value='1'> 1 dimension </option>
-            <option value='2'> 2 dimension</option>
-            <option value='3'> 3 dimension</option>
-            <option value='4'> 4 dimension</option>
-          </select>
+          
+          { node &&(
+            <>
+              <p> current node dimension {nodeDimension}</p>
+              <select value={nodeDimension} onChange={handleNodeDimension}>
+                <option value='1'> 1 dimension </option>
+                <option value='2'> 2 dimension</option>
+                <option value='3'> 3 dimension</option>
+                <option value='4'> 4 dimension</option>
+              </select>
+            </>
+
+          )}
+
         </div>
       </div>
   )
