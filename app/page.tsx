@@ -20,7 +20,7 @@ export default function Home() {
     let sigmaIns: Sigma | null = null
 
     if(containerRef.current){
-      sigmaIns = new Sigma(createHypercube(), containerRef.current)  
+      sigmaIns = new Sigma(createHypercube(), containerRef.current) 
     }
     setSigma(sigmaIns)
     return ()=>{
