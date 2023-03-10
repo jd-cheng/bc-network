@@ -1,6 +1,7 @@
 "use client"
 
 import { 
+  createContext,
   useEffect, 
   useRef, 
   useState } from 'react'
@@ -8,6 +9,7 @@ import Sigma from 'sigma'
 import Controller from '@/components/Controller'
 import { createHypercube } from '@/lib/BCnetwork'
 import styles from './page.module.css'
+import { SigmaContext } from '@/lib/sigma'
 
 
 export default function Home() {
@@ -35,11 +37,14 @@ export default function Home() {
   
 
   return (
-    <main className={styles.main}>
-      <div className={styles.controller}>
-        <Controller sigma={sigma}/>
-      </div>
-      <div className={styles.container} ref={containerRef}></div>
-    </main>
+    <SigmaContext.Provider value={sigma}>
+      <main className={styles.main}>
+        <div className={styles.controller}>
+          <Controller/>
+        </div>
+        <div className={styles.container} ref={containerRef}></div>
+      </main>
+    </SigmaContext.Provider>
+
   )
 }

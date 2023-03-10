@@ -1,16 +1,18 @@
 import { 
   createHypercube, 
   createCrossedcube } from '@/lib/BCnetwork'
+import { SigmaContext } from '@/lib/sigma'
 import { 
+  useContext,
   useState } from 'react'
-import Sigma from 'sigma'
 
 interface IProp {
-  sigma: Sigma | null
+
 }
 
-export default function NetworkController({sigma}:IProp) {
+export default function NetworkController() {
 
+  const sigma = useContext(SigmaContext)
   const [network, setNetwork] = useState<string>('hyper')
   const [networkDimension, setNetworkDimension] = useState<string>('')
 

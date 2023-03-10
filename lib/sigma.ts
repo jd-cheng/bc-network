@@ -1,3 +1,6 @@
+import { createContext } from "react";
+import Sigma from "sigma";
+
 interface State {
   selectedNode?: string;
   // State derived from hovered node:
@@ -6,3 +9,5 @@ interface State {
 }
 
 export const sigmaState: State = {};
+
+export const SigmaContext = createContext<Sigma | null>(null)

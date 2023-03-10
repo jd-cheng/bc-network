@@ -1,19 +1,19 @@
 import { 
+  useContext,
   useEffect, 
   useState } from "react"
-import { sigmaState } from "@/lib/sigma"
-import Sigma from "sigma"
+import { 
+  SigmaContext, 
+  sigmaState } from "@/lib/sigma"
 import styles from './Controller.module.css'
 import NetworkController from "./NetworkController"
 import NodeController from "./NodeController"
 import EdgeController from "./EdgeController"
 import TabPanel from "./TabPanel"
-interface IProp {
-  sigma: Sigma | null
-}
 
-export default function Controller({sigma}:IProp){
+export default function Controller(){
 
+  const sigma = useContext(SigmaContext)
   const [tab, setTab] = useState<string>('network')
   const [selectedNode, setSelectedNode] = useState<string | null>(null)
   const [selectedEdge, setSelectedEdge] = useState<string | null>(null)
@@ -99,18 +99,18 @@ export default function Controller({sigma}:IProp){
         <button onClick={()=>setTab('node')}>node</button>
         <button onClick={()=>setTab('edge')}>edge</button>
         <TabPanel value={tab} index="network">
-          <NetworkController sigma={sigma}/>
+          <NetworkController/>
         </TabPanel>
         <TabPanel value={tab} index="node">
           <NodeController 
-            sigma={sigma} 
+
             selectedNode={selectedNode} 
             setSelectedNode={setSelectedNode}
           />
         </TabPanel>
         <TabPanel value={tab} index="edge">
           <EdgeController 
-            sigma={sigma} 
+
             selectedEdge={selectedEdge} 
             setSeletedEdge={setSelectedEdge}
           />

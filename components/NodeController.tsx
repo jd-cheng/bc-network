@@ -1,15 +1,17 @@
-import { sigmaState } from '@/lib/sigma'
-import React, { useEffect, useState } from 'react'
-import Sigma from 'sigma'
-
+import { 
+  SigmaContext, 
+  sigmaState } from '@/lib/sigma'
+import React, { 
+  useContext, 
+  useState } from 'react'
 interface IProp{
-  sigma: Sigma | null
   selectedNode: string | null
   setSelectedNode: (node: string | null)=>void
 }
 
-export default function NodeController({sigma, selectedNode,setSelectedNode}:IProp) {
+export default function NodeController({ selectedNode,setSelectedNode}:IProp) {
 
+  const sigma = useContext(SigmaContext)
   const [nodeDimension, setNodeDimension] = useState<string>('')
 
   const handleNodeDimension = (evt:React.ChangeEvent<HTMLSelectElement>) =>{
