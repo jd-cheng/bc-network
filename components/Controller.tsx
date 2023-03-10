@@ -20,12 +20,16 @@ export default function Controller(){
 
   const handleNode = (node: string | null)=>{
     if (!sigma) { return }
-    console.log('node:'+ node)
-    const preNode = sigmaState.selectedNode
+
+    const { selectedNode, selectedEdge } = sigmaState
     const network = sigma.getGraph()
 
-    if(preNode){
-      network.setNodeAttribute(preNode, 'highlighted', false)
+    if(selectedNode){
+      network.setNodeAttribute(selectedNode, 'highlighted', false)
+    }
+
+    if(selectedEdge){
+      network.setEdgeAttribute(selectedEdge, 'color', '')
     }
 
     if(node){
@@ -42,11 +46,15 @@ export default function Controller(){
   const handleEdge = (edge: string | null)=>{
     if (!sigma) { return }
     console.log('edge:'+ edge)
-    const preEdge = sigmaState.selectedEdge
+    const { selectedNode, selectedEdge } = sigmaState
     const network = sigma.getGraph()
 
-    if(preEdge){
-      network.setEdgeAttribute(preEdge, 'color', '')
+    if(selectedNode){
+      network.setNodeAttribute(selectedNode, 'highlighted', false)
+    }
+    
+    if(selectedEdge){
+      network.setEdgeAttribute(selectedEdge, 'color', '')
     }
 
     if(edge){
