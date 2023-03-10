@@ -18,73 +18,62 @@ export default function Controller(){
   const [selectedNode, setSelectedNode] = useState<string | null>(null)
   const [selectedEdge, setSelectedEdge] = useState<string | null>(null)
 
-  const handleSelectNode = (node: string)=>{
+  const handleNode = (node: string | null)=>{
     if (!sigma) { return }
-
+    console.log('node:'+ node)
     const preNode = sigmaState.selectedNode
     const network = sigma.getGraph()
+
     if(preNode){
       network.setNodeAttribute(preNode, 'highlighted', false)
     }
-    sigmaState.selectedNode = node;
-    network.setNodeAttribute(node, 'highlighted', true)
 
+    if(node){
+      network.setNodeAttribute(node, 'highlighted', true)
+    }
+
+    sigmaState.selectedNode = node;
     sigma.refresh()
     setTab('node')
     setSelectedNode(node)
+
   }
 
-  const handleDropNode = ()=>{
+  const handleEdge = (edge: string | null)=>{
     if (!sigma) { return }
-    
-    sigma.getGraph().setNodeAttribute(sigmaState.selectedNode, 'highlighted', false)
-    sigmaState.selectedNode = undefined;    
-
-    sigma.refresh()
-    setSelectedNode(null)
-  }
-
-  const handleSelectEdge = (edge:string)=>{
-    if (!sigma) { return }
-
+    console.log('edge:'+ edge)
     const preEdge = sigmaState.selectedEdge
-    if(preEdge){
-      sigma.getGraph().setEdgeAttribute(preEdge, 'highlighted', false)
-    }
-    sigmaState.selectedEdge = edge;
-    sigma.getGraph().setNodeAttribute(edge, 'highlighted', true)
+    const network = sigma.getGraph()
 
+    if(preEdge){
+      network.setEdgeAttribute(preEdge, 'color', '')
+    }
+
+    if(edge){
+      network.setEdgeAttribute(edge,'color', '#B30000')
+    }
+
+    sigmaState.selectedEdge = edge;
     sigma.refresh()
     setTab('edge')
-    setSelectedNode(edge)
+    setSelectedEdge(edge)
 
   }
-
-  const handleDropEdge = ()=>{
-    if (!sigma) { return }
-    
-    sigma.getGraph().setEdgeAttribute(sigmaState.selectedEdge, 'highlighted', false)
-    sigmaState.selectedEdge = undefined;    
-
-    sigma.refresh()
-    setSelectedEdge(null)
-  }
-
 
   useEffect(() => {
     if (!sigma) { return }
     // Bind graph interactions:
     sigma.on("clickNode", ({node})=>{
-      handleSelectNode(node);
+      handleNode(node);
     });
 
     sigma.on("clickEdge",({edge})=>{
-      handleSelectEdge(edge)
+      handleEdge(edge)
     })
 
     sigma.on("clickStage", ()=>{
-      handleDropNode()
-      // handleDropEdge()
+      if(sigmaState.selectedEdge) handleEdge(null)
+      if(sigmaState.selectedNode) handleNode(null)
     });
 
     return () => {
