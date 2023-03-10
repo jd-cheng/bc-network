@@ -12,8 +12,6 @@ export default function NodeController({sigma, selectedNode,setSelectedNode}:IPr
 
   const [nodeDimension, setNodeDimension] = useState<string>('')
 
-
-
   const handleNodeDimension = (evt:React.ChangeEvent<HTMLSelectElement>) =>{
     if (!sigma) { return }
 
@@ -31,7 +29,6 @@ export default function NodeController({sigma, selectedNode,setSelectedNode}:IPr
     sigma.refresh()
     setNodeDimension(nodeDimension)
   }
-
 
   return (
     <div>
