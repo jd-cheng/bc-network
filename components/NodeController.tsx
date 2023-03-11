@@ -1,4 +1,5 @@
 import { 
+  sigma,
   SigmaContext, 
   sigmaState } from '@/lib/sigma'
 import React, { 
@@ -6,19 +7,21 @@ import React, {
   useState } from 'react'
 interface IProp{
   selectedNode: string | null
-  setSelectedNode: (node: string | null)=>void
 }
 
-export default function NodeController({ selectedNode,setSelectedNode}:IProp) {
+export default function NodeController({ selectedNode}:IProp) {
 
-  const sigma = useContext(SigmaContext)
+
   const [nodeDimension, setNodeDimension] = useState<string>('')
+  const [nodeColor, setNodeColor] = useState<string>('')
+  const [nodeSize, setNodeSize] = useState<string>('')
+  const [nodeLabel, setNodeLabel] = useState<string>('')
 
   const handleNodeDimension = (evt:React.ChangeEvent<HTMLSelectElement>) =>{
-    if (!sigma) { return }
+    if (!sigma.render) { return }
 
     const nodeDimension = evt.target.value
-    const network = sigma.getGraph()
+    const network = sigma.render.getGraph()
     const edges = network.filterEdges(selectedNode,(edge)=>{
       return network.hasExtremity(edge,selectedNode)
     })    
@@ -28,7 +31,7 @@ export default function NodeController({ selectedNode,setSelectedNode}:IProp) {
       network.setEdgeAttribute(edge, 'color', '#300000')
     })
 
-    sigma.refresh()
+    sigma.render.refresh()
     setNodeDimension(nodeDimension)
   }
 

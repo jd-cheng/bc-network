@@ -1,56 +1,57 @@
 "use client"
 
 import { 
-  createContext,
   useEffect, 
-  useRef, 
-  useState } from 'react'
+  useRef } from 'react'
 import Sigma from 'sigma'
 import Controller from '@/components/Controller'
 import { createHypercube } from '@/lib/BCnetwork'
 import styles from './page.module.css'
-import { SigmaContext } from '@/lib/sigma'
+import { 
+  handleEdge, 
+  handleNode, 
+  sigma, 
+  sigmaSetting } from '@/lib/sigma'
 
 
 export default function Home() {
 
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const [sigma, setSigma] = useState<Sigma | null>(null)
 
   useEffect(()=>{
     console.log("render sigma")
-    let sigmaIns: Sigma | null = null
 
     if(containerRef.current){
-      sigmaIns = new Sigma(
-        createHypercube(), 
-        containerRef.current,
-        {
-          enableEdgeClickEvents: true 
-        }
-      ) 
+      sigma.render = new Sigma(createHypercube(), containerRef.current,sigmaSetting) 
+
+      sigma.render.on("clickNode", ({node})=>{
+        handleNode(node);
+      });
+  
+      sigma.render.on("clickEdge",({edge})=>{
+        handleEdge(edge)
+      })
+  
+      sigma.render.on("clickStage", ()=>{
+        if(sigma.state.selectedEdge) handleEdge(null)
+        if(sigma.state.selectedNode) handleNode(null)
+      });
     }
-    setSigma(sigmaIns)
+
     return ()=>{
       console.log("unmount sigma")
-      if(sigmaIns){
-        sigmaIns.kill()
-      }
-      setSigma(null)
+      sigma.render && sigma.render.kill()
     }
   }
   ,[containerRef])
   
 
   return (
-    <SigmaContext.Provider value={sigma}>
-      <main className={styles.main}>
-        <div className={styles.controller}>
-          <Controller/>
-        </div>
-        <div className={styles.container} ref={containerRef}></div>
-      </main>
-    </SigmaContext.Provider>
-
+    <main className={styles.main}>
+      <div className={styles.controller}>
+        <Controller/>
+      </div>
+      <div className={styles.container} ref={containerRef}></div>
+    </main>
   )
 }

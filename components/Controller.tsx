@@ -1,9 +1,8 @@
 import { 
-  useContext,
   useEffect, 
   useState } from "react"
 import { 
-  SigmaContext, 
+  sigma,
   sigmaState } from "@/lib/sigma"
 import styles from './Controller.module.css'
 import NetworkController from "./NetworkController"
@@ -13,41 +12,21 @@ import TabPanel from "./TabPanel"
 
 export default function Controller(){
 
-  const sigma = useContext(SigmaContext)
   const [tab, setTab] = useState<string>('network')
   const [selectedNode, setSelectedNode] = useState<string | null>(null)
   const [selectedEdge, setSelectedEdge] = useState<string | null>(null)
 
   const handleNode = (node: string | null)=>{
-    if (!sigma) { return }
-
-    const { selectedNode, selectedEdge } = sigmaState
-    const network = sigma.getGraph()
-
-    if(selectedNode){
-      network.setNodeAttribute(selectedNode, 'highlighted', false)
-    }
-
-    if(selectedEdge){
-      network.setEdgeAttribute(selectedEdge, 'color', '')
-    }
-
-    if(node){
-      network.setNodeAttribute(node, 'highlighted', true)
-    }
-
-    sigmaState.selectedNode = node;
-    sigma.refresh()
     setTab('node')
     setSelectedNode(node)
 
   }
 
   const handleEdge = (edge: string | null)=>{
-    if (!sigma) { return }
+    if (!sigma.render) { return }
     console.log('edge:'+ edge)
     const { selectedNode, selectedEdge } = sigmaState
-    const network = sigma.getGraph()
+    const network = sigma.render.getGraph()
 
     if(selectedNode){
       network.setNodeAttribute(selectedNode, 'highlighted', false)
@@ -62,32 +41,11 @@ export default function Controller(){
     }
 
     sigmaState.selectedEdge = edge;
-    sigma.refresh()
+    sigma.render.refresh()
     setTab('edge')
     setSelectedEdge(edge)
 
   }
-
-  useEffect(() => {
-    if (!sigma) { return }
-    // Bind graph interactions:
-    sigma.on("clickNode", ({node})=>{
-      handleNode(node);
-    });
-
-    sigma.on("clickEdge",({edge})=>{
-      handleEdge(edge)
-    })
-
-    sigma.on("clickStage", ()=>{
-      if(sigmaState.selectedEdge) handleEdge(null)
-      if(sigmaState.selectedNode) handleNode(null)
-    });
-
-    return () => {
-      console.log("unmount node controller")
-    }
-  }, [sigma])
 
 
   return(
@@ -100,16 +58,13 @@ export default function Controller(){
         </TabPanel>
         <TabPanel value={tab} index="node">
           <NodeController 
-
             selectedNode={selectedNode} 
-            setSelectedNode={setSelectedNode}
           />
         </TabPanel>
         <TabPanel value={tab} index="edge">
           <EdgeController 
-
             selectedEdge={selectedEdge} 
-            setSeletedEdge={setSelectedEdge}
+
           />
         </TabPanel>
       </div>
