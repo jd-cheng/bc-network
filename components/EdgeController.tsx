@@ -8,7 +8,10 @@ interface IProp {
 
 export default function EdgeController({selectedEdge}:IProp) {
 
+
   return (
-    <div>EdgeController</div>
+    <div>
+      <p> selected edge {selectedEdge}</p>
+    </div>
   )
 }
