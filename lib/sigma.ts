@@ -1,7 +1,14 @@
-import { createContext } from "react";
+import { Attributes } from "graphology-types";
 import Sigma from "sigma";
 
-interface State {
+export type ControllerType = 'network' | 'node' | 'edge'
+
+export interface SigmaTarget {
+  key: string;
+  attr: Attributes;
+}
+
+interface SigmaState {
   selectedNode: string | null;
   // State derived from hovered node:
   selectedNeighbors?: Set<string>;
@@ -10,15 +17,9 @@ interface State {
 
 interface ISigma {
   render: Sigma | null;
-  state: State
+  state: SigmaState
 }
 
-export const sigmaState: State = {
-  selectedNode: null,
-  selectedEdge: null,
-};
-
-export const SigmaContext = createContext<Sigma | null>(null)
 
 export const sigmaSetting = {
   enableEdgeClickEvents: true 
@@ -44,6 +45,7 @@ export const handleNode = (node: string | null) => {
 
     sigma.state.selectedNode = node;
     sigma.render.refresh()
+
 }
 
 export const handleEdge = (edge: string | null) => {
@@ -58,4 +60,6 @@ export const handleEdge = (edge: string | null) => {
 
   sigma.state.selectedEdge = edge;
   sigma.render.refresh()
+
 }
+

@@ -5,51 +5,47 @@ import {
   useRef, 
   useState} from 'react'
 import { 
+  ControllerType,
   handleEdge, 
   handleNode, 
   sigma, 
-  sigmaSetting } from '@/lib/sigma'
+  sigmaSetting, 
+  SigmaTarget} from '@/lib/sigma'
 import { 
   SigmaEdgeEventPayload, 
   SigmaNodeEventPayload } from 'sigma/sigma'
 import Sigma from 'sigma'
-import { createHypercube } from '@/lib/BCnetwork'
 import styles from './page.module.css'
-import EdgeController from '@/components/EdgeController'
-import NetworkController from '@/components/NetworkController'
-import NodeController from '@/components/NodeController'
+import Controller from '@/components/Controller'
+import { network } from '@/lib/network'
 
-interface Selected {
-  type: string;
-  value: string | null;
-}
 
 export default function Home() {
 
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const [selected, setSelected] = useState<Selected>({type:'network',value:null})
-  const [controller, setController] = useState<string>('network')
+  const [controller, setController] = useState<ControllerType>('network')
+  const [target, setTarget] = useState<string | null>(null)
 
   const clickNode = ({node}:SigmaNodeEventPayload)=> {
-    handleNode(node)
 
-    setSelected({type:'node',value:node})
+    handleNode(node)
     setController('node')
+    setTarget(node)
 
   }
 
   const clickEdge = ({edge}:SigmaEdgeEventPayload)=> {
-    handleEdge(edge)
 
-    setSelected({type:'edge',value:edge})
+    handleEdge(edge)
     setController('edge')
+    setTarget(edge)
 
   }
 
   const clickStage = ()=>{
     sigma.state.selectedNode && handleNode(null)
     sigma.state.selectedEdge && handleEdge(null)
-    setSelected({type:'network',value:null})
+    setTarget(null)
 
   }
 
@@ -57,7 +53,7 @@ export default function Home() {
     console.log("render sigma")
     if(!containerRef.current){ return }
 
-    sigma.render = new Sigma(createHypercube(), containerRef.current,sigmaSetting) 
+    sigma.render = new Sigma(network, containerRef.current,sigmaSetting) 
     sigma.render.on("clickNode", clickNode);
     sigma.render.on("clickEdge", clickEdge)
     sigma.render.on("clickStage",clickStage);
@@ -76,10 +72,7 @@ export default function Home() {
         <button onClick={()=>setController('network')}>network</button>
         <button onClick={()=>setController('node')}>node</button>
         <button onClick={()=>setController('edge')}>edge</button>
-        {controller === 'network'  && <NetworkController/>}
-        {controller === 'node' && <NodeController selectedNode={selected.type === 'node'?selected.value:null}/>}
-        {controller === 'edge' && <EdgeController selectedEdge={selected.type === 'edge'?selected.value:null}/>}
-
+        <Controller type={controller} target={target}/>
       </div>
       <div className={styles.container} ref={containerRef}></div>
     </main>

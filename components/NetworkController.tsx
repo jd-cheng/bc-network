@@ -1,41 +1,38 @@
 import { 
   createHypercube, 
-  createCrossedcube } from '@/lib/BCnetwork'
-import { SigmaContext } from '@/lib/sigma'
-import { 
-  useContext,
-  useState } from 'react'
+  createCrossedcube } from '@/lib/network'
+import { sigma } from '@/lib/sigma'
 
-interface IProp {
+import { useState } from 'react'
 
-}
+
 
 export default function NetworkController() {
 
-  const sigma = useContext(SigmaContext)
+  const { render } = sigma
   const [network, setNetwork] = useState<string>('hyper')
   const [networkDimension, setNetworkDimension] = useState<string>('')
 
   const handleNetwork = (evt:React.ChangeEvent<HTMLSelectElement>)=>{
-    if (!sigma){ return }
+    if (!render){ return }
 
     const networkType = evt.target.value
     switch(networkType){
       case 'hyper': 
-        sigma.setGraph(createHypercube())
+        render.setGraph(createHypercube())
         break
       case 'crossed': 
-        sigma.setGraph(createCrossedcube())
+        render.setGraph(createCrossedcube())
         break
       case 'twisted': 
-        sigma.setGraph(createCrossedcube())
+        render.setGraph(createCrossedcube())
         break
     }
     setNetwork(networkType)
   }
 
   const handleNetworkDimension = (evt:React.ChangeEvent<HTMLSelectElement>)=>{
-    if (!sigma){ return }
+    if (!render){ return }
 
     const networkDimension = evt.target.value
     
