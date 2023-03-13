@@ -9,8 +9,7 @@ import {
   handleEdge, 
   handleNode, 
   sigma, 
-  sigmaSetting, 
-  SigmaTarget} from '@/lib/sigma'
+  sigmaSetting, } from '@/lib/sigma'
 import { 
   SigmaEdgeEventPayload, 
   SigmaNodeEventPayload } from 'sigma/sigma'

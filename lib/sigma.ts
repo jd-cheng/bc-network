@@ -1,12 +1,6 @@
 import { Attributes } from "graphology-types";
 import Sigma from "sigma";
-
-export type ControllerType = 'network' | 'node' | 'edge'
-
-export interface SigmaTarget {
-  key: string;
-  attr: Attributes;
-}
+import { network } from "./network";
 
 interface SigmaState {
   selectedNode: string | null;
@@ -19,6 +13,8 @@ interface ISigma {
   render: Sigma | null;
   state: SigmaState
 }
+
+export type ControllerType = 'network' | 'node' | 'edge'
 
 
 export const sigmaSetting = {
@@ -37,7 +33,6 @@ export const handleNode = (node: string | null) => {
     if (!sigma.render) { return }
     console.log('node:'+ node)
     const { selectedNode, selectedEdge } = sigma.state
-    const network = sigma.render.getGraph()
 
     selectedNode && network.setNodeAttribute(selectedNode, 'highlighted', false)
     selectedEdge && network.setEdgeAttribute(selectedEdge, 'color', '')
@@ -52,7 +47,6 @@ export const handleEdge = (edge: string | null) => {
   if (!sigma.render) { return }
   console.log('edge:'+ edge)
   const { selectedNode, selectedEdge } = sigma.state
-  const network = sigma.render.getGraph()
 
   selectedNode && network.setNodeAttribute(selectedNode, 'highlighted', false)
   selectedEdge && network.setEdgeAttribute(selectedEdge, 'color', '')

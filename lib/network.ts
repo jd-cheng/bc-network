@@ -31,7 +31,6 @@ export const getTargetAttributes = (type: ControllerType, target:string) => {
       return network.getNodeAttributes(target)
     case 'edge':
       return network.getEdgeAttributes(target)
-    
   }
 }
 

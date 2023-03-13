@@ -1,12 +1,13 @@
-import { getTargetAttributes, network } from '@/lib/network'
-import { sigma, SigmaTarget, ControllerType } from '@/lib/sigma'
-import { Attributes } from 'graphology-types'
-import React, { useEffect, useState } from 'react'
-
+import { 
+  sigma,  
+  ControllerType } from '@/lib/sigma'
+import React, { 
+  useEffect, 
+  useState } from 'react'
+import { getTargetAttributes} from '@/lib/network'
 interface IProp {
   type: ControllerType
   target: string | null
-
 }
 
 export default function Controller({type, target}:IProp ) {
@@ -29,6 +30,8 @@ export default function Controller({type, target}:IProp ) {
   // const [draggable, setDraggable] = useState(defAttr.draggable)
   
   useEffect(() => {
+    console.log('render controller')
+
     if(!target) return
     const defaultAttr = getTargetAttributes(type, target)
     setLabel(defaultAttr.label)
@@ -37,7 +40,7 @@ export default function Controller({type, target}:IProp ) {
     setHidden(defaultAttr.hidden)
   
     return () => {
-
+      console.log('unmount controller')
     }
   }, [type, target])
   
