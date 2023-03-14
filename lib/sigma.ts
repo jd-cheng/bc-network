@@ -87,31 +87,4 @@ export const getSelectedAttributes = (selected: ISelected) => {
   }
 }
 
-// export const handleNode = (node: string | null) => {
-//     if (!sigma.render) { return }
-//     console.log('node:'+ node)
-//     const { selectedNode, selectedEdge } = sigma.state
-
-//     selectedNode && network.setNodeAttribute(selectedNode, 'highlighted', false)
-//     selectedEdge && network.setEdgeAttribute(selectedEdge, 'color', '')
-//     node && network.setNodeAttribute(node, 'highlighted', true)
-
-//     sigma.state.selectedNode = node;
-//     sigma.render.refresh()
-
-// }
-
-// export const handleEdge = (edge: string | null) => {
-//   if (!sigma.render) { return }
-//   console.log('edge:'+ edge)
-//   const { selectedNode, selectedEdge } = sigma.state
-
-//   selectedNode && network.setNodeAttribute(selectedNode, 'highlighted', false)
-//   selectedEdge && network.setEdgeAttribute(selectedEdge, 'color', '')
-//   edge && network.setEdgeAttribute(edge,'color', '#B30000')
-
-//   sigma.state.selectedEdge = edge;
-//   sigma.render.refresh()
-
-// }
 
