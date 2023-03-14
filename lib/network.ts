@@ -1,7 +1,6 @@
 import Graph from "graphology";
 import data from "@/data.json";
 import data_test from "@/data_test.json";
-import { ControllerType } from "./sigma";
 
 export const network = new Graph()
 network.import(data)
@@ -23,14 +22,5 @@ function createLocallyTwistedcube(){
 }
 
 
-export const getTargetAttributes = (type: ControllerType, target:string) => {
-  switch(type){
-    case 'network':
-      return network.getAttributes()
-    case 'node':
-      return network.getNodeAttributes(target)
-    case 'edge':
-      return network.getEdgeAttributes(target)
-  }
-}
+
 
