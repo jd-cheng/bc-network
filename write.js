@@ -102,15 +102,23 @@ function createEdges() {
 
 function createData(){
 
-  const network = JSON.stringify({
+  const graph = JSON.stringify({
     attributes: {
-      name: 'BC Network'
+      name: 'BC Networks',
+      networks: [
+        {
+          key: 'hypercube',
+          attributes:{
+            color: 'red'
+          }
+        }
+      ]
     },
     nodes: createNodes(),
     edges: createEdges(),
-  })
+  },null,2)
 
-  fs.writeFile(__dirname+'/data.json',network,err => {
+  fs.writeFile(__dirname+'/data.json',graph,err => {
     if (err) {
         console.log('Error writing file', err)
     } else {
