@@ -100,6 +100,26 @@ function createEdges() {
  * }
  */
 
+function gen_hypercube(){
+
+  const networkObj = {
+    type: "hyper-cube",
+    nodes: createNodes(),
+    edges: createEdges()
+  }
+  const networkStr = JSON.stringify(networkObj,null,2)
+
+
+  fs.writeFile(__dirname+'/hypercube.json',networkStr,err=>{
+    if (err) {
+        console.log('Error writing edges', err)
+    } else {
+        console.log('Successfully wrote edges')
+    }
+  })
+}
+
+
 function createData(){
 
   const graph = JSON.stringify({
@@ -108,9 +128,7 @@ function createData(){
       networks: [
         {
           key: 'hypercube',
-          attributes:{
-            color: 'red'
-          }
+          type: 'hypercube',
         }
       ]
     },
@@ -127,4 +145,4 @@ function createData(){
 })
 }
 
-createData()
+gen_hypercube()

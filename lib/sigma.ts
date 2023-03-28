@@ -1,44 +1,66 @@
+import { ISelected } from "@/store/selected";
 import Sigma from "sigma";
 import { graph } from "./graph";
 
-
 interface ISigma {
   render: Sigma | null;
-  state: {
-    selected: ISelected | null
-  }
-}
-export interface ISelected {
-  type: 'network' | 'node' | 'edge' | null ;
-  key: string 
 }
 
+
 export const renderSetting = {
-  enableEdgeClickEvents: true 
+  enableEdgeClickEvents: true,
+  allowInvalidContainer: true 
 }
 
 
 
 export const sigma: ISigma = {
   render: null,
-  state: {
-    selected : null
-  }
 } 
 
 
-export const getSelectedAttributes = (selected: ISelected) => {
-  const { type, key } = selected
-  switch(type){
-    case 'network':
-      return graph.getAttributes()
-    case 'node':
-      return graph.getNodeAttributes(key)
-    case 'edge':
-      return graph.getEdgeAttributes(key)
-    case null:
-      return graph.getAttributes()
+export const renderSelected = (curSelected:ISelected | null, preSelected:ISelected | null)=> {
+  if(!sigma.render) { return }
+  const { render } = sigma
+
+  //clear previously seleced elements effect
+
+  if(preSelected){
+    const { type, key } = preSelected
+
+    switch(type){
+      case 'network':
+        break;
+      case 'node':
+        graph.setNodeAttribute(key, 'highlighted', false)
+        break;
+      case 'edge':
+        graph.setEdgeAttribute(key, 'color','')
+        break;
+    }
   }
+
+  //render currently selected element
+  if(curSelected){
+    const { type, key } = curSelected
+
+    switch(type){
+      case 'network':
+        break;
+      case 'node':
+        graph.setNodeAttribute(key, 'highlighted', true)
+        break;
+      case 'edge':
+        graph.setEdgeAttribute(key, 'color', '#B30000')
+        break;
+    }
+  }
+
+  render.refresh()
+
 }
+
+
+
 
 

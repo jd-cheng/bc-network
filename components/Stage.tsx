@@ -1,10 +1,11 @@
 import { graph } from '@/lib/graph'
-import { ISelected, renderSetting, sigma } from '@/lib/sigma'
+import { renderSetting, sigma } from '@/lib/sigma'
 import { selectedState } from '@/store/selected'
 import React, { useEffect, useRef } from 'react'
 import { useSetRecoilState } from 'recoil'
 import Sigma from 'sigma'
-import { SigmaNodeEventPayload, SigmaEdgeEventPayload } from 'sigma/sigma'
+import { SigmaNodeEventPayload, SigmaEdgeEventPayload, SigmaStageEvents, SigmaStageEventPayload } from 'sigma/sigma'
+import data from '@/data/data.json'
 import styles from './Stage.module.css'
 
 
@@ -13,22 +14,26 @@ export default function Stage() {
   const stageRef = useRef<HTMLDivElement | null>(null)
   const setSelected = useSetRecoilState(selectedState)
 
-  const clickNode = ({node}:SigmaNodeEventPayload)=> {
-    // const selected : ISelected = {type:'node',key:node}
-    setSelected({type:'node',key:node})
+  const select = (element: SigmaNodeEventPayload | SigmaEdgeEventPayload | SigmaStageEventPayload) => {
+    console.log(element)
+
+
+    //click node
+    if('node' in element){
+      setSelected({type:'node',key: element.node})
+      return
+    }
+
+    //click edge
+    if('edge' in element){
+      setSelected({type:'edge', key:element.edge})
+      return
+    }
+
+    //click stage
+    setSelected(null)
 
   }
-
-  const clickEdge = ({edge}:SigmaEdgeEventPayload)=> {
-    // const selected : ISelected = {type:'edge',key:edge}
-    setSelected({type:'edge',key:edge})
-
-  }
-
-  const clickStage = ()=>{
-    setSelected({type:null, key:'null'})
-  }
-
 
 
   useEffect(() => {
@@ -36,13 +41,15 @@ export default function Stage() {
     if(!stageRef.current) { return }
 
     sigma.render = new Sigma(graph, stageRef.current, renderSetting)
-    sigma.render.on("clickNode", clickNode);
-    sigma.render.on("clickEdge", clickEdge)
-    sigma.render.on("clickStage",clickStage);
+    sigma.render.on("clickNode", select);
+    sigma.render.on("clickEdge", select)
+    sigma.render.on("clickStage",select);
+    // graph.import(data)
   
     return () => {
       console.log("unmount stage")
       sigma.render && sigma.render.kill()
+      graph.clear()
     }
   }, [stageRef])
   

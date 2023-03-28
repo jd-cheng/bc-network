@@ -2,7 +2,7 @@ import React, {
   useEffect, 
   useRef, 
   useState } from 'react'
-import { getSelectedAttributes } from '@/lib/sigma'
+import { getSelectedAttributes } from '@/lib/graph'
 import styles from './Editor.module.css'
 import { useRecoilValue } from 'recoil'
 import { selectedState } from '@/store/selected'
@@ -19,7 +19,7 @@ export default function Editor() {
   // type: string;
   // const selected = useContext(SelectorContext)
   const selected = useRecoilValue(selectedState)
-  const [editior, setEditor] = useState<'network'| 'node' | 'edge' | null >('network')
+  const [editior, setEditor] = useState<'network'| 'node' | 'edge' | null >(null)
   const labelRef = useRef<HTMLInputElement | null>(null)
   const colorRef = useRef<HTMLInputElement | null>(null)
   const sizeRef = useRef<HTMLInputElement | null>(null)
@@ -51,23 +51,24 @@ export default function Editor() {
   
   useEffect(() => {
     console.log('render editor')
-    if(!selected.type) { return }
-    setEditor(selected.type)
+    // if(!selected.type) { return }
+    // setEditor(selected.type)
     
-    const defaultAttr = getSelectedAttributes(selected)
+    // const defaultAttr = getSelectedAttributes(selected)
+    // console.log(defaultAttr)
 
-    if(labelRef.current && colorRef.current && sizeRef.current && hiddenRef.current){
-      labelRef.current.defaultValue = defaultAttr.label
-      colorRef.current.defaultValue = defaultAttr.color
-      sizeRef.current.defaultValue = defaultAttr.size
-      hiddenRef.current.defaultValue = defaultAttr.hidden
-    }
+    // if(labelRef.current && colorRef.current && sizeRef.current && hiddenRef.current){
+    //   labelRef.current.defaultValue = defaultAttr.label
+    //   colorRef.current.defaultValue = defaultAttr.color
+    //   sizeRef.current.defaultValue = defaultAttr.size
+    //   hiddenRef.current.defaultValue = defaultAttr.hidden
+    // }
 
   
     return () => {
       console.log('unmount editor')
     }
-  }, [selected])
+  }, [])
   
 
 
