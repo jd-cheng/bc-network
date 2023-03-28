@@ -1,6 +1,6 @@
 import React from 'react'
 import hypercube_data from '@/data/hypercube.json'
-import { useRecoilState, useSetRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { networksState } from '@/store/networks'
 import { IEdge, graph, INetwork, INode, NetworkAttributes } from '@/lib/graph'
 import { nodesState } from '@/store/nodes'
@@ -53,14 +53,14 @@ export default function Drawer() {
 
 
   return (
-    <div>
-      <form>
-        {/* <label>network key</label>
-        <input/>
+    <div style={{maxWidth: '200px'}}>
+      {/* <form>
+        <label>network key</label>
+        <input type='text'/>
         <label>network type</label>
-        <input/>
+        
         <label>network color</label>
-        <input/>
+        <input type='text'/>
         <label>network size</label>
         <label>nodeList</label>
         <button>add node</button>
@@ -73,8 +73,8 @@ export default function Drawer() {
         <label>source</label>
         <input/>
         <label>target</label>
-        <input/> */}
-      </form>
+        <input/>
+      </form> */}
       <button onClick={() =>handleAddNetwork(
         hypercube_data.network,
         hypercube_data.nodes,

@@ -4,8 +4,10 @@ import { selectedState } from '@/store/selected'
 import React, { useEffect, useRef } from 'react'
 import { useSetRecoilState } from 'recoil'
 import Sigma from 'sigma'
-import { SigmaNodeEventPayload, SigmaEdgeEventPayload, SigmaStageEvents, SigmaStageEventPayload } from 'sigma/sigma'
-import data from '@/data/data.json'
+import { 
+  SigmaNodeEventPayload, 
+  SigmaEdgeEventPayload, 
+  SigmaStageEventPayload } from 'sigma/sigma'
 import styles from './Stage.module.css'
 
 
@@ -15,8 +17,6 @@ export default function Stage() {
   const setSelected = useSetRecoilState(selectedState)
 
   const select = (element: SigmaNodeEventPayload | SigmaEdgeEventPayload | SigmaStageEventPayload) => {
-    console.log(element)
-
 
     //click node
     if('node' in element){

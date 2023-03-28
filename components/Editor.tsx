@@ -2,7 +2,6 @@ import React, {
   useEffect, 
   useRef, 
   useState } from 'react'
-import { getSelectedAttributes } from '@/lib/graph'
 import styles from './Editor.module.css'
 import { useRecoilValue } from 'recoil'
 import { selectedState } from '@/store/selected'
@@ -10,16 +9,9 @@ import { selectedState } from '@/store/selected'
 
 export default function Editor() {
 
-  // label: string | null;
-  // size: number;
-  // color: string;
-  // hidden: boolean;
-  // forceLabel: boolean;
-  // zIndex: number;
-  // type: string;
-  // const selected = useContext(SelectorContext)
   const selected = useRecoilValue(selectedState)
-  const [editior, setEditor] = useState<'network'| 'node' | 'edge' | null >(null)
+  const [editior, setEditor] = useState<'network'| 'node' | 'edge' | null >(selected? selected.type : null)
+  
   const labelRef = useRef<HTMLInputElement | null>(null)
   const colorRef = useRef<HTMLInputElement | null>(null)
   const sizeRef = useRef<HTMLInputElement | null>(null)
@@ -68,7 +60,7 @@ export default function Editor() {
     return () => {
       console.log('unmount editor')
     }
-  }, [])
+  })
   
 
 
@@ -79,7 +71,7 @@ export default function Editor() {
       <button onClick={()=>setEditor('edge')}>edge</button>
       <p>{editior} Editor</p>
 
-      <p>selected { selected&&selected.type === editior &&selected.key}</p>
+      <p>selected {selected && selected.type === editior? selected.key:''}</p>
       <hr/>
       <p>
       <label>label </label>
