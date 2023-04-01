@@ -1,6 +1,6 @@
 "use client"
 import { RecoilRoot } from 'recoil'
-import './globals.css'
+import './globals.css';
 
 const metadata = {
   title: 'BC Network',

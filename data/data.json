@@ -16,7 +16,8 @@
         "y": -300,
         "size": 20,
         "color": "#B30000",
-        "label": "node-0"
+        "label": "node-0",
+        "highlighted": false
       }
     },
     {
@@ -26,7 +27,8 @@
         "y": -212.13203435596424,
         "size": 20,
         "color": "#B30000",
-        "label": "node-1"
+        "label": "node-1",
+        "highlighted": false
       }
     },
     {
@@ -36,7 +38,8 @@
         "y": 0,
         "size": 20,
         "color": "#B30000",
-        "label": "node-2"
+        "label": "node-2",
+        "highlighted": false
       }
     },
     {
@@ -46,7 +49,8 @@
         "y": 212.13203435596424,
         "size": 20,
         "color": "#B30000",
-        "label": "node-3"
+        "label": "node-3",
+        "highlighted": false
       }
     },
     {
@@ -56,7 +60,8 @@
         "y": 300,
         "size": 20,
         "color": "#B30000",
-        "label": "node-4"
+        "label": "node-4",
+        "highlighted": false
       }
     },
     {
@@ -66,7 +71,8 @@
         "y": 212.13203435596424,
         "size": 20,
         "color": "#B30000",
-        "label": "node-5"
+        "label": "node-5",
+        "highlighted": false
       }
     },
     {
@@ -76,7 +82,8 @@
         "y": 0,
         "size": 20,
         "color": "#B30000",
-        "label": "node-6"
+        "label": "node-6",
+        "highlighted": false
       }
     },
     {
@@ -86,7 +93,8 @@
         "y": -212.13203435596424,
         "size": 20,
         "color": "#B30000",
-        "label": "node-7"
+        "label": "node-7",
+        "highlighted": false
       }
     },
     {
@@ -96,7 +104,8 @@
         "y": -600,
         "size": 20,
         "color": "#B30000",
-        "label": "node-8"
+        "label": "node-8",
+        "highlighted": false
       }
     },
     {
@@ -106,7 +115,8 @@
         "y": -424.2640687119285,
         "size": 20,
         "color": "#B30000",
-        "label": "node-9"
+        "label": "node-9",
+        "highlighted": false
       }
     },
     {
@@ -116,7 +126,8 @@
         "y": 0,
         "size": 20,
         "color": "#B30000",
-        "label": "node-10"
+        "label": "node-10",
+        "highlighted": false
       }
     },
     {
@@ -126,7 +137,8 @@
         "y": 424.2640687119285,
         "size": 20,
         "color": "#B30000",
-        "label": "node-11"
+        "label": "node-11",
+        "highlighted": false
       }
     },
     {
@@ -136,7 +148,8 @@
         "y": 600,
         "size": 20,
         "color": "#B30000",
-        "label": "node-12"
+        "label": "node-12",
+        "highlighted": false
       }
     },
     {
@@ -146,7 +159,8 @@
         "y": 424.2640687119285,
         "size": 20,
         "color": "#B30000",
-        "label": "node-13"
+        "label": "node-13",
+        "highlighted": false
       }
     },
     {
@@ -156,7 +170,8 @@
         "y": 0,
         "size": 20,
         "color": "#B30000",
-        "label": "node-14"
+        "label": "node-14",
+        "highlighted": false
       }
     },
     {
@@ -166,7 +181,8 @@
         "y": -424.2640687119285,
         "size": 20,
         "color": "#B30000",
-        "label": "node-15"
+        "label": "node-15",
+        "highlighted": false
       }
     }
   ],

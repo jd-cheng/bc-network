@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { HTMLProps } from 'react'
 import hypercube_data from '@/data/hypercube.json'
 import { useRecoilState } from 'recoil'
 import { networksState } from '@/store/networks'
 import { IEdge, graph, INetwork, INode, NetworkAttributes } from '@/lib/graph'
 import { nodesState } from '@/store/nodes'
 import { edgesState } from '@/store/edges'
+import styles from './NetworkDrawer.module.css'
+import List from '@/components/List'
+import ListItem from '@/components/ListItem'
+import * as RadixLabel from '@radix-ui/react-label';
+
 
 export default function Drawer() {
 
@@ -13,7 +18,7 @@ export default function Drawer() {
   const [edgeList, setEdgeList] = useRecoilState(edgesState)
 
 
-  const handleAddNetwork = (network: INetwork, nodes: INode[], edges: IEdge[])=>{
+  const drawNetwork = (network: INetwork, nodes: INode[], edges: IEdge[])=>{
     console.log('add network')
     const { attributes: networkAttributes } = network
     const { nodeColor, nodeSize, edgeColor, edgeSize } = networkAttributes as NetworkAttributes
@@ -53,32 +58,40 @@ export default function Drawer() {
 
 
   return (
-    <div style={{maxWidth: '200px'}}>
-      {/* <form>
-        <label>network key</label>
-        <input type='text'/>
-        <label>network type</label>
-        
-        <label>network color</label>
-        <input type='text'/>
-        <label>network size</label>
-        <label>nodeList</label>
-        <button>add node</button>
-        <label>node label</label>
-        <input/>
-        <label>node coordinate</label>
-        <input/>
-        <label>edgeList</label>
-        <button>add edge</button>
-        <label>source</label>
-        <input/>
-        <label>target</label>
-        <input/>
-      </form> */}
-      <button onClick={() =>handleAddNetwork(
+    <div className={styles.wrapper}>
+      <Label>Key</Label>
+      <Input type='text'/>
+      <Label>Type</Label>
+            
+      <Label>Color</Label>
+      <input type='text'/>
+      <Label>node size</Label>
+
+      <label>nodeList</label>
+      <button>add node</button>
+      <button onClick={() =>drawNetwork(
         hypercube_data.network,
         hypercube_data.nodes,
         hypercube_data.edges)}>add hypercube</button>
     </div>
+  )
+}
+
+
+
+const Label = ({children}:{children?: React.ReactNode})=>{
+  return (
+    <RadixLabel.Root className="text-[15px] font-medium leading-[35px] text-white">
+      {children}
+    </RadixLabel.Root>
+  )
+}
+
+const Input = ({...prop}: HTMLProps<HTMLInputElement>)=>{
+  return (
+    <input 
+      className="bg-blackA5 shadow-blackA9 inline-flex h-[35px] w-[200px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_black] selection:color-white selection:bg-blackA9"
+      {...prop}
+    />
   )
 }

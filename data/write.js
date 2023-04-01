@@ -33,7 +33,9 @@ function createNodes() {
         y: n[1]*300,
         size: 20,
         color: "#B30000",
-        label: "node-" + i
+        label: "node-" + i,
+        highlighted: false
+        
       }
 
     }
@@ -145,4 +147,4 @@ function createData(){
 })
 }
 
-gen_hypercube()
+createData()
