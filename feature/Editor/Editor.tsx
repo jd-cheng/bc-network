@@ -1,29 +1,42 @@
-import React, { 
-  HTMLProps,
-  useEffect, 
-  useRef, 
-  useState } from 'react'
-import styles from './Editor.module.css'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { selectedState } from '@/store/selected'
-import { getSelectedAttributes } from '@/lib/graph'
+import React, { HTMLProps, useEffect, useState } from 'react'
 import * as RadixLabel from '@radix-ui/react-label';
-import { selectFamilyState } from '@/store/selectedFamily'
+import { useSelectedStore } from '@/store/selected';
+import styles from './Editor.module.css'
+import * as Form from '@radix-ui/react-form';
+import { graph } from '@/lib/graph';
+import { Resolver, useForm } from 'react-hook-form';
+import { renderEdge, renderNetwork, renderNode } from '@/lib/sigma';
+
+
+type NetworkFormValues = {
+  key: string;
+  type: string;
+  label: string;
+  nodeColor: string
+  nodeSize: number
+  edgeColor: string
+  edgeSize: number
+};
+
+const resolver: Resolver<NetworkFormValues> = async (values) => {
+  return {
+    values: values,
+    errors: {}
+  };
+};
 
 
 
 export default function Editor() {
 
-  const selected = useRecoilValue(selectedState)
-  const selectedAttributes = selected && getSelectedAttributes(selected)
+  const selected = useSelectedStore((state) => state.selected)
+  const { register, handleSubmit } = useForm<NetworkFormValues>({ resolver });
 
-  const seletedAttributesFamily = useRecoilState(selectFamilyState(JSON.stringify(selected)))
 
-  const setAttributes = (evt: React.FormEvent)=>{
+  const setSelectedAttributes = (evt: React.FormEvent<HTMLFormElement>)=>{
     evt.preventDefault()
-    console.log(evt.currentTarget)
-    console.log(selectFamilyState)
-
+    console.log(evt)
+    // graph.updateNodeAttribute(selected?.key, 'label',oldVal=>evt.currentTarget.label.value)
 
   }
 
@@ -33,41 +46,31 @@ export default function Editor() {
 
   }
 
-
-
+  const onSubmit = (data:any) =>{
+    switch(selected?.key){
+      case 'network':
+        renderNetwork(data)
+        break;
+      case 'node':
+        renderNode(data)
+        break;
+      case 'edge':
+        renderEdge(data)
+        break
+    }
+  }
   
-
-
   return (
-    <div className={styles.wrapper}> 
-      <p>{selected?.type}</p>
-      <p>{selected?.key}</p>
-      <hr/>
-      <form onSubmit={setAttributes}>
-        <Label>Label </Label>
-        <Input 
-          type='text'
-          defaultValue={selectedAttributes?.label}
-          onBlur={resetAttribute}
-        />
-        <hr/>
-        <Label>Color</Label>
-        <Input 
-          type='text' 
-          defaultValue={selectedAttributes?.color}
-          onBlur={resetAttribute}
-        />
-        <button type='submit'></button>
-      </form>
-
+    <div className={styles.wrapper}>
+      <button></button>
     </div>
   )
 }
 
 
-const Label = ({children}:{children?: React.ReactNode})=>{
+const Label = ({children, htmlFor}:{children?: React.ReactNode; htmlFor?: string})=>{
   return (
-    <RadixLabel.Root className="text-[15px] font-medium leading-[35px] text-white">
+    <RadixLabel.Root className="text-[15px] font-medium leading-[35px] text-white" htmlFor={htmlFor}>
       {children}
     </RadixLabel.Root>
   )
@@ -81,35 +84,3 @@ const Input = ({...prop}: HTMLProps<HTMLInputElement>)=>{
     />
   )
 }
-
-const NetworkForm = ()=>{
-
-}
-
-// const NodeAttributes = ()=>{
-//   return(
-//     <>
-//       <Label>Label </Label>
-//       <Input 
-//         type='text'
-//         defaultValue={selectedAttributes?.label}
-//         // onKeyDown={setLabel} 
-//         onBlur={resetLabel}
-//       />
-//       <hr/>
-//       <Label>Color</Label>
-//       <Input 
-//         type='text' 
-//         defaultValue={selectedAttributes?.color}
-//         // onKeyDown={handleColor} 
-//         // onBlur={handleColor}
-//       />
-//       <Label>Size</Label>
-//       <Input
-//         type='text'
-//         defaultValue={}
-//       />
-//     </>
-
-//   )
-// }

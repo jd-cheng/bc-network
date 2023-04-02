@@ -1,6 +1,6 @@
 import { ISelected } from "@/store/selected";
 import Sigma from "sigma";
-import { graph } from "./graph";
+import { graph, IEdge, INetwork, INode, NetworkAttributes } from "./graph";
 
 interface ISigma {
   render: Sigma | null;
@@ -61,6 +61,49 @@ export const renderSelected = (curSelected:ISelected | null, preSelected:ISelect
 }
 
 
+export const renderNetwork = (network: INetwork) =>{
+  console.log('add network')
+  const { attributes: networkAttributes } = network
+  const { nodeColor, nodeSize, edgeColor, edgeSize } = networkAttributes as NetworkAttributes
+
+  graph.updateAttribute('networks', (oldNetworks)=>{
+    if(!oldNetworks){
+      return [network]
+    }
+    return [...oldNetworks, network]
+  } )
+
+  graph.forEachNode((node)=>{
+    const attributes = graph.getNodeAttributes(node)
+    
+    if(attributes.network !== network.key){ return }
+
+    attributes.color = nodeColor
+    attributes.size = nodeSize
+    graph.updateNodeAttributes(node, oldVal=>attributes)
+
+  })
+    
+  graph.forEachEdge((edge)=>{
+    const attributes = graph.getEdgeAttributes(edge)
+    if(attributes.network !== network.key) { return }
+
+    attributes.color = edgeColor
+    attributes.size = edgeSize
+    graph.updateEdgeAttributes(edge, oldVal=>attributes)
+  })
+
+}
 
 
+export const renderNode = (node: INode) =>{
+  const {key, attributes} = node 
+  graph.updateNodeAttributes(key, oldVal=>({...oldVal, ...attributes }))
 
+}
+
+export const renderEdge = (edge: IEdge) =>{
+  const {key, attributes} = edge 
+  graph.updateEdgeAttributes(key, oldVal=>({...oldVal, ...attributes }))
+
+}

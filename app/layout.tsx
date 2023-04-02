@@ -1,8 +1,6 @@
-"use client"
-import { RecoilRoot } from 'recoil'
 import './globals.css';
 
-const metadata = {
+export const metadata = {
   title: 'BC Network',
   description: 'Bijective Connection Network',
 }
@@ -15,9 +13,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <RecoilRoot>
-          {children}
-        </RecoilRoot>
+        {children}
       </body>
     </html>
   )

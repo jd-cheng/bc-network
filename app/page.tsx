@@ -12,7 +12,7 @@ export default function Home() {
     <main className={styles.main}>
       <Selector/>
       <Stage/>
-      <Editor/>
+      <NetworkDrawer/>
     </main>
 
   )

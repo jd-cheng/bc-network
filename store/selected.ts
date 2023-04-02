@@ -1,25 +1,23 @@
-import { renderSelected } from "@/lib/sigma";
-import { atom, AtomEffect } from "recoil";
+import { EdgeAttributes, getSelectedAttributes, NetworkAttributes, NodeAttributes } from '@/lib/graph'
+import { renderSelected } from '@/lib/sigma'
+import { create } from 'zustand'
 
 export interface ISelected {
-  type: 'network' | 'node' | 'edge'  ;
-  key: string 
+  type: 'network' | 'node' | 'edge'
+  key: string
+  attributes: NetworkAttributes | NodeAttributes | EdgeAttributes
 }
 
-const selectedEffect: AtomEffect<ISelected | null> = ({onSet, setSelf})=>{
-  onSet((newValue, oldValue)=>{
-    renderSelected(newValue, oldValue as ISelected | null)
-    setSelf(newValue)
+
+interface SelectedState {
+  selected: ISelected | null
+  setSelected: (selected: ISelected| null) => void
+}
+
+export const useSelectedStore = create<SelectedState>((set) => ({
+  selected: null,
+  setSelected: (selected) =>set((state) => {
+    renderSelected(selected, state.selected)
+    return {selected}
   })
-}
-
-
-const initialState = null
-
-export const selectedState = atom<ISelected | null>({
-  key: 'selectedState',
-  default: initialState,
-  effects: [
-    selectedEffect
-  ]
-})
+}))
