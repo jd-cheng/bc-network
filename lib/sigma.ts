@@ -1,6 +1,6 @@
 import { ISelected } from "@/store/selected";
 import Sigma from "sigma";
-import { graph, IEdge, INetwork, INode, NetworkAttributes } from "./graph";
+import { graph, IEdge, INetwork, INode, NetworkAttributes, updateNetworkAttributes } from "./graph";
 
 interface ISigma {
   render: Sigma | null;
@@ -62,20 +62,16 @@ export const renderSelected = (curSelected:ISelected | null, preSelected:ISelect
 
 
 export const renderNetwork = (network: INetwork) =>{
-  console.log('add network')
+  console.log('render network')
   const { attributes: networkAttributes } = network
   const { nodeColor, nodeSize, edgeColor, edgeSize } = networkAttributes as NetworkAttributes
 
-  graph.updateAttribute('networks', (oldNetworks)=>{
-    if(!oldNetworks){
-      return [network]
-    }
-    return [...oldNetworks, network]
-  } )
+  if(networkAttributes){
+    updateNetworkAttributes(network.key, networkAttributes)
+  }
 
-  graph.forEachNode((node)=>{
-    const attributes = graph.getNodeAttributes(node)
-    
+
+  graph.forEachNode((node, attributes)=>{    
     if(attributes.network !== network.key){ return }
 
     attributes.color = nodeColor
@@ -84,8 +80,7 @@ export const renderNetwork = (network: INetwork) =>{
 
   })
     
-  graph.forEachEdge((edge)=>{
-    const attributes = graph.getEdgeAttributes(edge)
+  graph.forEachEdge((edge, attributes)=>{
     if(attributes.network !== network.key) { return }
 
     attributes.color = edgeColor

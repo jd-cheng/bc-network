@@ -54,17 +54,45 @@ export interface IEdge {
 }
 
 
+export const addNetwork = (network: INetwork) => {
+  graph.updateAttribute('networks', oldVal=>{
+    if(!oldVal){
+      return [network]
+    }
+    return [...oldVal, network]
+  })
+}
 
-const getNetworksAttributes = (key:string)=>{
+export const updateNetworkAttributes = (networkKey: string, attributes: NetworkAttributes) =>{
+  graph.updateAttribute('networks', oldVal=>{
+    if(!oldVal) { console.log('network does not exist', networkKey);return [] }
+
+    const networks = oldVal
+    networks.forEach((network)=>{
+      if(network.key !== networkKey) { return }
+
+      network.attributes = attributes
+    })
+
+    return networks
+  })
+}
+
+export const getNetworkAttributes = (networkKey:string)=>{
+  return graph.getAttribute('networks').find((network)=>{
+    return network.key === networkKey
+  })
 
 }
+
+
 
 
 export const getSelectedAttributes = (selected: ISelected) => {
   const { type, key } = selected
   switch(type){
     case 'network':
-      return getNetworksAttributes(key)
+      return getNetworkAttributes(key)
     case 'node':
       return graph.getNodeAttributes(key)
     case 'edge':

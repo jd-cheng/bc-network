@@ -30,6 +30,8 @@ type NetworkFormValues = {
 type NodeFormValues  ={
   key: string;
   label: string;
+  x: number
+  y: number
 
 }
 
@@ -54,21 +56,50 @@ export default function Drawer() {
   const [nodeList, setNodeList] = useState<INode[]>([])
   const { register: networkReg, handleSubmit: handleNetworkSubmit } = useForm<NetworkFormValues>({ resolver: networkResolver });
   const { register: nodeReg, handleSubmit: handleNodeSubmit } = useForm<NodeFormValues>({ resolver: nodeResolver });
-  const [addNetwork, addNodes] = useGraphStore((state)=>[state.addNetwork, state.addNodes])
+  const [addNetwork, addNodes, addEdges] = useGraphStore((state)=>[state.addNetwork, state.addNodes, state.addEdges])
   
+  const onNetworkSubmitByFile = (data:any) =>{
+    const { network, nodes, edges } = data
+    addNetwork({key:network.key, attributes:{label:network}})
+    addNodes(nodes.map((node: INode)=>({
+      key:node.key, 
+      attributes:{
+        label: node.attributes?.label, 
+        network:network.key
+      }
+    })))
+    addEdges(edges.map((edge: IEdge)=>({
+      key: edge.key,
+      source: edge.source,
+      target: edge.target
+    })))
+    renderNetwork(network)
+
+  }
+
   const onNetworkSubmit: SubmitHandler<NetworkFormValues> = (data) =>{
     console.log(data)
     console.log(nodeList)
     const { key , type, label, nodeColor, nodeSize, edgeColor, edgeSize } = data
-    const attributes = {type, label, nodeColor, nodeSize, edgeColor, edgeSize}
-    const network: INetwork = {key, attributes}
-    // const nodeAttrs = {network:key, color:nodeColor, size:nodeSize}
-    // const edgeAttrs = {network: key, color:edgeColor, size:edgeSize}
+    const network: INetwork = {key, attributes:{type, label, nodeColor, nodeSize, edgeColor, edgeSize}}
 
-    // const nodes: INode[] = nodeList.map((node)=>({...node,attributes: nodeAttrs}))
+    switch(type){
+      case 'hyper':
+        break;
+      case 'crossed':
+        break;
+      case 'twisted':
+        break;
+    }
 
-    addNetwork(network)
-    addNodes(nodeList)
+    addNetwork({key, attributes:{label}})
+    addNodes(nodeList.map((node)=>({
+      key:node.key, 
+      attributes:{
+        label, 
+        network:key,
+      }
+    })))
     renderNetwork(network)
 
   };

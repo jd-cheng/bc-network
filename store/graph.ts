@@ -1,4 +1,4 @@
-import { graph, IEdge, INetwork, INode } from "@/lib/graph";
+import { addNetwork, graph, IEdge, INetwork, INode } from "@/lib/graph";
 import produce from "immer";
 import { create } from "zustand";
 
@@ -21,12 +21,7 @@ export const useGraphStore = create<GraphState>((set)=>({
   edges: [],
   addNetwork: (newNetwork)=>set(produce((state: GraphState)=>{
     console.log('add network', newNetwork)
-    graph.updateAttribute('networks',oldVal =>{
-      if(!oldVal) {
-        return [newNetwork]
-      }
-      return [...oldVal, newNetwork]
-    })
+    addNetwork(newNetwork)
     state.networks.push(newNetwork)
   })),
 

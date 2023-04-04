@@ -33,18 +33,7 @@ export default function Editor() {
   const { register, handleSubmit } = useForm<NetworkFormValues>({ resolver });
 
 
-  const setSelectedAttributes = (evt: React.FormEvent<HTMLFormElement>)=>{
-    evt.preventDefault()
-    console.log(evt)
-    // graph.updateNodeAttribute(selected?.key, 'label',oldVal=>evt.currentTarget.label.value)
-
-  }
-
-  const resetAttribute = (evt: React.FocusEvent<HTMLInputElement>)=>{
-    console.log('input onBlur')
-    console.log(evt)
-
-  }
+  
 
   const onSubmit = (data:any) =>{
     switch(selected?.key){
