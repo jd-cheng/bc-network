@@ -1,6 +1,5 @@
 import Graph from "graphology";
 import { getCrossedcubeNeighborLabel } from "./crossedcube";
-import { graph } from "./graph";
 import { getHypercubeNeighborLabel } from "./hypercube";
 
 export function createHypercube(){

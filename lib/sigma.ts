@@ -1,6 +1,9 @@
+import { getGraph } from "@/store/graphs";
+import { INetwork } from "@/store/networks";
 import { ISelected } from "@/store/selected";
+import Graph from "graphology";
 import Sigma from "sigma";
-import { graph, IEdge, INetwork, INode, NetworkAttributes, updateNetworkAttributes } from "./graph";
+import { getHypercubeNeighbor } from "./hypercube";
 
 interface ISigma {
   render: Sigma | null;
@@ -19,10 +22,7 @@ export const sigma: ISigma = {
 } 
 
 
-export const renderSelected = (curSelected:ISelected | null, preSelected:ISelected | null)=> {
-  if(!sigma.render) { return }
-  const { render } = sigma
-
+export const renderSelected = (graph:Graph, curSelected:ISelected | null, preSelected:ISelected | null)=> {
   //clear previously seleced elements effect
 
   if(preSelected){
@@ -32,10 +32,10 @@ export const renderSelected = (curSelected:ISelected | null, preSelected:ISelect
       case 'network':
         break;
       case 'node':
-        graph.setNodeAttribute(key, 'highlighted', false)
+        graph.updateNodeAttribute(key, 'highlighted', oldVal=>false)
         break;
       case 'edge':
-        graph.setEdgeAttribute(key, 'color','')
+        graph.updateEdgeAttribute(key, 'color',oldVal=>'')
         break;
     }
   }
@@ -48,57 +48,70 @@ export const renderSelected = (curSelected:ISelected | null, preSelected:ISelect
       case 'network':
         break;
       case 'node':
-        graph.setNodeAttribute(key, 'highlighted', true)
+        graph.updateNodeAttribute(key, 'highlighted', oldVal=>true)
         break;
       case 'edge':
-        graph.setEdgeAttribute(key, 'color', '#B30000')
+        graph.updateEdgeAttribute(key, 'color', oldVal=>'#B30000')
         break;
     }
   }
 
-  render.refresh()
-
 }
 
 
-export const renderNetwork = (network: INetwork) =>{
-  console.log('render network')
-  const { attributes: networkAttributes } = network
-  const { nodeColor, nodeSize, edgeColor, edgeSize } = networkAttributes as NetworkAttributes
+// export const renderNetwork = (network: INetwork) =>{
+//   console.log('render network')
+//   const { attributes: networkAttributes } = network
+//   const { nodeColor, nodeSize, edgeColor, edgeSize } = networkAttributes as NetworkAttributes
 
-  if(networkAttributes){
-    updateNetworkAttributes(network.key, networkAttributes)
+//   if(networkAttributes){
+//     updateNetworkAttributes(network.key, networkAttributes)
+//   }
+
+
+//   graph.forEachNode((node, attributes)=>{    
+//     if(attributes.network !== network.key){ return }
+
+//     attributes.color = nodeColor
+//     attributes.size = nodeSize
+//     graph.updateNodeAttributes(node, oldVal=>attributes)
+
+//   })
+    
+//   graph.forEachEdge((edge, attributes)=>{
+//     if(attributes.network !== network.key) { return }
+
+//     attributes.color = edgeColor
+//     attributes.size = edgeSize
+//     graph.updateEdgeAttributes(edge, oldVal=>attributes)
+//   })
+
+// }
+
+
+// export const renderNode = (node: INode) =>{
+//   const {key, attributes} = node 
+//   graph.updateNodeAttributes(key, oldVal=>({...oldVal, ...attributes }))
+
+// }
+
+// export const renderEdge = (edge: IEdge) =>{
+//   const {key, attributes} = edge 
+//   graph.updateEdgeAttributes(key, oldVal=>({...oldVal, ...attributes }))
+
+// }
+
+export const renderNeighborByDimension = (network:INetwork, node: string, dimension: number) => {
+  const graph = getGraph(network.key)
+  let neighbor = null
+
+  switch(network.type){
+    case 'hyper':
+      neighbor = getHypercubeNeighbor(graph, node, dimension)
+      break;
   }
 
-
-  graph.forEachNode((node, attributes)=>{    
-    if(attributes.network !== network.key){ return }
-
-    attributes.color = nodeColor
-    attributes.size = nodeSize
-    graph.updateNodeAttributes(node, oldVal=>attributes)
-
-  })
-    
-  graph.forEachEdge((edge, attributes)=>{
-    if(attributes.network !== network.key) { return }
-
-    attributes.color = edgeColor
-    attributes.size = edgeSize
-    graph.updateEdgeAttributes(edge, oldVal=>attributes)
-  })
-
-}
-
-
-export const renderNode = (node: INode) =>{
-  const {key, attributes} = node 
-  graph.updateNodeAttributes(key, oldVal=>({...oldVal, ...attributes }))
-
-}
-
-export const renderEdge = (edge: IEdge) =>{
-  const {key, attributes} = edge 
-  graph.updateEdgeAttributes(key, oldVal=>({...oldVal, ...attributes }))
-
+  graph?.updateNodeAttribute(node, 'color', oldVal=>'')
+  graph?.updateNodeAttribute(neighbor, 'color' ,oldVal=>'')
+  
 }

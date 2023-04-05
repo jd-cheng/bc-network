@@ -1,12 +1,6 @@
 {
   "attributes": {
-    "name": "BC Networks",
-    "networks": [
-      {
-        "key": "hypercube",
-        "type": "hypercube"
-      }
-    ]
+    "name": "BC Networks"
   },
   "nodes": [
     {

@@ -1,4 +1,4 @@
-import { graph } from "./graph"
+
 
 
 export const buildCrossedcube = ()=>{
@@ -66,15 +66,15 @@ export const getCrossedcubeNeighborLabel = (node: string, dimension: number)=>{
     
 }
 
-export const getCrossedcubeNeighbor = (node:string, dimension: number) => {
-  const label = graph.getNodeAttribute(node, 'label')
+// export const getCrossedcubeNeighbor = (node:string, dimension: number) => {
+//   const label = graph.getNodeAttribute(node, 'label')
 
-  if(!label) {return}
+//   if(!label) {return}
 
-  const neighborLabel = getCrossedcubeNeighborLabel(label,dimension)
+//   const neighborLabel = getCrossedcubeNeighborLabel(label,dimension)
 
-  return graph.findNode((node, {label})=>{
-    return label === neighborLabel
-  })
+//   return graph.findNode((node, {label})=>{
+//     return label === neighborLabel
+//   })
 
-}
+// }

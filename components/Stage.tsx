@@ -1,7 +1,7 @@
-import { graph } from '@/lib/graph'
-import { renderSetting, sigma } from '@/lib/sigma'
+import { renderSetting } from '@/lib/sigma'
+import { getGraph } from '@/store/graphs'
+import { useOpenedStore } from '@/store/opened'
 import { ISelected,  useSelectedStore } from '@/store/selected'
-
 import React, { useEffect, useRef } from 'react'
 import Sigma from 'sigma'
 import { 
@@ -11,19 +11,17 @@ import {
 import styles from './Stage.module.css'
 
 
-
 export default function Stage() {
-  const stageRef = useRef<HTMLDivElement | null>(null)
-  // const setSelected = useSetRecoilState(selectedState)
 
-  const [selected, setSelected] = useSelectedStore(
-    (state) => [state.selected, state.setSelected]
-  )
-
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const [network] = useOpenedStore((state) =>[state.openedNetwork])
+  const [selected, setSelected] = useSelectedStore((state) => [state.selected, state.setSelected])
+  const graph = network? getGraph(network.key): null
 
   const select = (element: SigmaNodeEventPayload | SigmaEdgeEventPayload | SigmaStageEventPayload) => {
 
     console.log("select:",element)
+    if(!graph) { return } 
     let newSelected = null as ISelected | null
     
     if('node' in element){
@@ -34,28 +32,27 @@ export default function Stage() {
       newSelected = {type:'edge',key: element.edge, attributes: graph.getEdgeAttributes(element.edge)}
     }
 
-    setSelected(newSelected)
+    network && setSelected(network.key,newSelected)
 
   }
 
-
   useEffect(() => {
     console.log('render stage')
-    if(!stageRef.current) { return }
+    if(!containerRef.current || !graph) { return }
 
-    sigma.render = new Sigma(graph, stageRef.current, renderSetting)
-    sigma.render.on("clickNode", select);
-    sigma.render.on("clickEdge", select)
-    sigma.render.on("clickStage",select);
+    const render = new Sigma(graph, containerRef.current, renderSetting)
+    render.on("clickNode", select);
+    render.on("clickEdge", select)
+    render.on("clickStage",select);
   
     return () => {
       console.log("unmount stage")
-      sigma.render && sigma.render.kill()
+      render.kill()
     }
-  }, [stageRef])
+  }, [network,containerRef])
   
 
   return (
-    <div className={styles.stage} ref={stageRef}></div>
+    <div className={styles.container} ref={containerRef}></div>
   )
 }

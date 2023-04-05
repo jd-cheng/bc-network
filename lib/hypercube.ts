@@ -1,7 +1,24 @@
+import { getGraph } from "@/store/graphs"
+import { INetwork } from "@/store/networks"
 import { sin45 } from "@/utils/degree"
-import { graph } from "./graph"
+import Graph from "graphology"
+export const defaultHypercubeNodePosionDimension1 = [
 
-export const hypercubePosition = [
+]
+
+
+export const defaultHypercubeNodePosionDimension2 = [
+
+]
+
+
+export const defaultHypercubeNodePosionDimension3 = [
+
+]
+
+
+
+export const defaultHypercubeNodePosionDimension4 = [
   [0,-1],
   [sin45, -sin45],
   [1, 0],
@@ -24,33 +41,20 @@ export const hypercubePosition = [
 
 export const buildHypercube= (node:string, label:string)=>{
 
-  const dimension = 4
-  // const initialLabel = '0000'
-  graph.updateNodeAttribute(node, 'label', oldVal=>label)
-
-  const neighborLabels = []
-
-  for( let d = 1; d<= dimension; d++){
-    const neighborLabel = getHypercubeNeighborLabel(node,d)
-    neighborLabels.push(neighborLabel)
-  }
-  
-  graph.forEachNode((node, {label})=>{
-    if(label){ return }
-    for( let d = 1; d<= dimension; d++){
-      const neighborLabel = getHypercubeNeighborLabel(node,d)
-      graph.updateNodeAttribute(node, 'label', oldVal=>neighborLabel)
-    }
-    
-  })
 }
 
+export const getHypercubeNeighbor = (network:INetwork, node:string, dimension: number) =>{
+  const graph = getGraph(network.key) as Graph
+  const label = graph.getNodeAttribute(node, 'label')
 
+  if(!label){ return }
 
-
-
-//000 , 001  i = 2 d= 1 len = 3
-//100, 110 i = 1 d = 2 len = 3
+  const neighborLabel = getHypercubeNeighborLabel(label, dimension)
+  
+  return graph.findNode((node,{label})=>{
+    return label === neighborLabel
+  })
+}
 
 export const getHypercubeNeighborLabel = (label: string, dimension: number) =>{
   if(dimension<1 || dimension>label.length){
@@ -64,14 +68,3 @@ export const getHypercubeNeighborLabel = (label: string, dimension: number) =>{
 
 }
 
-export const getHypercubeNeighbor = (node:string, dimension: number) =>{
-  const label = graph.getNodeAttribute(node, 'label')
-
-  if(!label){ return }
-
-  const neighborLabel = getHypercubeNeighborLabel(label, dimension)
-  
-  return graph.findNode((node,{label})=>{
-    return label === neighborLabel
-  })
-}

@@ -1,11 +1,10 @@
 import Graph from "graphology";
-import data_init from '@/data/data_init.json'
+import data from '@/data/data.json'
 import { ISelected } from "@/store/selected";
 
 export interface NodeAttributes {
   x?: number;
   y?: number;
-  network?: string;
   label?: string;
   color?: string;
   size?: number;
@@ -14,7 +13,6 @@ export interface NodeAttributes {
 }
 
 export interface EdgeAttributes  {
-  network?: string;
   label?: string;
   color?: string;
   size?: number;
@@ -33,13 +31,9 @@ export interface NetworkAttributes {
 
 export interface GraphAttributes {
   name: string;
-  networks: INetwork[]
 }
 
-export interface INetwork {
-  key: string
-  attributes?: NetworkAttributes
-}
+
 
 export interface INode {
   key: string
@@ -54,45 +48,46 @@ export interface IEdge {
 }
 
 
-export const addNetwork = (network: INetwork) => {
-  graph.updateAttribute('networks', oldVal=>{
-    if(!oldVal){
-      return [network]
-    }
-    return [...oldVal, network]
-  })
-}
+// export const addNetwork = (network: INetwork) => {
+//   graph.updateAttribute('networks', oldVal=>{
+//     if(!oldVal){
+//       return [network]
+//     }
+//     return [...oldVal, network]
+//   })
+// }
 
-export const updateNetworkAttributes = (networkKey: string, attributes: NetworkAttributes) =>{
-  graph.updateAttribute('networks', oldVal=>{
-    if(!oldVal) { console.log('network does not exist', networkKey);return [] }
+// export const updateNetworkAttributes = (networkKey: string, attributes: NetworkAttributes) =>{
+//   graph.updateAttribute('networks', oldVal=>{
+//     if(!oldVal) { console.log('network does not exist', networkKey);return [] }
 
-    const networks = oldVal
-    networks.forEach((network)=>{
-      if(network.key !== networkKey) { return }
+//     const networks = oldVal
+//     networks.forEach((network)=>{
+//       if(network.key !== networkKey) { return }
 
-      network.attributes = attributes
-    })
+//       network.attributes = attributes
+//     })
 
-    return networks
-  })
-}
+//     return networks
+//   })
+// }
 
-export const getNetworkAttributes = (networkKey:string)=>{
-  return graph.getAttribute('networks').find((network)=>{
-    return network.key === networkKey
-  })
+// export const getNetworkAttributes = (networkKey:string)=>{
+//   return graph.getAttribute('networks').find((network)=>{
+//     return network.key === networkKey
+//   })
 
-}
-
-
+// }
 
 
-export const getSelectedAttributes = (selected: ISelected) => {
+
+
+export const getSelectedAttributes = (graph: Graph, selected: ISelected) => {
   const { type, key } = selected
   switch(type){
     case 'network':
-      return getNetworkAttributes(key)
+      // return getNetworkAttributes(key)
+      break;
     case 'node':
       return graph.getNodeAttributes(key)
     case 'edge':
@@ -101,6 +96,6 @@ export const getSelectedAttributes = (selected: ISelected) => {
 }
 
 
-export const graph: Graph<NodeAttributes, EdgeAttributes, GraphAttributes> = new Graph();
 
-graph.import(data_init)//initiate graph
+export const hypercube = new Graph()
+hypercube.import(data)
