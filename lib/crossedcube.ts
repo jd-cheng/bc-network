@@ -1,3 +1,6 @@
+import { getGraph } from "@/store/graphs"
+import { INetwork } from "@/store/networks"
+import Graph from "graphology"
 
 
 
@@ -66,15 +69,16 @@ export const getCrossedcubeNeighborLabel = (node: string, dimension: number)=>{
     
 }
 
-// export const getCrossedcubeNeighbor = (node:string, dimension: number) => {
-//   const label = graph.getNodeAttribute(node, 'label')
+export const getCrossedcubeNeighbor = (network:INetwork, node:string, dimension: number) => {
+  const graph = getGraph(network.key) as Graph
+  const label = graph.getNodeAttribute(node, 'label')
 
-//   if(!label) {return}
+  if(!label) {return}
 
-//   const neighborLabel = getCrossedcubeNeighborLabel(label,dimension)
+  const neighborLabel = getCrossedcubeNeighborLabel(label,dimension)
 
-//   return graph.findNode((node, {label})=>{
-//     return label === neighborLabel
-//   })
+  return graph.findNode((node, {label})=>{
+    return label === neighborLabel
+  })
 
-// }
+}

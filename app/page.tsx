@@ -1,18 +1,21 @@
 "use client"
 
-import Stage from '@/components/Stage'
+import Sidebar from '@/components/Sidebar'
+import Dimension from '@/feature/Dimension'
 import Editor from '@/feature/Editor/Editor'
-import NetworkDrawer from '@/feature/NetworkDrawer/NetworkDrawer'
-import Selector from '@/feature/Selector/Selector'
+
+import Stage from '@/refactor/Stage'
 import styles from './page.module.css'
 
 export default function Home() {
 
+
+
   return (
     <main className={styles.main}>
-      <Selector/>
+      <Sidebar/>
       <Stage/>
-      <NetworkDrawer/>
+      {/* <Dimension/> */}
     </main>
 
   )

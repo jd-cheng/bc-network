@@ -3,22 +3,12 @@ import * as RadixLabel from '@radix-ui/react-label';
 import { useSelectedStore } from '@/store/selected';
 import styles from './Editor.module.css'
 import * as Form from '@radix-ui/react-form';
-import { graph } from '@/lib/graph';
 import { Resolver, useForm } from 'react-hook-form';
-import { renderEdge, renderNetwork, renderNode } from '@/lib/sigma';
+import { useOpenedStore } from '@/store/opened';
+import NodeForm, { NodeFormValues } from '../../components/NodeForm';
 
 
-type NetworkFormValues = {
-  key: string;
-  type: string;
-  label: string;
-  nodeColor: string
-  nodeSize: number
-  edgeColor: string
-  edgeSize: number
-};
-
-const resolver: Resolver<NetworkFormValues> = async (values) => {
+const resolver: Resolver<NodeFormValues> = async (values) => {
   return {
     values: values,
     errors: {}
@@ -30,28 +20,15 @@ const resolver: Resolver<NetworkFormValues> = async (values) => {
 export default function Editor() {
 
   const selected = useSelectedStore((state) => state.selected)
-  const { register, handleSubmit } = useForm<NetworkFormValues>({ resolver });
+  const openedNetwork = useOpenedStore((state)=> state.openedNetwork)
+  const { register, handleSubmit } = useForm<NodeFormValues>({ resolver });
+  console.log('render editor')
 
-
-  
-
-  const onSubmit = (data:any) =>{
-    switch(selected?.key){
-      case 'network':
-        renderNetwork(data)
-        break;
-      case 'node':
-        renderNode(data)
-        break;
-      case 'edge':
-        renderEdge(data)
-        break
-    }
-  }
   
   return (
     <div className={styles.wrapper}>
-      <button></button>
+      <h1>{selected? '' : openedNetwork?.name}</h1>
+      {selected?.type === 'node' && <NodeForm register={register} defaultValues={selected.attributes}/>}
     </div>
   )
 }

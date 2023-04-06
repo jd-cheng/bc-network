@@ -9,6 +9,7 @@ import { Resolver, SubmitHandler, useForm } from 'react-hook-form'
 import { v1 as uuidv1 } from 'uuid';
 import { addGraph } from '@/store/graphs'
 import NetworkForm, { NetworkFormValues } from './NetworkForm'
+import Editor from '@/feature/Editor/Editor'
 
 const networkResolver: Resolver<NetworkFormValues> = async (values) => {
   return {
@@ -22,35 +23,36 @@ export default function Sidebar() {
   const { register: networkReg, handleSubmit: handleNetworkSubmit } = useForm<NetworkFormValues>({ resolver: networkResolver });
   const [networks, addNetwork, deleteNetwork] = useNetworkStore((state)=> [state.networks, state.addNetwork, state.deleteNetwork])
   const openNetwork = useOpenedStore((state) => state.openNetwork)
-  const [mode, setMode] = useState<'add' | 'select'>('select')
+  const [mode, setMode] = useState<'add' | 'select' | 'edit'>('select')
 
   const onNetworkSubmit: SubmitHandler<NetworkFormValues> = (data)=>{
-    console.log(data)
+    console.log('submit network')
     const { graph: graphFile, name, type, nodeColor, nodeSize, edgeColor, edgeSize } = data
     const fileReader = new FileReader()
     const graph = new Graph()
-
-    const readFile = ()=>{
-      const  result  = fileReader.result as string
-      const data = JSON.parse(result)
-      graph.import(data)
-    }
-
-    fileReader.onloadend = readFile
-
     const key = uuidv1()
 
-    addNetwork({key, type, name})
-    addGraph(key, graph)
+    const readFile = ()=>{
+      console.log('read file')
+      // const  result  = fileReader.result as string
+      // const data = JSON.parse(result)
+      // graph.import(data)
+      // addGraph(key, graph)
+    }
+    fileReader.onloadend = readFile
+    // fileReader.readAsText(graphFile)
+    // addNetwork({key, type, name})
 
   }
 
 
   return (
     <div className={styles.wrapper}>
-      <h1> Bijective Connection Network</h1>
-      <button onClick={()=> mode === 'select'? setMode('add'): setMode('select')}> add network</button>
-      { mode === 'select' ? (
+      <h1> BC Network</h1>
+      <button onClick={()=> setMode('select')}> select</button><br/>
+      <button onClick={()=>setMode('add')}> add </button><br/>
+      <button onClick={()=>setMode('edit')}> edit </button><br/>
+      { mode === 'select' && (
         <List>
           {networks.map((network)=>(
             <ListItem key={network.key} onClick={()=>{
@@ -61,11 +63,17 @@ export default function Sidebar() {
             </ListItem>
           ))}
         </List>
-      ): (
+      )
+    }
+    { mode === 'add' && (
         <>
           <NetworkForm register={networkReg}/>
           <button onClick={handleNetworkSubmit(onNetworkSubmit)}>submit</button>
         </>  
+      )
+    }
+    { mode === 'edit' && (
+        <Editor/>
       )
     }
   </div>

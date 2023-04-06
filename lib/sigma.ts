@@ -101,17 +101,17 @@ export const renderSelected = (graph:Graph, curSelected:ISelected | null, preSel
 
 // }
 
-export const renderNeighborByDimension = (network:INetwork, node: string, dimension: number) => {
-  const graph = getGraph(network.key)
-  let neighbor = null
+// export const renderNeighborByDimension = (network:INetwork, node: string, dimension: number) => {
+//   const graph = getGraph(network.key)
+//   let neighbor = null
 
-  switch(network.type){
-    case 'hyper':
-      neighbor = getHypercubeNeighbor(graph, node, dimension)
-      break;
-  }
+//   switch(network.type){
+//     case 'hyper':
+//       neighbor = getHypercubeNeighbor(graph, node, dimension)
+//       break;
+//   }
 
-  graph?.updateNodeAttribute(node, 'color', oldVal=>'')
-  graph?.updateNodeAttribute(neighbor, 'color' ,oldVal=>'')
+//   graph?.updateNodeAttribute(node, 'color', oldVal=>'')
+//   graph?.updateNodeAttribute(neighbor, 'color' ,oldVal=>'')
   
-}
+// }
