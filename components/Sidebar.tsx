@@ -6,9 +6,9 @@ import styles from './Sidebar.module.css'
 import React, { useState } from 'react'
 import Graph from 'graphology'
 import { Resolver, SubmitHandler, useForm } from 'react-hook-form'
-import NetworkForm, { NetworkFormValues } from '@/feature/NetworkDrawer/NetworkForm'
 import { v1 as uuidv1 } from 'uuid';
 import { addGraph } from '@/store/graphs'
+import NetworkForm, { NetworkFormValues } from './NetworkForm'
 
 const networkResolver: Resolver<NetworkFormValues> = async (values) => {
   return {
