@@ -1,6 +1,7 @@
+import { INetwork } from "@/store/networks";
 import Graph from "graphology";
-import { getCrossedcubeNeighborLabel } from "./crossedcube";
-import { getHypercubeNeighborLabel } from "./hypercube";
+import { getCrossedNeighborLabel } from "./crossedcube";
+import { getHyperNeighborLabel } from "./hypercube";
 
 export function createHypercube(){
   let graph = new Graph()
@@ -17,13 +18,23 @@ function createLocallyTwistedcube(){
 
 }
 
-export const getNeighborByDimension = (node: any, dimension: number, networkType: string)=>{
 
-  //find neighbors logic hypercube
-  switch(networkType){
+
+export const getNeigborByDimension = (network:INetwork, node:string, dimension: number) =>{
+  const { type, graph } = network
+  const nodeLabel = graph.getNodeAttribute(node, 'label')
+  let neigLabel = ''
+
+  switch(type){
     case 'hyper':
-      return getHypercubeNeighborLabel(node, dimension)
+      neigLabel = getHyperNeighborLabel(nodeLabel, dimension)
+      break;
     case 'crossed':
-      return getCrossedcubeNeighborLabel(node, dimension)
+      neigLabel = getCrossedNeighborLabel(nodeLabel, dimension)
+      break
   }
+    
+  return graph.findNeighbor(node, (neighbor, attributes)=>{
+    return neigLabel === attributes.label
+  })
 }

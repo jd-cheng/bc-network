@@ -8,7 +8,7 @@ export const buildCrossedcube = ()=>{
 }
 
 
-export const getCrossedcubeNeighborLabel = (node: string, dimension: number)=>{
+export const getCrossedNeighborLabel = (node: string, dimension: number)=>{
 
   const reverseIdx = (idx: number)=>{
     return node.length-idx-1
@@ -19,7 +19,7 @@ export const getCrossedcubeNeighborLabel = (node: string, dimension: number)=>{
   }
 
   if(dimension<1 || dimension>node.length){
-    return -1
+    return ''
   }
   //11100
   //11110
@@ -64,20 +64,18 @@ export const getCrossedcubeNeighborLabel = (node: string, dimension: number)=>{
 
 
   }
+
+  return neighbor
   
     
 }
 
-export const getCrossedcubeNeighbor = (network:INetwork, node:string, dimension: number) => {
-  const { graph } = network 
-  const label = graph.getNodeAttribute(node, 'label')
-
-  if(!label) {return}
-
-  const neighborLabel = getCrossedcubeNeighborLabel(label,dimension)
-
-  return graph.findNode((node, {label})=>{
-    return label === neighborLabel
+export const getNeighbor = (network:INetwork, node:string, dimension: number) => {
+  const { graph } = network
+  const nodeLabel = graph.getNodeAttribute(node, 'label')
+  const neigLabel = getCrossedNeighborLabel(nodeLabel, dimension)
+    
+  return graph.findNeighbor(node, (neighbor, attributes)=>{
+    return neigLabel === attributes.label
   })
-
 }

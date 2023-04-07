@@ -11,7 +11,7 @@ export const defaultHypercubeNodePosionDimension2 = [
 ]
 
 
-export const defaultHypercubeNodePosionDimension3 = [
+export const defaultNodesCoordinate = [
 
 ]
 
@@ -42,20 +42,9 @@ export const buildHypercube= (node:string, label:string)=>{
 
 }
 
-export const getHypercubeNeighbor = (network:INetwork, node:string, dimension: number) =>{
-  const { graph } = network
-  const label = graph.getNodeAttribute(node, 'label')
 
-  if(!label){ return }
 
-  const neighborLabel = getHypercubeNeighborLabel(label, dimension)
-  
-  return graph.findNode((node,{label})=>{
-    return label === neighborLabel
-  })
-}
-
-export const getHypercubeNeighborLabel = (label: string, dimension: number) =>{
+export const getHyperNeighborLabel = (label: string, dimension: number) =>{
   if(dimension<1 || dimension>label.length){
     return ''
   }
@@ -67,3 +56,12 @@ export const getHypercubeNeighborLabel = (label: string, dimension: number) =>{
 
 }
 
+export const getNeigbor = (network:INetwork, node:string, dimension: number) =>{
+  const { graph } = network
+  const nodeLabel = graph.getNodeAttribute(node, 'label')
+  const neigLabel = getHyperNeighborLabel(nodeLabel, dimension)
+
+  return graph.findNeighbor(node, (neighbor, attributes)=>{
+    return neigLabel === attributes.label
+  })
+}

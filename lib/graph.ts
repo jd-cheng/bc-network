@@ -1,6 +1,7 @@
-import Graph from "graphology";
 import data from '@/data/data.json'
+import { INetwork } from '@/store/networks';
 import { ISelected } from "@/store/selected";
+import Graph from 'graphology';
 
 export interface NodeAttributes {
   x?: number;
@@ -48,15 +49,6 @@ export interface IEdge {
 }
 
 
-// export const addNetwork = (network: INetwork) => {
-//   graph.updateAttribute('networks', oldVal=>{
-//     if(!oldVal){
-//       return [network]
-//     }
-//     return [...oldVal, network]
-//   })
-// }
-
 // export const updateNetworkAttributes = (networkKey: string, attributes: NetworkAttributes) =>{
 //   graph.updateAttribute('networks', oldVal=>{
 //     if(!oldVal) { console.log('network does not exist', networkKey);return [] }
@@ -82,12 +74,10 @@ export interface IEdge {
 
 
 
-export const getSelectedAttributes = (graph: Graph, selected: ISelected) => {
+export const getSelectedAttributes = (network: INetwork, selected: ISelected) => {
   const { type, key } = selected
+  const { graph } = network
   switch(type){
-    case 'network':
-      // return getNetworkAttributes(key)
-      break;
     case 'node':
       return graph.getNodeAttributes(key)
     case 'edge':

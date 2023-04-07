@@ -1,6 +1,8 @@
+import { INetwork } from "@/store/networks";
 import { ISelected } from "@/store/selected";
 import Graph from "graphology";
 import Sigma from "sigma";
+import { getNeigborByDimension } from "./network";
 
 interface ISigma {
   render: Sigma | null;
@@ -26,8 +28,6 @@ export const renderSelected = (graph:Graph, curSelected:ISelected | null, preSel
     const { type, key } = preSelected
 
     switch(type){
-      case 'network':
-        break;
       case 'node':
         graph.updateNodeAttribute(key, 'highlighted', oldVal=>false)
         break;
@@ -42,8 +42,6 @@ export const renderSelected = (graph:Graph, curSelected:ISelected | null, preSel
     const { type, key } = curSelected
 
     switch(type){
-      case 'network':
-        break;
       case 'node':
         graph.updateNodeAttribute(key, 'highlighted', oldVal=>true)
         break;
@@ -98,17 +96,10 @@ export const renderSelected = (graph:Graph, curSelected:ISelected | null, preSel
 
 // }
 
-// export const renderNeighborByDimension = (network:INetwork, node: string, dimension: number) => {
-//   const graph = getGraph(network.key)
-//   let neighbor = null
+export const renderNeighborByDimension = (network:INetwork, node: string, dimension: number) => {
+  const { graph } = network 
+  const neighbor = getNeigborByDimension(network, node, dimension)
 
-//   switch(network.type){
-//     case 'hyper':
-//       neighbor = getHypercubeNeighbor(graph, node, dimension)
-//       break;
-//   }
-
-//   graph?.updateNodeAttribute(node, 'color', oldVal=>'')
-//   graph?.updateNodeAttribute(neighbor, 'color' ,oldVal=>'')
+  graph.updateNodeAttribute(neighbor, 'color' ,oldVal=>'')
   
-// }
+}

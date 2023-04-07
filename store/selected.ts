@@ -5,7 +5,7 @@ import { INetwork } from './networks'
 
 
 export interface ISelected {
-  type: 'network' | 'node' | 'edge'
+  type: 'node' | 'edge'
   key: string
   attributes: NetworkAttributes | NodeAttributes | EdgeAttributes
 }

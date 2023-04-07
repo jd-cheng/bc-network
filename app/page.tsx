@@ -1,6 +1,7 @@
 "use client"
 
-import Sidebar from '@/components/Sidebar'
+
+import Sidebar from '@/components/Sidebar/Sidebar'
 import Dimension from '@/feature/Dimension'
 import Editor from '@/feature/Editor/Editor'
 
@@ -12,7 +13,7 @@ export default function Home() {
 
 
   return (
-    <main className={styles.main}>
+    <main className='flex flex-row w-full h-full'>
       <Sidebar/>
       <Stage/>
       {/* <Dimension/> */}
