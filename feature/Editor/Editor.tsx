@@ -4,8 +4,8 @@ import { useSelectedStore } from '@/store/selected';
 import styles from './Editor.module.css'
 import * as Form from '@radix-ui/react-form';
 import { Resolver, useForm } from 'react-hook-form';
-import { useOpenedStore } from '@/store/opened';
 import NodeForm, { NodeFormValues } from '../../components/NodeForm';
+import { useNetworkStore } from '@/store/networks';
 
 
 const resolver: Resolver<NodeFormValues> = async (values) => {
@@ -20,7 +20,7 @@ const resolver: Resolver<NodeFormValues> = async (values) => {
 export default function Editor() {
 
   const selected = useSelectedStore((state) => state.selected)
-  const openedNetwork = useOpenedStore((state)=> state.openedNetwork)
+  const openedNetwork = useNetworkStore((state)=> state.openedNetwork)
   const { register, handleSubmit } = useForm<NodeFormValues>({ resolver });
   console.log('render editor')
 

@@ -1,4 +1,3 @@
-import { getGraph } from "@/store/graphs"
 import { INetwork } from "@/store/networks"
 import { sin45 } from "@/utils/degree"
 import Graph from "graphology"
@@ -44,7 +43,7 @@ export const buildHypercube= (node:string, label:string)=>{
 }
 
 export const getHypercubeNeighbor = (network:INetwork, node:string, dimension: number) =>{
-  const graph = getGraph(network.key) as Graph
+  const { graph } = network
   const label = graph.getNodeAttribute(node, 'label')
 
   if(!label){ return }

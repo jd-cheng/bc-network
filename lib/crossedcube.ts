@@ -1,4 +1,3 @@
-import { getGraph } from "@/store/graphs"
 import { INetwork } from "@/store/networks"
 import Graph from "graphology"
 
@@ -70,7 +69,7 @@ export const getCrossedcubeNeighborLabel = (node: string, dimension: number)=>{
 }
 
 export const getCrossedcubeNeighbor = (network:INetwork, node:string, dimension: number) => {
-  const graph = getGraph(network.key) as Graph
+  const { graph } = network 
   const label = graph.getNodeAttribute(node, 'label')
 
   if(!label) {return}

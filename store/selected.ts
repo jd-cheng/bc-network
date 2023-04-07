@@ -1,8 +1,7 @@
 import { EdgeAttributes, getSelectedAttributes, NetworkAttributes, NodeAttributes } from '@/lib/graph'
 import { renderSelected } from '@/lib/sigma'
-import Graph from 'graphology'
 import { create } from 'zustand'
-import { getGraph } from './graphs'
+import { INetwork } from './networks'
 
 
 export interface ISelected {
@@ -14,14 +13,13 @@ export interface ISelected {
 
 interface SelectedState {
   selected: ISelected | null
-  setSelected: (network:string, selected: ISelected| null) => void
+  setSelected: (network:INetwork, selected: ISelected| null) => void
 }
 
 export const useSelectedStore = create<SelectedState>((set) => ({
   selected: null,
-  setSelected: (network, selected) =>set((state) => {
-    const graph = getGraph(network) as Graph
-    renderSelected(graph, selected, state.selected)
+  setSelected: (network:INetwork, selected) =>set((state) => {
+    renderSelected(network.graph, selected, state.selected)
     return {selected}
   })
 }))

@@ -1,13 +1,11 @@
 import List from '@/components/List'
 import ListItem from '@/components/ListItem'
 import { useNetworkStore } from '@/store/networks'
-import { useOpenedStore } from '@/store/opened'
 import styles from './Sidebar.module.css'
 import React, { useState } from 'react'
 import Graph from 'graphology'
 import { Resolver, SubmitHandler, useForm } from 'react-hook-form'
 import { v1 as uuidv1 } from 'uuid';
-import { addGraph } from '@/store/graphs'
 import NetworkForm, { NetworkFormValues } from './NetworkForm'
 import Editor from '@/feature/Editor/Editor'
 
@@ -21,8 +19,7 @@ const networkResolver: Resolver<NetworkFormValues> = async (values) => {
 
 export default function Sidebar() {
   const { register: networkReg, handleSubmit: handleNetworkSubmit } = useForm<NetworkFormValues>({ resolver: networkResolver });
-  const [networks, addNetwork, deleteNetwork] = useNetworkStore((state)=> [state.networks, state.addNetwork, state.deleteNetwork])
-  const openNetwork = useOpenedStore((state) => state.openNetwork)
+  const [networks, addNetwork, deleteNetwork, openNetwork] = useNetworkStore((state)=> [state.networks, state.addNetwork, state.deleteNetwork, state.openNetwork])
   const [mode, setMode] = useState<'add' | 'select' | 'edit'>('select')
 
   const onNetworkSubmit: SubmitHandler<NetworkFormValues> = (data)=>{
