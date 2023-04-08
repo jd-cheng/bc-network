@@ -7,11 +7,7 @@ import {
   SigmaNodeEventPayload, 
   SigmaEdgeEventPayload, 
   SigmaStageEventPayload } from 'sigma/sigma'
-import styles from './Stage.module.css'
 
-interface IProp{
-  network: INetwork | null
-}
 
 export default function Stage() {
 
@@ -62,6 +58,6 @@ export default function Stage() {
   
 
   return (
-    <div className={styles.container} ref={containerRef}></div>
+    <div className="flex-1 overflow-hidden w-full h-full" ref={containerRef}></div>
   )
 }
