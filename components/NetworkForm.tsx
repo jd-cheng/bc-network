@@ -1,11 +1,16 @@
-import Graph from 'graphology';
-import React, { useRef } from 'react'
-import { Controller, Resolver, SubmitHandler, useForm } from 'react-hook-form';
-import * as Form from '@radix-ui/react-form';
-import { v1 as uuidv1 } from 'uuid';
-import { Button, FormControl, FormLabel, Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react';
-import { AttachmentIcon } from '@chakra-ui/icons';
+import { 
+  Controller, 
+  Resolver, 
+  SubmitHandler, 
+  useForm } from 'react-hook-form';
+import { 
+  Button, 
+  FormLabel, 
+  Input, 
+  Select } from '@chakra-ui/react';
 import FileInput from './Sidebar/FileInput';
+import { v1 as uuidv1 } from 'uuid';
+import React, { useRef } from 'react'
 
 
 
@@ -86,10 +91,9 @@ export default function NetworkForm() {
       <FormLabel>File</FormLabel>
       <FileInput control={control} name='file'/>
       
-      <Button type='submit'>Submit</Button>
+      <Button type='submit' w={'100%'}>
+        Submit
+      </Button>
     </form>
-
-
-
   )
 }

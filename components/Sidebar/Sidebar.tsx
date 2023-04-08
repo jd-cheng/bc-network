@@ -1,17 +1,8 @@
-import List from '@/components/List'
-import ListItem from '@/components/ListItem'
 import { useNetworkStore } from '@/store/networks'
-import styles from './Sidebar.module.css'
-import React, { useState } from 'react'
-import Graph from 'graphology'
-import { Resolver, SubmitHandler, useForm } from 'react-hook-form'
-import { v1 as uuidv1 } from 'uuid';
-
-import Editor from '@/feature/Editor/Editor'
-import { NetworkFormValues } from '../NetworkForm'
+import React from 'react'
 import AddNetwork from './AddNetwork'
-import NetworkList from './NetworkList'
 import NetworkItem from './NetworkItem'
+import { Divider, Heading, List } from '@chakra-ui/react'
 
 
 
@@ -21,10 +12,9 @@ export default function Sidebar() {
 
   return (
     <div className='flex flex-col h-full w-[180px] '>
-      <p className=''>
-        BC Network        
-      </p>
-      <NetworkList>
+      <Heading p={1}>BC Network</Heading>
+      <Divider/>      
+      <List flex='1 1 auto'>
         {networks.map((network)=>(
           <NetworkItem key={network.key} onClick={()=>{
             console.log('click', network)
@@ -33,7 +23,8 @@ export default function Sidebar() {
             {network.name}
           </ NetworkItem>
         ))}
-      </NetworkList>
+      </List>
+      <Divider/>
       <AddNetwork/>
   </div>
   )

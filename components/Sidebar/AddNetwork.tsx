@@ -1,17 +1,14 @@
-import * as Toolbar from '@radix-ui/react-toolbar'
+import { AddIcon } from '@chakra-ui/icons'
+import { Button } from '@chakra-ui/react'
 import React from 'react'
-
-interface IProp {
-  children?: React.ReactNode
-}
 
 export default function AddNetwork() {
   
   const handleAddNetwork = ()=>{}
   
   return (
-    <button>
+    <Button leftIcon={<AddIcon/>}>
       Add Network
-    </button>
+    </Button>
   )
 }

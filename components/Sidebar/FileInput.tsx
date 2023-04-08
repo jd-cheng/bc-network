@@ -1,9 +1,15 @@
-import { AttachmentIcon } from '@chakra-ui/icons'
-import { Button, Icon, Input, InputGroup, InputLeftElement, InputProps, InputRightElement, useMultiStyleConfig } from '@chakra-ui/react'
-import React, { useRef } from 'react'
-import { useController, UseControllerProps } from 'react-hook-form';
+import { 
+  Button, 
+  Input, 
+  InputGroup, 
+  InputLeftElement, 
+  InputRightElement } from '@chakra-ui/react'
+import { 
+  useController, 
+  UseControllerProps } from 'react-hook-form';
 import { NetworkFormValues } from '../NetworkForm';
-
+import React, { useRef } from 'react'
+import { AttachmentIcon } from '@chakra-ui/icons'
 
 
 
