@@ -8,7 +8,7 @@ interface IProp {
 
 export default function NetworkList({children}: IProp) {
   return (
-    <ScrollArea.Root className="h-auto rounded overflow-hidden bg-white">
+    <ScrollArea.Root className="flex-auto basis-0 rounded overflow-hidden bg-white">
       <ScrollArea.Viewport className="w-full h-full rounded">
         <div className="py-[15px] px-5">
           {children}

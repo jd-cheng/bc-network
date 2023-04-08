@@ -38,7 +38,34 @@ export const defaultHypercubeNodePosionDimension4 = [
 ]
 
 
-export const buildHypercube= (node:string, label:string)=>{
+export const buildHypercube= (network:INetwork, node:string, dimension: number)=>{
+  const { graph } = network
+  const nodeLabel = ''
+  const nodes = graph.nodes() 
+  const neigLabels: string[] = []
+  const neighbor: string[] = []
+  let p = 0
+
+  graph.updateNodeAttribute(node, 'label', oldVal=>nodeLabel)
+  while(p<nodes.length){
+
+    for(let i = 1; i<=dimension; i++){
+      neigLabels.push(getHyperNeighborLabel(nodeLabel, dimension))
+    }
+  
+    do{
+      if(nodes[p] !== node){
+        graph.updateNodeAttribute(nodes[p], 'label', oldVal=>neigLabels.shift())
+        graph.addEdge(node, node[p])
+
+        neighbor.push(node[p])
+        p++
+      }
+    } while(p%dimension !== 0)
+  }
+
+
+
 
 }
 

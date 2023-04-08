@@ -9,9 +9,6 @@ import {
   SigmaStageEventPayload } from 'sigma/sigma'
 import styles from './Stage.module.css'
 
-interface IProp{
-  network: INetwork | null
-}
 
 export default function Stage() {
 

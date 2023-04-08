@@ -20,7 +20,7 @@ export default function Sidebar() {
   const [networks, addNetwork, deleteNetwork, openNetwork] = useNetworkStore((state)=> [state.networks, state.addNetwork, state.deleteNetwork, state.openNetwork])
 
   return (
-    <div className='w-[180px] flex-col h-full'>
+    <div className='flex flex-col h-full w-[180px] '>
       <p className=''>
         BC Network        
       </p>

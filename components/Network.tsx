@@ -9,11 +9,8 @@ import {
   SigmaStageEventPayload } from 'sigma/sigma'
 import styles from './Stage.module.css'
 
-interface IProp{
-  network: INetwork | null
-}
 
-export default function Stage() {
+export default function Network() {
 
   const containerRef = useRef<HTMLDivElement | null>(null)
   // const setSelected = useSetRecoilState(selectedState)
@@ -62,6 +59,6 @@ export default function Stage() {
   
 
   return (
-    <div className={styles.container} ref={containerRef}></div>
+    <div className='flex-1' ref={containerRef}></div>
   )
 }
