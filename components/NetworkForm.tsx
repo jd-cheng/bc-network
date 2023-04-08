@@ -1,7 +1,11 @@
-import { Label } from '@radix-ui/react-label';
 import Graph from 'graphology';
-import React from 'react'
-import { Resolver, SubmitHandler, useForm } from 'react-hook-form';
+import React, { useRef } from 'react'
+import { Controller, Resolver, SubmitHandler, useForm } from 'react-hook-form';
+import * as Form from '@radix-ui/react-form';
+import { v1 as uuidv1 } from 'uuid';
+import { Button, FormControl, FormLabel, Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react';
+import { AttachmentIcon } from '@chakra-ui/icons';
+import FileInput from './Sidebar/FileInput';
 
 
 
@@ -23,28 +27,33 @@ const resolver: Resolver<NetworkFormValues> = async (values) => {
 };
 
 export default function NetworkForm() {
-  const { register, handleSubmit } = useForm<NetworkFormValues>({ resolver });
+  const { control, register, handleSubmit } = useForm<NetworkFormValues>({ resolver });
+
+  const inputRef = useRef<HTMLInputElement>(null)
+
 
   const onSubmit: SubmitHandler<NetworkFormValues> = (data)=>{
     console.log('submit network')
+    console.log(data)
     const { file, name, type, nodeColor, nodeSize, edgeColor, edgeSize } = data
     const fileReader = new FileReader()
-    const key = uuidv1()
-    const graph = new Graph()
+    // const key = uuidv1()
+    // const graph = new Graph()
 
-    const network = {
-      key,
-      name,
-      type,
-      graph
-    }
+    // const network = {
+    //   key,
+    //   name,
+    //   type,
+    //   graph
+    // }
 
 
     const readFile = ()=>{
       console.log('read file')
       const  result  = fileReader.result as string
       const data = JSON.parse(result)
-      graph.import(data)
+      console.log(data)
+      // graph.import(data)
       // addGraph(key, graph)
     }
     fileReader.onloadend = readFile
@@ -54,33 +63,33 @@ export default function NetworkForm() {
   }
 
   return (
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Label>Name</Label>
-        <input {...register('name')}/>
-        <Label>Type</Label>
-        <select {...register('type')}>
-          <option value="hyper">hypercube</option>
-          <option value="crossed">crossed cube</option>
-        </select>
-        <Label>Node Color</Label>
-        <input {...register('nodeColor')} />
-        <Label>Node Size</Label>
-        <input {...register('nodeSize')} />
-        <Label>Edge Color</Label>
-        <input {...register('edgeColor')} />
-        <Label>Edge Size </Label>
-        <input {...register('edgeSize')} />
-        <Label>Graph</Label>
-        <input {...register('file')} type='file'/>
-        <button type='submit'>Submit</button>
-      </form>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FormLabel>Name</FormLabel>
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => <Input {...field} />}
+      />
+      
+      <FormLabel>Type</FormLabel>
+      <Controller
+        name="type"
+        control={control}
+        render={({ field }) => 
+          <Select placeholder='Network Type' {...field}>
+            <option value='option1'>Option 1</option>
+            <option value='option2'>Option 2</option>
+            <option value='option3'>Option 3</option>
+          </Select>
+        }
+      />
+      <FormLabel>File</FormLabel>
+      <FileInput control={control} name='file'/>
+      
+      <Button type='submit'>Submit</Button>
+    </form>
+
 
 
   )
 }
-
-
-function uuidv1() {
-  throw new Error('Function not implemented.');
-}
-

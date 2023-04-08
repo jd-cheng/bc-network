@@ -1,6 +1,9 @@
+'use client'
+import { CacheProvider } from '@chakra-ui/next-js'
+import { ChakraProvider } from '@chakra-ui/react'
 import './globals.css';
 
-export const metadata = {
+const metadata = {
   title: 'BC Network',
   description: 'Bijective Connection Network',
 }
@@ -13,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <CacheProvider>
+          <ChakraProvider>{children}</ChakraProvider>
+        </CacheProvider>
       </body>
     </html>
   )
