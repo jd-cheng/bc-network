@@ -53,49 +53,6 @@ export const renderSelected = (graph:Graph, curSelected:ISelected | null, preSel
 
 }
 
-
-// export const renderNetwork = (network: INetwork) =>{
-//   console.log('render network')
-//   const { attributes: networkAttributes } = network
-//   const { nodeColor, nodeSize, edgeColor, edgeSize } = networkAttributes as NetworkAttributes
-
-//   if(networkAttributes){
-//     updateNetworkAttributes(network.key, networkAttributes)
-//   }
-
-
-//   graph.forEachNode((node, attributes)=>{    
-//     if(attributes.network !== network.key){ return }
-
-//     attributes.color = nodeColor
-//     attributes.size = nodeSize
-//     graph.updateNodeAttributes(node, oldVal=>attributes)
-
-//   })
-    
-//   graph.forEachEdge((edge, attributes)=>{
-//     if(attributes.network !== network.key) { return }
-
-//     attributes.color = edgeColor
-//     attributes.size = edgeSize
-//     graph.updateEdgeAttributes(edge, oldVal=>attributes)
-//   })
-
-// }
-
-
-// export const renderNode = (node: INode) =>{
-//   const {key, attributes} = node 
-//   graph.updateNodeAttributes(key, oldVal=>({...oldVal, ...attributes }))
-
-// }
-
-// export const renderEdge = (edge: IEdge) =>{
-//   const {key, attributes} = edge 
-//   graph.updateEdgeAttributes(key, oldVal=>({...oldVal, ...attributes }))
-
-// }
-
 export const renderNeighborByDimension = (network:INetwork, node: string, dimension: number) => {
   const { graph } = network 
   const neighbor = getNeigborByDimension(network, node, dimension)
