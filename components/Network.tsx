@@ -22,17 +22,17 @@ export default function Network() {
 
     console.log("select:",element)
     if(!network) { return } 
-    let newSelected = null as ISelected | null
+    let nextSelected = null as ISelected | null
     
     if('node' in element){
-      newSelected = {type:'node',key: element.node, attributes: network.graph.getNodeAttributes(element.node)}
+      nextSelected = {type:'node',key: element.node, attributes: network.graph.getNodeAttributes(element.node)}
     }
 
     if('edge' in element){
-      newSelected = {type:'edge',key: element.edge, attributes: network.graph.getEdgeAttributes(element.edge)}
+      nextSelected = {type:'edge',key: element.edge, attributes: network.graph.getEdgeAttributes(element.edge)}
     }
 
-    setSelected(network,newSelected)
+    setSelected(network,nextSelected)
 
   }
 

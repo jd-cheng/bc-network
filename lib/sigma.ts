@@ -21,9 +21,10 @@ export const sigma: ISigma = {
 } 
 
 
-export const renderSelected = (graph:Graph, curSelected:ISelected | null, preSelected:ISelected | null)=> {
+export const renderSelected = (network:INetwork, nextSelected:ISelected | null, preSelected:ISelected | null)=> {
   //clear previously seleced elements effect
-
+  console.log('render select', nextSelected, preSelected)
+  const { graph } = network
   if(preSelected){
     const { type, key } = preSelected
 
@@ -38,8 +39,8 @@ export const renderSelected = (graph:Graph, curSelected:ISelected | null, preSel
   }
 
   //render currently selected element
-  if(curSelected){
-    const { type, key } = curSelected
+  if(nextSelected){
+    const { type, key } = nextSelected
 
     switch(type){
       case 'node':

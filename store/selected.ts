@@ -19,8 +19,9 @@ interface SelectedState {
 
 export const useSelectedStore = create<SelectedState>((set) => ({
   selected: null,
-  setSelected: (network:INetwork, selected) =>set(produce((state) => {
-    renderSelected(network.graph, selected, state.selected)
-    state.seleced = selected
-  }))
+  setSelected: (network:INetwork, selected) =>set((state) => {
+    // cannot use immer
+    renderSelected(network, selected, state.selected)
+    return {...state, selected}
+  })
 }))
