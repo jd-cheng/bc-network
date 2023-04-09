@@ -1,55 +1,28 @@
-import { INetwork, useNetworkStore } from '@/store/networks'
 import React from 'react'
-import AddNetwork from './AddNetwork'
-import NetworkItem from './NetworkItem'
-import { Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Heading, List } from '@chakra-ui/react'
+import { 
+  Drawer, 
+  DrawerContent, 
+  DrawerOverlay } from '@chakra-ui/react'
 import { useSidebarState } from '@/store/sidebar'
+import NetworkForm from './NetworkForm'
+import NetworkList from './NetworkList'
 
 
 
 
 export default function Sidebar() {
-  const [networks, addNetwork, deleteNetwork, openNetwork] = useNetworkStore((state)=> [state.networks, state.addNetwork, state.deleteNetwork, state.openNetwork])
-  const [isOpen, onClose] = useSidebarState((state)=>[state.isOpen, state.onClose])
-
-  const handleClick = (network: INetwork)=>{
-      console.log('click', network)
-      openNetwork(network)
-  }
-
-  const handleDelete = (index: number)=>{
-    console.log('delete', index)
-    deleteNetwork(index)
-  }
+  console.log('render sidebar')
+  const [isOpen, type, onClose] = useSidebarState((state)=>[state.isOpen, state.type, state.onClose])
 
   return (
     <Drawer 
-      placement='right'
+      placement='left'
       isOpen={isOpen}
       onClose={onClose}
     >
       <DrawerOverlay/>
       <DrawerContent>
-        <DrawerHeader>
-          <Heading p={1}>BC Network</Heading>
-
-        </DrawerHeader>
-        <DrawerBody>
-          <List flex='1 1 auto'>
-            {networks.map((network, index)=>(
-              <NetworkItem 
-                key={network.key} 
-                onClick={()=>handleClick(network)}
-                onDelete={()=>handleDelete(index)}
-              >
-                {network.key}
-              </ NetworkItem>
-            ))}
-          </List>
-        </DrawerBody>
-        <DrawerFooter>
-          <AddNetwork/>
-        </DrawerFooter>
+        {type === 'list'? <NetworkList/> : <NetworkForm/>}
       </DrawerContent>
     </Drawer>
 

@@ -9,8 +9,8 @@ interface IProp extends HTMLProps<HTMLDivElement> {
 
 export default function NetworkItem({onDelete, children, ...prop}:IProp) {
   return (
-    <ListItem >
-      <ButtonGroup>
+    <ListItem>
+      <ButtonGroup w={'100%'}>
         <Button variant='ghost' w={'100%'}>
           {children}
         </Button>

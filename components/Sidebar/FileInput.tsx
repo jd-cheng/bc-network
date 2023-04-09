@@ -7,9 +7,9 @@ import {
 import { 
   useController, 
   UseControllerProps } from 'react-hook-form';
-import { NetworkFormValues } from '../NetworkForm';
 import React, { useRef } from 'react'
 import { AttachmentIcon } from '@chakra-ui/icons'
+import { NetworkFormValues } from './NetworkForm';
 
 
 
