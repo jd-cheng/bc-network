@@ -12,7 +12,7 @@ interface IProp extends HTMLProps<HTMLDivElement> {
 export default function NetworkItem({onOpen, onDelete, isEdit, children, ...prop}:IProp) {
   return (
     <ListItem>
-      <ButtonGroup w={'100%'}>
+      <ButtonGroup w={'100%'} isAttached>
         <Button variant='ghost' w={'100%'} onClick={onOpen}>
           {children}
         </Button>
