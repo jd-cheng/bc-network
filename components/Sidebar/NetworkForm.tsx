@@ -1,5 +1,4 @@
 import { 
-  Controller, 
   Resolver, 
   SubmitHandler, 
   useForm } from 'react-hook-form';
@@ -11,13 +10,12 @@ import {
   FormLabel, 
   Heading, 
   Input, 
-  Select } from '@chakra-ui/react';
+  Select, 
+  Stack} from '@chakra-ui/react';
 
 import React, { useRef } from 'react'
 import FileInput from './FileInput';
-import { AddIcon, ArrowBackIcon } from '@chakra-ui/icons';
-import { type } from 'os';
-import NetworkList from './NetworkList';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSidebarState } from '@/store/sidebar';
 
 
@@ -78,50 +76,53 @@ export default function NetworkForm() {
 
   return (
     <>
-      <DrawerHeader>
+      <DrawerHeader borderBottomWidth='1px'>
         <Heading p={1}>
           Add Network
         </Heading>
       </DrawerHeader>
       <DrawerBody>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormLabel>Name</FormLabel>
-          <Input {...register('name')}/>
+          <Stack direction={'column'} spacing={2}>
+            <FormLabel>Name</FormLabel>
+            <Input {...register('name')}/>
+            
+            <FormLabel>Type</FormLabel>
+            <Select placeholder='Network Type' {...register('type')}>
+              <option value='option1'>Option 1</option>
+              <option value='option2'>Option 2</option>
+              <option value='option3'>Option 3</option>
+            </Select>
+            <FormLabel>Dimension</FormLabel>
+            <Input {...register('dimension')}/>
+            {/* <Controller
+              name="type"
+              control={control}
+              render={({ field }) => 
+                <Select placeholder='Network Type' {...field}>
+                  <option value='option1'>Option 1</option>
+                  <option value='option2'>Option 2</option>
+                  <option value='option3'>Option 3</option>
+                </Select>
+              }
+            /> */}
+            <FormLabel>File</FormLabel>
+            <FileInput control={control} name='file'/>
+            
+            <Button type='submit' w={'100%'}>
+              Submit
+            </Button>
+          </Stack>
           
-          <FormLabel>Type</FormLabel>
-          <Select placeholder='Network Type' {...register('type')}>
-            <option value='option1'>Option 1</option>
-            <option value='option2'>Option 2</option>
-            <option value='option3'>Option 3</option>
-          </Select>
-          <FormLabel>Dimension</FormLabel>
-          <Input {...register('dimension')}/>
-          {/* <Controller
-            name="type"
-            control={control}
-            render={({ field }) => 
-              <Select placeholder='Network Type' {...field}>
-                <option value='option1'>Option 1</option>
-                <option value='option2'>Option 2</option>
-                <option value='option3'>Option 3</option>
-              </Select>
-            }
-          /> */}
-          <FormLabel>File</FormLabel>
-          <FileInput control={control} name='file'/>
-          
-          <Button type='submit' w={'100%'}>
-            Submit
-          </Button>
         </form>
       </DrawerBody>
-      <DrawerFooter>
+      <DrawerFooter borderTopWidth='1px'>
         <Button 
           w={'100%'}
           leftIcon={<ArrowBackIcon/>} 
           onClick={()=>setType('list')}
         >
-          Back
+          Cancel
         </Button>
       </DrawerFooter>
     </>

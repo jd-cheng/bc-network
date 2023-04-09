@@ -1,8 +1,7 @@
 import { INetwork, useNetworkStore } from '@/store/networks'
 import { useSidebarState } from '@/store/sidebar'
-import { AddIcon, ArrowBackIcon } from '@chakra-ui/icons'
+import { AddIcon } from '@chakra-ui/icons'
 import { Button, DrawerBody, DrawerFooter, DrawerHeader, Heading, List } from '@chakra-ui/react'
-import { type } from 'os'
 import React from 'react'
 import NetworkItem from './NetworkItem'
 
@@ -22,7 +21,7 @@ export default function NetworkList() {
 
   return (
     <>
-      <DrawerHeader>
+      <DrawerHeader borderBottomWidth='1px'>
         <Heading p={1}>
           Network List
         </Heading>
@@ -40,7 +39,7 @@ export default function NetworkList() {
           ))}
         </List>
       </DrawerBody>
-      <DrawerFooter>
+      <DrawerFooter borderTopWidth='1px'>
         <Button 
           w={'100%'}
           leftIcon={<AddIcon/>} 

@@ -6,18 +6,26 @@ import React from 'react'
 export default function Header() {
 
   const [isOpen, onOpen] = useSidebarState((state)=>[state.isOpen, state.onOpen])
-  
+
   return (
-    <Flex direction='row' >
+    <Flex 
+      direction='row' 
+      w='100%' h='56px'  px='32px'
+      bgColor="black" 
+      justify='space-between'
+      align='center'
+    >
       <IconButton 
+        variant='outline'
         aria-label='menu' 
         icon={<HamburgerIcon/>} 
         onClick={onOpen}
+        colorScheme="whiteAlpha"
       />
-      <Heading>
+      <Heading textColor='white' size='lg'>
         BC Network
       </Heading>
-      <IconButton aria-label='menu' icon={<HamburgerIcon/>}/>
+      <div></div>
     </Flex>
 
   )

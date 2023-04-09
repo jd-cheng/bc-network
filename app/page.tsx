@@ -17,11 +17,10 @@ export default function Home() {
 
   return (
     <>
-    <Header/>
-    <main className='flex flex-row w-full h-full'>
+      <Header/>
       <Sidebar/>
-    </main>
-
+      <main className='flex flex-row'>
+      </main>
     </>
 
   )
