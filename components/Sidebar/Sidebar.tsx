@@ -19,6 +19,7 @@ export default function Sidebar() {
       placement='left'
       isOpen={isOpen}
       onClose={onClose}
+      size='xs'
     >
       <DrawerOverlay/>
       <DrawerContent>

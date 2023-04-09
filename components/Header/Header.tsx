@@ -3,6 +3,8 @@ import { HamburgerIcon } from '@chakra-ui/icons'
 import { Flex, Heading, IconButton } from '@chakra-ui/react'
 import React from 'react'
 
+export const normalHeight = '56px'
+
 export default function Header() {
 
   const [isOpen, onOpen] = useSidebarState((state)=>[state.isOpen, state.onOpen])
@@ -10,7 +12,7 @@ export default function Header() {
   return (
     <Flex 
       direction='row' 
-      w='100%' h='56px'  px='32px'
+      w='100%' h={normalHeight}  px='32px'
       bgColor="black" 
       justify='space-between'
       align='center'
@@ -22,10 +24,9 @@ export default function Header() {
         onClick={onOpen}
         colorScheme="whiteAlpha"
       />
-      <Heading textColor='white' size='lg'>
+      <Heading textColor='white' size='lg' mx='auto'>
         BC Network
       </Heading>
-      <div></div>
     </Flex>
 
   )

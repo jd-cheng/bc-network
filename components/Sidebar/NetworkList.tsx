@@ -1,15 +1,20 @@
 import { INetwork, useNetworkStore } from '@/store/networks'
 import { useSidebarState } from '@/store/sidebar'
-import { AddIcon } from '@chakra-ui/icons'
-import { Button, DrawerBody, DrawerFooter, DrawerHeader, Heading, List } from '@chakra-ui/react'
-import React from 'react'
+import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
+import { Button, ButtonGroup, DrawerBody, DrawerFooter, DrawerHeader, Flex, Heading, IconButton, List, ListItem } from '@chakra-ui/react'
+import React, { useState } from 'react'
+import { normalHeight } from '../Header/Header'
 import NetworkItem from './NetworkItem'
 
+
+
 export default function NetworkList() {
+  console.log('render network list')
   const [networks, deleteNetwork, openNetwork] = useNetworkStore((state)=> [state.networks, state.deleteNetwork, state.openNetwork])
   const setType = useSidebarState((state)=>state.setType)
+  const [isEdit, setEdit] = useState(false)
 
-  const handleClick = (network: INetwork)=>{
+  const handleOpen = (network: INetwork)=>{
     console.log('click', network)
     openNetwork(network)
   }
@@ -19,27 +24,38 @@ export default function NetworkList() {
     deleteNetwork(index)
   }
 
+  const handleEdit = ()=>{
+    setEdit(isEdit?false:true)
+  }
+
   return (
     <>
-      <DrawerHeader borderBottomWidth='1px'>
-        <Heading p={1}>
-          Network List
-        </Heading>
+      <DrawerHeader borderBottomWidth='1px' height={normalHeight} display='flex'>
+          <Heading size='lg' textAlign="center" mx='auto'>
+            Network List
+          </Heading>
+          <IconButton 
+            aria-label='edit' 
+            icon={<EditIcon/>} mr='0'
+            onClick={handleEdit}
+            mt='-4px'
+          />
       </DrawerHeader>
       <DrawerBody>
-        <List flex='1 1 auto' w={'100%'}>
+        <List flex='1 1 auto' >
           {networks.map((network, index)=>(
             <NetworkItem 
-              key={network.key} 
-              onClick={()=>handleClick(network)}
+              key={network.key}
+              onOpen={()=>handleOpen(network)}
               onDelete={()=>handleDelete(index)}
+              isEdit={isEdit}
             >
               {network.key}
-            </ NetworkItem>
+            </NetworkItem>
           ))}
         </List>
       </DrawerBody>
-      <DrawerFooter borderTopWidth='1px'>
+      <DrawerFooter borderTopWidth='1px' height={normalHeight}>
         <Button 
           w={'100%'}
           leftIcon={<AddIcon/>} 

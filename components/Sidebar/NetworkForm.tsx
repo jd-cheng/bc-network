@@ -17,6 +17,7 @@ import React, { useRef } from 'react'
 import FileInput from './FileInput';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSidebarState } from '@/store/sidebar';
+import { normalHeight } from '../Header/Header';
 
 
 
@@ -39,11 +40,9 @@ const resolver: Resolver<NetworkFormValues> = async (values) => {
 };
 
 export default function NetworkForm() {
+  console.log('render network form')
   const { control, register, handleSubmit } = useForm<NetworkFormValues>({ resolver });
   const setType = useSidebarState((state)=>state.setType)
-
-  const inputRef = useRef<HTMLInputElement>(null)
-
 
   const onSubmit: SubmitHandler<NetworkFormValues> = (data)=>{
     console.log('submit network')
@@ -76,8 +75,8 @@ export default function NetworkForm() {
 
   return (
     <>
-      <DrawerHeader borderBottomWidth='1px'>
-        <Heading p={1}>
+      <DrawerHeader  borderBottomWidth='1px' h={normalHeight}>
+        <Heading size='lg' textAlign="center">
           Add Network
         </Heading>
       </DrawerHeader>
@@ -116,7 +115,7 @@ export default function NetworkForm() {
           
         </form>
       </DrawerBody>
-      <DrawerFooter borderTopWidth='1px'>
+      <DrawerFooter borderTopWidth='1px' h={normalHeight}>
         <Button 
           w={'100%'}
           leftIcon={<ArrowBackIcon/>} 

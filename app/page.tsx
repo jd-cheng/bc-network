@@ -5,6 +5,7 @@ import Header from '@/components/Header/Header'
 import Network from '@/components/Network'
 
 import Sidebar from '@/components/Sidebar/Sidebar'
+import Toolbar from '@/components/Toolbar/Toolbar'
 import Dimension from '@/feature/Dimension/Dimension'
 import Editor from '@/feature/Editor/Editor'
 
@@ -21,6 +22,7 @@ export default function Home() {
       <Sidebar/>
       <main className='flex flex-row'>
       </main>
+      <Toolbar/>
     </>
 
   )
