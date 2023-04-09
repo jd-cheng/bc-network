@@ -9,7 +9,6 @@ import {
   Input, 
   Select } from '@chakra-ui/react';
 import FileInput from './Sidebar/FileInput';
-import { v1 as uuidv1 } from 'uuid';
 import React, { useRef } from 'react'
 
 
@@ -43,7 +42,6 @@ export default function NetworkForm() {
     console.log(data)
     const { file, name, type, dimension, nodeColor, nodeSize, edgeColor, edgeSize } = data
     const fileReader = new FileReader()
-    // const key = uuidv1()
     // const graph = new Graph()
 
     // const network = {

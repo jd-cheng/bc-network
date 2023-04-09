@@ -1,22 +1,7 @@
 import { INetwork } from "@/store/networks";
-import Graph from "graphology";
 import { getCrossedNeighborLabel } from "./crossedcube";
 import { getHyperNeighborLabel } from "./hypercube";
 
-export function createHypercube(){
-  let graph = new Graph()
-
-  return graph
-}
-
-export function createCrossedcube(){
-  let graph = new Graph()
-  return graph
-}
-
-function createLocallyTwistedcube(){
-
-}
 
 
 
@@ -37,4 +22,13 @@ export const getNeigborByDimension = (network:INetwork, node:string, dimension: 
   return graph.findNeighbor(node, (neighbor, attributes)=>{
     return neigLabel === attributes.label
   })
+}
+
+
+export const validataNetowrk = (network:INetwork)=>{
+
+}
+
+export const buildNetwork = (network:INetwork) =>{
+
 }

@@ -25,7 +25,7 @@ export default function Editor() {
   
   return (
     <div className={styles.wrapper}>
-      <h1>{selected? '' : openedNetwork?.name}</h1>
+      <h1>{selected? '' : openedNetwork?.key}</h1>
     </div>
   )
 }
