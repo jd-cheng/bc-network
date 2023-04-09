@@ -1,6 +1,7 @@
 import { renderSetting } from '@/lib/sigma'
 import { INetwork, useNetworkStore } from '@/store/networks'
 import { ISelected,  useSelectedStore } from '@/store/selected'
+import { Box } from '@chakra-ui/react'
 import React, { useEffect, useRef } from 'react'
 import Sigma from 'sigma'
 import { 
@@ -14,14 +15,8 @@ export default function Network() {
 
   const containerRef = useRef<HTMLDivElement | null>(null)
   // const setSelected = useSetRecoilState(selectedState)
-  const [network] = useNetworkStore(
-    (state) =>[state.openedNetwork]
-  )
-
-
-  const [selected, setSelected] = useSelectedStore(
-    (state) => [state.selected, state.setSelected]
-  )
+  const [network] = useNetworkStore((state) =>[state.openedNetwork])
+  const [selected, setSelected] = useSelectedStore((state) => [state.selected, state.setSelected])
 
   const select = (element: SigmaNodeEventPayload | SigmaEdgeEventPayload | SigmaStageEventPayload) => {
 
@@ -43,8 +38,8 @@ export default function Network() {
 
 
   useEffect(() => {
-    console.log('render stage')
     if(!containerRef.current || !network) { return }
+    console.log('render network')
 
     const render = new Sigma(network.graph, containerRef.current, renderSetting)
     render.on("clickNode", select);
@@ -52,13 +47,13 @@ export default function Network() {
     render.on("clickStage",select);
   
     return () => {
-      console.log("unmount stage")
+      console.log("unmount network")
       render.kill()
     }
   }, [network, containerRef])
   
 
   return (
-    <div className='flex-1' ref={containerRef}></div>
+    <Box top='0' left='0' w='100%' h='100%' ref={containerRef}></Box>
   )
 }
