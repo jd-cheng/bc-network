@@ -17,6 +17,7 @@ import React, { useRef } from 'react'
 export interface NetworkFormValues {
   type: string;
   name: string;
+  dimension: number
   nodeColor: string
   nodeSize: number
   edgeColor: string
@@ -40,7 +41,7 @@ export default function NetworkForm() {
   const onSubmit: SubmitHandler<NetworkFormValues> = (data)=>{
     console.log('submit network')
     console.log(data)
-    const { file, name, type, nodeColor, nodeSize, edgeColor, edgeSize } = data
+    const { file, name, type, dimension, nodeColor, nodeSize, edgeColor, edgeSize } = data
     const fileReader = new FileReader()
     // const key = uuidv1()
     // const graph = new Graph()
@@ -70,14 +71,17 @@ export default function NetworkForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormLabel>Name</FormLabel>
-      <Controller
-        name="name"
-        control={control}
-        render={({ field }) => <Input {...field} />}
-      />
+      <Input {...register('name')}/>
       
       <FormLabel>Type</FormLabel>
-      <Controller
+      <Select placeholder='Network Type' {...register('type')}>
+        <option value='option1'>Option 1</option>
+        <option value='option2'>Option 2</option>
+        <option value='option3'>Option 3</option>
+      </Select>
+      <FormLabel>Dimension</FormLabel>
+      <Input {...register('dimension')}/>
+      {/* <Controller
         name="type"
         control={control}
         render={({ field }) => 
@@ -87,7 +91,7 @@ export default function NetworkForm() {
             <option value='option3'>Option 3</option>
           </Select>
         }
-      />
+      /> */}
       <FormLabel>File</FormLabel>
       <FileInput control={control} name='file'/>
       

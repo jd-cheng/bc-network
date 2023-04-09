@@ -38,8 +38,8 @@ export const defaultHypercubeNodePosionDimension4 = [
 ]
 
 
-export const buildHypercube= (network:INetwork, node:string, dimension: number)=>{
-  const { graph } = network
+export const buildHypercube= (network:INetwork, node:string)=>{
+  const { graph, dimension } = network
   const nodeLabel = ''
   const nodes = graph.nodes() 
   const neigLabels: string[] = []

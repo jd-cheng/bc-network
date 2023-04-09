@@ -7,12 +7,14 @@ export enum NetworkType {
   HYPER,
   CROSSED,
   TWISIED,
+  RAW
 }
 
 export interface INetwork {
   key: string
   name: string
   type: string
+  dimension: number
   graph: Graph
 }
 
@@ -32,6 +34,7 @@ const initialState = [
     key: 'hyper-1',
     name: 'hypercube-1',
     type: 'hyper',
+    dimension: 4,
     graph: hypercube
   }
 ] as INetwork[]
