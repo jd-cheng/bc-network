@@ -7,15 +7,15 @@ export const normalHeight = '56px'
 
 export default function Header() {
 
-  const [isOpen, onOpen] = useSidebarState((state)=>[state.isOpen, state.onOpen])
+  const onOpen = useSidebarState((state)=>state.onOpen)
 
   return (
     <Flex 
       direction='row' 
       w='100%' h={normalHeight}  px='32px'
       bgColor="black" 
-      justify='space-between'
       align='center'
+      justify='space-between'
     >
       <IconButton 
         variant='outline'
@@ -23,10 +23,12 @@ export default function Header() {
         icon={<HamburgerIcon/>} 
         onClick={onOpen}
         colorScheme="whiteAlpha"
+        justifySelf='flex-start'
       />
-      <Heading textColor='white' size='lg' mx='auto'>
+      <Heading textColor='white' size='lg'>
         BC Network
       </Heading>
+      <div></div>
     </Flex>
 
   )

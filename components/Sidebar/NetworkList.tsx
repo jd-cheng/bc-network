@@ -30,16 +30,17 @@ export default function NetworkList() {
 
   return (
     <>
-      <DrawerHeader borderBottomWidth='1px' height={normalHeight} display='flex'>
-          <Heading size='lg' textAlign="center" mx='auto'>
-            Network List
-          </Heading>
-          <IconButton 
-            aria-label='edit' 
-            icon={<EditIcon/>} mr='0'
-            onClick={handleEdit}
-            mt='-4px'
-          />
+      <DrawerHeader borderBottomWidth='1px' height={normalHeight}>
+        <Flex align='center'>
+          <Heading size="lg" textAlign="center" mx='auto'>
+              Network List
+            </Heading>
+            <IconButton 
+              aria-label='edit' 
+              icon={<EditIcon/>}
+              onClick={handleEdit}
+            />
+        </Flex>
       </DrawerHeader>
       <DrawerBody>
         <List flex='1 1 auto' >
