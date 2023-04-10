@@ -61,3 +61,25 @@ export const renderNeighborByDimension = (network:INetwork, node: string, dimens
   graph.updateNodeAttribute(neighbor, 'color' ,oldVal=>'')
   
 }
+
+export const renderDimension  = (network: INetwork, dimension: number, node?:string) => {
+  const { graph } = network 
+  
+  if(node){
+    //only render neighbor edges by dimension
+  } else {
+    //render and edges by dimension
+  }
+
+}
+
+export const clearDimension  = (network: INetwork, dimension: number, node?:string) => {
+  const { graph } = network 
+  
+  if(node){
+    //only render neighbor edges by dimension
+  } else {
+    //render and edges by dimension
+  }
+
+}
