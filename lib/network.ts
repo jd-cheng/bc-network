@@ -1,6 +1,6 @@
 import { INetwork } from "@/store/networks";
 import { getCrossedNeighborLabel } from "./crossedcube";
-import { getHyperNeighborLabel } from "./hypercube";
+import { buildNeighborLabel } from "./hypercube";
 
 
 
@@ -12,7 +12,7 @@ export const getNeigborByDimension = (network:INetwork, node:string, dimension: 
 
   switch(type){
     case 'hyper':
-      neigLabel = getHyperNeighborLabel(nodeLabel, dimension)
+      neigLabel = buildNeighborLabel(nodeLabel, dimension)
       break;
     case 'crossed':
       neigLabel = getCrossedNeighborLabel(nodeLabel, dimension)

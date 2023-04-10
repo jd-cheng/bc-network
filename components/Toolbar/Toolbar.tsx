@@ -1,11 +1,27 @@
 import React from 'react'
 import { Stack, Button} from '@chakra-ui/react'
+import { useNetworkStore } from '@/store/networks'
+import { buildHypercube } from '@/lib/hypercube'
+import { useSelectedStore } from '@/store/selected'
 
 export default function Toolbar() {
+
+  const network = useNetworkStore((state)=>state.openedNetwork)
+  const selected = useSelectedStore((state)=>state.selected)
+
+  const handleBuild = ()=>{
+    if( network?.type === 'raw'){
+      console.log(selected)
+      buildHypercube(network, selected?.key)
+    }
+  }
+
+
   return (
     <Stack 
       direction='row' 
       align='center' 
+      //center an element in parent
       position='absolute'
       bottom='16px'
       left= '50%'
@@ -17,7 +33,7 @@ export default function Toolbar() {
       <Button>
         edit
       </Button>
-      <Button>
+      <Button onClick={handleBuild}>
         build
       </Button>
       <Button>

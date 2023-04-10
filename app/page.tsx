@@ -18,19 +18,13 @@ export default function Home() {
 
   return (
     <>
-      {/* <Header/>
+      <Header/>
       <Box as="main" position='relative' flex='1 1 auto'>
         <Network/>
         <Toolbar/>
       </Box>
-      <Sidebar/> */}
-      <Box display='flex' flex='0 0 auto'>
+      <Sidebar/>
 
-      <Dimension/>
-      <Box flex='1 0 auto'>
-        testsetsetseeststes
-      </Box>
-      </Box>
     </>
 
   )

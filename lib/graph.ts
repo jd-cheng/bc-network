@@ -1,4 +1,5 @@
-import data from '@/data/data.json'
+import hyper_data from '@/data/hyper_data.json'
+import raw_data from '@/data/raw_data.json'
 import { INetwork } from '@/store/networks';
 import { ISelected } from "@/store/selected";
 import Graph from 'graphology';
@@ -88,4 +89,6 @@ export const getSelectedAttributes = (network: INetwork, selected: ISelected) =>
 
 
 export const hypercube = new Graph()
-hypercube.import(data)
+export const raw = new Graph()
+hypercube.import(hyper_data)
+raw.import(raw_data)

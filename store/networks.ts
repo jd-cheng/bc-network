@@ -1,4 +1,4 @@
-import { hypercube } from "@/lib/graph";
+import { hypercube, raw } from "@/lib/graph";
 import Graph from "graphology";
 import produce from "immer";
 import { create } from "zustand";
@@ -30,10 +30,16 @@ interface NetworkState {
 
 const initialState = [
   {
-    key: 'hyper-1',
+    key: 'hyper',
     type: 'hyper',
     dimension: 4,
     graph: hypercube
+  },
+  {
+    key: 'raw',
+    type: 'raw',
+    dimension: 4,
+    graph: raw
   }
 ] as INetwork[]
 

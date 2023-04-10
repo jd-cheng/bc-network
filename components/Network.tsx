@@ -8,13 +8,11 @@ import {
   SigmaNodeEventPayload, 
   SigmaEdgeEventPayload, 
   SigmaStageEventPayload } from 'sigma/sigma'
-import styles from './Stage.module.css'
 
 
 export default function Network() {
 
   const containerRef = useRef<HTMLDivElement | null>(null)
-  // const setSelected = useSetRecoilState(selectedState)
   const [network] = useNetworkStore((state) =>[state.openedNetwork])
   const [selected, setSelected] = useSelectedStore((state) => [state.selected, state.setSelected])
 

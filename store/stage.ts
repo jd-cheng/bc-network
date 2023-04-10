@@ -12,7 +12,7 @@ interface StageState {
 
 }
 
-export const useSelectedStore = create<StageState>((set) =>({
+export const useStageStore = create<StageState>((set) =>({
   isForm: false,
   render: '',
   setForm: (isForm: boolean) => set(produce((state)=>{
