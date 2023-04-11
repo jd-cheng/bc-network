@@ -12,7 +12,7 @@ import {
 export default function Network() {
 
   const containerRef = useRef<HTMLDivElement>(null)
-  const [network] = useNetworkStore((state) =>[state.selected])
+  const network = useNetworkStore((state) =>state.selected)
   const setSelectedNode = useNodeStore((state) => state.setSelected)
 
   const clickNode = (evt: SigmaNodeEventPayload ) => {
@@ -34,7 +34,7 @@ export default function Network() {
     if(!containerRef.current || !network) { return }
     console.log('render network')
 
-    const render = new Sigma(network.graph, containerRef.current, renderSetting)
+    const render = new Sigma(network.graph, containerRef.current)
     render.on("clickNode", clickNode);
     render.on("clickStage",clickStage);
   

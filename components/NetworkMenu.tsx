@@ -1,4 +1,4 @@
-import { HamburgerIcon, AddIcon, EditIcon, DownloadIcon } from '@chakra-ui/icons'
+import { HamburgerIcon, AddIcon, EditIcon, DownloadIcon, SettingsIcon } from '@chakra-ui/icons'
 import { Menu, MenuButton, IconButton, MenuList, MenuItem, Box, Button } from '@chakra-ui/react'
 import React from 'react'
 
@@ -21,6 +21,9 @@ export default function NetworkMenu() {
           </MenuItem>
           <MenuItem as={Button} icon={<EditIcon />} >
             Edit Network
+          </MenuItem>
+          <MenuItem as={Button} icon={<SettingsIcon />} >
+            Network Settings 
           </MenuItem>
         </MenuList>
       </Menu>

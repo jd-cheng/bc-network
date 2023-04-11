@@ -18,14 +18,13 @@ const resolver: Resolver<NodeFormValues> = async (values) => {
 export default function Editor() {
 
   const selected = useNodeStore((state) => state.selected)
-  const openedNetwork = useNetworkStore((state)=> state.selected)
+  const network = useNetworkStore((state)=> state.selected)
   const { register, handleSubmit } = useForm<NodeFormValues>({ resolver });
-  console.log('render editor')
 
   
   return (
     <div className={styles.wrapper}>
-      <h1>{selected? '' : openedNetwork?.key}</h1>
+      <h1>{selected? '' : network?.key}</h1>
     </div>
   )
 }

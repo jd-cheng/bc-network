@@ -17,7 +17,7 @@ import React from 'react'
 import FileInput from './FileInput';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSidebarState } from '@/store/sidebar';
-import { normalHeight } from '../../components/Header/Header';
+
 
 
 
@@ -75,7 +75,7 @@ export default function NetworkForm() {
 
   return (
     <>
-      <DrawerHeader  borderBottomWidth='1px' h={normalHeight}>
+      <DrawerHeader  borderBottomWidth='1px' h='56px'>
         <Heading size='lg' textAlign="center">
           Add Network
         </Heading>
@@ -115,7 +115,7 @@ export default function NetworkForm() {
           
         </form>
       </DrawerBody>
-      <DrawerFooter borderTopWidth='1px' h={normalHeight}>
+      <DrawerFooter borderTopWidth='1px' h='56px'>
         <Button 
           w={'100%'}
           leftIcon={<ArrowBackIcon/>} 

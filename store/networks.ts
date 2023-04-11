@@ -4,10 +4,9 @@ import produce from "immer";
 import { create } from "zustand";
 
 export enum NetworkType {
-  HYPER,
-  CROSSED,
-  TWISIED,
-  RAW
+  HYPER = 'hyper',
+  CROSSED = 'crossed',
+  TWISTED = 'twisted',
 }
 
 export interface INetwork {

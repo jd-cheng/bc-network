@@ -1,7 +1,11 @@
 import produce from "immer";
 import { create } from "zustand";
 
-
+export enum ToolType {
+  DIMENSION = 'Dimension Viewer',
+  BC = 'BC Builder',
+  IST = 'ISTs Builder'
+}
 
 interface ToolbarState {
   tools: string []
@@ -11,12 +15,12 @@ interface ToolbarState {
 }
 
 const initialState =[
-  'Dimension Controller',
-  'BC Network Builder',
-  'ISTs Builder',
+  ToolType.DIMENSION,
+  ToolType.BC,
+  ToolType.IST,
 ]
 
-export const useToolbarStore = create<ToolbarState>((set)=>({
+export const useToolStore = create<ToolbarState>((set)=>({
   tools: initialState,
   selected: null,
   setTools: (tools)=>set(produce((state)=>{

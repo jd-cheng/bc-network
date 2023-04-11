@@ -10,8 +10,7 @@ interface ISigma {
 
 
 export const renderSetting = {
-  enableEdgeClickEvents: true,
-  allowInvalidContainer: true 
+  defaultNodeSize: 10
 }
 
 

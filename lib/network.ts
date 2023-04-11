@@ -4,7 +4,7 @@ import { getCrossedNeighborLabel } from "./crossedcube";
 import { buildHypercube, getEdgeByDimension as getHyperEdgeByDimension } from "./hypercube";
 
 export const getEdgeByDimension = (network:INetwork, dimension: number, node?:string)=>{
-
+  console.log('get edges by dimension')
   const type = network.graph.getAttribute('type')
 
   switch(type){
@@ -16,10 +16,15 @@ export const getEdgeByDimension = (network:INetwork, dimension: number, node?:st
 }
 
 
-export const buildNetwork = (network:INetwork, type: string, start?:string) =>{
+export const buildNetwork = (network:INetwork, type: string, dimension:number, start?:string) =>{
 
-  const dimension = network.graph.getAttribute('dimension')
-  
+  network.graph.updateAttributes(attr=>({
+    ...attr,
+    type,
+    dimension,
+  }))
+
+  network.graph.clearEdges()
 
   switch(type){
     case 'hyper':
