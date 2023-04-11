@@ -44,9 +44,9 @@ export default function NetworkList() {
     transform= 'translateX(-50%)'
     zIndex='popover'
   >
-    <Menu matchWidth isLazy>
-      <MenuButton as={Button} minWidth='240px' variant='outline' rightIcon={<ChevronDownIcon/>}>
-        {selected? selected.key: "BC Network"}
+    <Menu matchWidth isLazy closeOnSelect={false}>
+      <MenuButton as={Button} minWidth='320px' variant='outline' rightIcon={<ChevronDownIcon/>}>
+        {selected? selected.graph.getAttribute('name'): "BC Network"}
       </MenuButton>
       <MenuList >
         <MenuOptionGroup type='radio' onChange={handleChange} >

@@ -5,13 +5,12 @@ import React from 'react'
 export default function NetworkMenu() {
   return (
     <Box position='fixed' top='16px' left='16px' zIndex='popover'>
-      <Menu>
+      <Menu >
         <MenuButton
           as={IconButton}
           aria-label='Options'
           icon={<HamburgerIcon />}
           variant='outline'
-
         />
         <MenuList>
           <MenuItem as={Button} icon={<AddIcon />} >

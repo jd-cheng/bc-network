@@ -7,6 +7,8 @@ import NetworkMenu from '@/components/NetworkMenu'
 
 import { Box } from '@chakra-ui/react'
 import NetworkList from '@/components/NetworkList'
+import Toolbar from '@/components/Tools/Toolbar'
+import ToolMenu from '@/components/Tools/ToolMenu'
 
 
 export default function Home() {
@@ -17,9 +19,9 @@ export default function Home() {
     <>
       <NetworkMenu/>
       <NetworkList/>
-    
+      <ToolMenu/>
       <Box as="main" position='relative' flex='1 1 auto'>
-        <Network/>
+        {/* <Network/> */}
         {/* <Toolbar/> */}
         {/* <Dimension/> */}
       </Box>

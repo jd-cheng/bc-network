@@ -1,5 +1,5 @@
 import React from 'react'
-import { Stack, Button} from '@chakra-ui/react'
+import { Stack, Button, ButtonGroup, IconButton} from '@chakra-ui/react'
 import { useNetworkStore } from '@/store/networks'
 import { buildHypercube } from '@/lib/hypercube'
 import { useNodeStore } from '@/store/nodes'
@@ -23,23 +23,20 @@ export default function Toolbar() {
       direction='row' 
       align='center' 
       //center an element in parent
-      position='absolute'
-      bottom='16px'
-      left= '50%'
-      transform= 'translateX(-50%)'
+      position='fixed' top='16px' right='16px' zIndex='popover'
+      borderWidth='1px'
+      borderRadius='md'
     >
-      <Button>
-        select
-      </Button>
-      <Button>
-        edit
-      </Button>
-      <Button onClick={handleBuild}>
-        build
-      </Button>
-      <Button>
-        dimension
-      </Button>
+      <ButtonGroup>
+        <Button>
+          dimension
+        </Button>
+        <Button onClick={handleBuild}>
+          build
+        </Button>
+
+      </ButtonGroup>
+
     </Stack>
   )
 }
