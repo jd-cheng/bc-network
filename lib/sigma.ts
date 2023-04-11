@@ -1,7 +1,6 @@
 import { IDimension } from "@/store/dimensions";
 import { INetwork } from "@/store/networks";
-import { ISelected } from "@/store/selected";
-import Graph from "graphology";
+import { INode } from "@/store/nodes";
 import Sigma from "sigma";
 import { getEdgeByDimension } from "./network";
 
@@ -22,36 +21,14 @@ export const sigma: ISigma = {
 } 
 
 
-export const renderSelected = (network:INetwork, nextSelected:ISelected | null, preSelected:ISelected | null)=> {
-  //clear previously seleced elements effect
-  console.log('render select', nextSelected, preSelected)
+export const renderSelectedNode = (network:INetwork, nextNode:INode | null, preNode:INode | null)=> {
+  
+  console.log('render selected node', nextNode, preNode)
   const { graph } = network
-  if(preSelected){
-    const { type, key } = preSelected
-
-    switch(type){
-      case 'node':
-        graph.updateNodeAttribute(key, 'highlighted', oldVal=>false)
-        break;
-      case 'edge':
-        graph.updateEdgeAttribute(key, 'color',oldVal=>'')
-        break;
-    }
-  }
-
+  //clear previously seleced elements effect
+  preNode && graph.updateNodeAttribute(preNode.key, 'highlighted', oldVal=>false)
   //render currently selected element
-  if(nextSelected){
-    const { type, key } = nextSelected
-
-    switch(type){
-      case 'node':
-        graph.updateNodeAttribute(key, 'highlighted', oldVal=>true)
-        break;
-      case 'edge':
-        graph.updateEdgeAttribute(key, 'color', oldVal=>'#B30000')
-        break;
-    }
-  }
+  nextNode && graph.updateNodeAttribute(nextNode.key, 'highlighted', oldVal=>true)
 
 }
 

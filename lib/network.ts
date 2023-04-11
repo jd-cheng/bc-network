@@ -3,10 +3,11 @@ import { INetwork } from "@/store/networks";
 import { getCrossedNeighborLabel } from "./crossedcube";
 import { buildHypercube, getEdgeByDimension as getHyperEdgeByDimension } from "./hypercube";
 
-
-
 export const getEdgeByDimension = (network:INetwork, dimension: number, node?:string)=>{
-  switch(network.type){
+
+  const type = network.graph.getAttribute('type')
+
+  switch(type){
     case "hyper":
       return getHyperEdgeByDimension(network.graph, dimension, node)
     default:
@@ -15,15 +16,18 @@ export const getEdgeByDimension = (network:INetwork, dimension: number, node?:st
 }
 
 
-export const validataNetowrk = (network:INetwork)=>{
-
-}
-
 export const buildNetwork = (network:INetwork, type: string, start?:string) =>{
+
+  const dimension = network.graph.getAttribute('dimension')
+  
 
   switch(type){
     case 'hyper':
-      buildHypercube(network.graph, network.dimension, start)
+      buildHypercube(network.graph, dimension, start)
       break;
   }
+}
+
+export const validataNetowrk = (network:INetwork)=>{
+
 }

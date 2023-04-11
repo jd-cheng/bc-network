@@ -1,6 +1,5 @@
 import { useDimensionStore } from '@/store/dimensions'
-import { useNetworkStore } from '@/store/networks'
-import { useSelectedStore } from '@/store/selected'
+
 
 import { Card, CardBody, CardHeader, Heading } from '@chakra-ui/react'
 import React, { useState } from 'react'

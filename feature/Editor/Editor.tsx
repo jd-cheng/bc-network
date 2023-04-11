@@ -1,5 +1,5 @@
 import React, { HTMLProps, useEffect, useState } from 'react'
-import { useSelectedStore } from '@/store/selected';
+import { useNodeStore } from '@/store/nodes';
 import styles from './Editor.module.css'
 import { Resolver, useForm } from 'react-hook-form';
 import NodeForm, { NodeFormValues } from '../../refactor/NodeForm';
@@ -17,8 +17,8 @@ const resolver: Resolver<NodeFormValues> = async (values) => {
 
 export default function Editor() {
 
-  const selected = useSelectedStore((state) => state.selected)
-  const openedNetwork = useNetworkStore((state)=> state.openedNetwork)
+  const selected = useNodeStore((state) => state.selected)
+  const openedNetwork = useNetworkStore((state)=> state.selected)
   const { register, handleSubmit } = useForm<NodeFormValues>({ resolver });
   console.log('render editor')
 

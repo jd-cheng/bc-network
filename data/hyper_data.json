@@ -1,6 +1,8 @@
 {
   "attributes": {
-    "name": "BC Networks"
+    "name": "hypercube",
+    "type": "hyper",
+    "dimension": 4
   },
   "nodes": [
     {
@@ -8,10 +10,8 @@
       "attributes": {
         "x": 0,
         "y": -300,
-        "size": 20,
         "color": "#B30000",
-        "label": "0000",
-        "highlighted": false
+        "label": "0000"
       }
     },
     {
@@ -19,10 +19,8 @@
       "attributes": {
         "x": 212.13203435596424,
         "y": -212.13203435596424,
-        "size": 20,
         "color": "#B30000",
-        "label": "0111",
-        "highlighted": false
+        "label": "0111"
       }
     },
     {
@@ -30,10 +28,8 @@
       "attributes": {
         "x": 300,
         "y": 0,
-        "size": 20,
         "color": "#B30000",
-        "label": "1001",
-        "highlighted": false
+        "label": "1001"
       }
     },
     {
@@ -41,10 +37,8 @@
       "attributes": {
         "x": 212.13203435596424,
         "y": 212.13203435596424,
-        "size": 20,
         "color": "#B30000",
-        "label": "0100",
-        "highlighted": false
+        "label": "0100"
       }
     },
     {
@@ -52,10 +46,8 @@
       "attributes": {
         "x": 0,
         "y": 300,
-        "size": 20,
         "color": "#B30000",
-        "label": "1111",
-        "highlighted": false
+        "label": "1111"
       }
     },
     {
@@ -63,10 +55,8 @@
       "attributes": {
         "x": -212.13203435596424,
         "y": 212.13203435596424,
-        "size": 20,
         "color": "#B30000",
-        "label": "1000",
-        "highlighted": false
+        "label": "1000"
       }
     },
     {
@@ -74,10 +64,8 @@
       "attributes": {
         "x": -300,
         "y": 0,
-        "size": 20,
         "color": "#B30000",
-        "label": "0110",
-        "highlighted": false
+        "label": "0110"
       }
     },
     {
@@ -85,10 +73,8 @@
       "attributes": {
         "x": -212.13203435596424,
         "y": -212.13203435596424,
-        "size": 20,
         "color": "#B30000",
-        "label": "1011",
-        "highlighted": false
+        "label": "1011"
       }
     },
     {
@@ -96,10 +82,8 @@
       "attributes": {
         "x": 0,
         "y": -600,
-        "size": 20,
         "color": "#B30000",
-        "label": "0011",
-        "highlighted": false
+        "label": "0011"
       }
     },
     {
@@ -107,10 +91,8 @@
       "attributes": {
         "x": 424.2640687119285,
         "y": -424.2640687119285,
-        "size": 20,
         "color": "#B30000",
-        "label": "0001",
-        "highlighted": false
+        "label": "0001"
       }
     },
     {
@@ -118,10 +100,8 @@
       "attributes": {
         "x": 600,
         "y": 0,
-        "size": 20,
         "color": "#B30000",
-        "label": "0101",
-        "highlighted": false
+        "label": "0101"
       }
     },
     {
@@ -129,10 +109,8 @@
       "attributes": {
         "x": 424.2640687119285,
         "y": 424.2640687119285,
-        "size": 20,
         "color": "#B30000",
-        "label": "1101",
-        "highlighted": false
+        "label": "1101"
       }
     },
     {
@@ -140,10 +118,8 @@
       "attributes": {
         "x": 0,
         "y": 600,
-        "size": 20,
         "color": "#B30000",
-        "label": "1100",
-        "highlighted": false
+        "label": "1100"
       }
     },
     {
@@ -151,10 +127,8 @@
       "attributes": {
         "x": -424.2640687119285,
         "y": 424.2640687119285,
-        "size": 20,
         "color": "#B30000",
-        "label": "1110",
-        "highlighted": false
+        "label": "1110"
       }
     },
     {
@@ -162,10 +136,8 @@
       "attributes": {
         "x": -600,
         "y": 0,
-        "size": 20,
         "color": "#B30000",
-        "label": "1010",
-        "highlighted": false
+        "label": "1010"
       }
     },
     {
@@ -173,10 +145,8 @@
       "attributes": {
         "x": -424.2640687119285,
         "y": -424.2640687119285,
-        "size": 20,
         "color": "#B30000",
-        "label": "0010",
-        "highlighted": false
+        "label": "0010"
       }
     }
   ],
@@ -185,257 +155,193 @@
       "key": "edge-0-3",
       "source": "node-0",
       "target": "node-3",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-0-5",
       "source": "node-0",
       "target": "node-5",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-0-9",
       "source": "node-0",
       "target": "node-9",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-0-15",
       "source": "node-0",
       "target": "node-15",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-1-4",
       "source": "node-1",
       "target": "node-4",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-1-6",
       "source": "node-1",
       "target": "node-6",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-1-8",
       "source": "node-1",
       "target": "node-8",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-1-10",
       "source": "node-1",
       "target": "node-10",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-2-5",
       "source": "node-2",
       "target": "node-5",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-2-7",
       "source": "node-2",
       "target": "node-7",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-2-9",
       "source": "node-2",
       "target": "node-9",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-2-11",
       "source": "node-2",
       "target": "node-11",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-3-6",
       "source": "node-3",
       "target": "node-6",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-3-10",
       "source": "node-3",
       "target": "node-10",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-3-12",
       "source": "node-3",
       "target": "node-12",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-4-7",
       "source": "node-4",
       "target": "node-7",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-4-11",
       "source": "node-4",
       "target": "node-11",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-4-13",
       "source": "node-4",
       "target": "node-13",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-5-12",
       "source": "node-5",
       "target": "node-12",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-5-14",
       "source": "node-5",
       "target": "node-14",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-6-13",
       "source": "node-6",
       "target": "node-13",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-6-15",
       "source": "node-6",
       "target": "node-15",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-7-14",
       "source": "node-7",
       "target": "node-14",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-7-8",
       "source": "node-7",
       "target": "node-8",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-8-9",
       "source": "node-8",
       "target": "node-9",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-8-15",
       "source": "node-8",
       "target": "node-15",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-9-10",
       "source": "node-9",
       "target": "node-10",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-10-11",
       "source": "node-10",
       "target": "node-11",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-11-12",
       "source": "node-11",
       "target": "node-12",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-12-13",
       "source": "node-12",
       "target": "node-13",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-13-14",
       "source": "node-13",
       "target": "node-14",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     },
     {
       "key": "edge-14-15",
       "source": "node-14",
       "target": "node-15",
-      "attributes": {
-        "size": 10
-      }
+      "attributes": {      }
     }
   ]
 }

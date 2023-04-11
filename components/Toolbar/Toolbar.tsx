@@ -2,18 +2,18 @@ import React from 'react'
 import { Stack, Button} from '@chakra-ui/react'
 import { useNetworkStore } from '@/store/networks'
 import { buildHypercube } from '@/lib/hypercube'
-import { useSelectedStore } from '@/store/selected'
+import { useNodeStore } from '@/store/nodes'
 import { buildNetwork } from '@/lib/network'
 
 export default function Toolbar() {
 
-  const network = useNetworkStore((state)=>state.openedNetwork)
-  const selected = useSelectedStore((state)=>state.selected)
+  const network = useNetworkStore((state)=>state.selected)
+  const node = useNodeStore((state)=>state.selected)
 
   const handleBuild = ()=>{
-    if( network?.type === 'raw'){
-      console.log(selected)
-      buildNetwork(network, 'hyper', selected?.key)
+    if( network && !network?.graph.getAttribute('type')){
+      console.log(node)
+      buildNetwork(network, 'hyper', node?.key)
     }
   }
 

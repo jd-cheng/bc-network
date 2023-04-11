@@ -17,7 +17,7 @@ import React from 'react'
 import FileInput from './FileInput';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSidebarState } from '@/store/sidebar';
-import { normalHeight } from '../Header/Header';
+import { normalHeight } from '../../components/Header/Header';
 
 
 

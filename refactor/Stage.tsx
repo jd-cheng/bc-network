@@ -14,7 +14,7 @@ export default function Stage() {
   const containerRef = useRef<HTMLDivElement | null>(null)
   // const setSelected = useSetRecoilState(selectedState)
   const [network] = useNetworkStore(
-    (state) =>[state.openedNetwork]
+    (state) =>[state.selected]
   )
 
 

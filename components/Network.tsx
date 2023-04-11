@@ -1,38 +1,33 @@
 import { renderSetting } from '@/lib/sigma'
-import { INetwork, useNetworkStore } from '@/store/networks'
-import { ISelected,  useSelectedStore } from '@/store/selected'
+import { useNetworkStore } from '@/store/networks'
+import { useNodeStore } from '@/store/nodes'
 import { Box } from '@chakra-ui/react'
 import React, { useEffect, useRef } from 'react'
 import Sigma from 'sigma'
 import { 
   SigmaNodeEventPayload, 
-  SigmaEdgeEventPayload, 
   SigmaStageEventPayload } from 'sigma/sigma'
 
 
 export default function Network() {
 
-  const containerRef = useRef<HTMLDivElement | null>(null)
-  const [network] = useNetworkStore((state) =>[state.openedNetwork])
-  const [selected, setSelected] = useSelectedStore((state) => [state.selected, state.setSelected])
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [network] = useNetworkStore((state) =>[state.selected])
+  const setSelectedNode = useNodeStore((state) => state.setSelected)
 
-  const select = (element: SigmaNodeEventPayload | SigmaEdgeEventPayload | SigmaStageEventPayload) => {
+  const clickNode = (evt: SigmaNodeEventPayload ) => {
 
-    console.log("select:",element)
+    console.log("select:",evt)
     if(!network) { return } 
-    let nextSelected = null as ISelected | null
-    
-    if('node' in element){
-      nextSelected = {type:'node',key: element.node, attributes: network.graph.getNodeAttributes(element.node)}
-    }
-
-    if('edge' in element){
-      nextSelected = {type:'edge',key: element.edge, attributes: network.graph.getEdgeAttributes(element.edge)}
-    }
-
-    setSelected(network,nextSelected)
+    let nextNode = {key:evt.node}
+    setSelectedNode(network,nextNode)
 
   }
+
+  const clickStage = (evt: SigmaStageEventPayload)=>{
+    if(!network) { return }
+    setSelectedNode(network, null)
+  } 
 
 
   useEffect(() => {
@@ -40,9 +35,8 @@ export default function Network() {
     console.log('render network')
 
     const render = new Sigma(network.graph, containerRef.current, renderSetting)
-    render.on("clickNode", select);
-    render.on("clickEdge", select)
-    render.on("clickStage",select);
+    render.on("clickNode", clickNode);
+    render.on("clickStage",clickStage);
   
     return () => {
       console.log("unmount network")

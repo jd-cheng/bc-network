@@ -12,8 +12,6 @@ export enum NetworkType {
 
 export interface INetwork {
   key: string
-  type: string
-  dimension: number
   graph: Graph
 }
 
@@ -21,31 +19,27 @@ export interface INetwork {
 
 interface NetworkState {
   networks: INetwork[]
-  openedNetwork: INetwork | null
+  selected: INetwork | null
   addNetwork: (network: INetwork) =>void
   deleteNetwork: (index:number) => void
-  openNetwork: (network: INetwork) => void
+  setSelected: (network: INetwork) => void
   closeNetwork: (network: string) => void
 }
 
 const initialState = [
   {
     key: 'hyper',
-    type: 'hyper',
-    dimension: 4,
     graph: hypercube
   },
   {
     key: 'raw',
-    type: 'raw',
-    dimension: 4,
     graph: raw
   }
 ] as INetwork[]
 
 export const useNetworkStore = create<NetworkState>((set)=>({
   networks: initialState,
-  openedNetwork: null ,
+  selected: null ,
   addNetwork: (network)=>set(produce((state:NetworkState)=>{
     console.log('add network')
     state.networks.push(network)
@@ -53,8 +47,8 @@ export const useNetworkStore = create<NetworkState>((set)=>({
   deleteNetwork: (index)=> set(produce((state: NetworkState)=>{
     state.networks.splice(index, 1)
   })),
-  openNetwork: (network)=>set(produce((state)=>{
-    state.openedNetwork = network
+  setSelected: (network)=>set(produce((state)=>{
+    state.selected = network
   })),
   closeNetwork: (network)=>null
 }))

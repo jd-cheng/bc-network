@@ -3,14 +3,14 @@ import { useSidebarState } from '@/store/sidebar'
 import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { Button, ButtonGroup, DrawerBody, DrawerFooter, DrawerHeader, Flex, Heading, IconButton, List, ListItem } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { normalHeight } from '../Header/Header'
+import { normalHeight } from '../../components/Header/Header'
 import NetworkItem from './NetworkItem'
 
 
 
 export default function NetworkList() {
   console.log('render network list')
-  const [networks, deleteNetwork, openNetwork] = useNetworkStore((state)=> [state.networks, state.deleteNetwork, state.openNetwork])
+  const [networks, deleteNetwork, openNetwork] = useNetworkStore((state)=> [state.networks, state.deleteNetwork, state.setSelected])
   const setType = useSidebarState((state)=>state.setType)
   const [isEdit, setEdit] = useState(false)
 

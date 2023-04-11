@@ -1,7 +1,6 @@
 import hyper_data from '@/data/hyper_data.json'
 import raw_data from '@/data/raw_data.json'
-import { INetwork } from '@/store/networks';
-import { ISelected } from "@/store/selected";
+
 import Graph from 'graphology';
 
 export interface NodeAttributes {
@@ -21,28 +20,20 @@ export interface EdgeAttributes  {
   hidden?: boolean;
   highlighted?: boolean
 } 
-
-export interface NetworkAttributes {
-  type?: string
-  nodeColor?: string
-  nodeSize?: number
-  edgeColor?: string
-  edgeSize?: number
-  label?: string
-}
-
 export interface GraphAttributes {
   name: string;
+  type?: string;
+  dimension?: number
 }
 
 
 
-export interface INode {
+export interface Node {
   key: string
   attributes?: NodeAttributes
 }
 
-export interface IEdge {
+export interface Edge {
   key: string
   source: string
   target: string
@@ -71,20 +62,6 @@ export interface IEdge {
 //   })
 
 // }
-
-
-
-
-export const getSelectedAttributes = (network: INetwork, selected: ISelected) => {
-  const { type, key } = selected
-  const { graph } = network
-  switch(type){
-    case 'node':
-      return graph.getNodeAttributes(key)
-    case 'edge':
-      return graph.getEdgeAttributes(key)
-  }
-}
 
 
 
