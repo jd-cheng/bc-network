@@ -3,6 +3,7 @@ import { Stack, Button} from '@chakra-ui/react'
 import { useNetworkStore } from '@/store/networks'
 import { buildHypercube } from '@/lib/hypercube'
 import { useSelectedStore } from '@/store/selected'
+import { buildNetwork } from '@/lib/network'
 
 export default function Toolbar() {
 
@@ -12,7 +13,7 @@ export default function Toolbar() {
   const handleBuild = ()=>{
     if( network?.type === 'raw'){
       console.log(selected)
-      buildHypercube(network, selected?.key)
+      buildNetwork(network, 'hyper', selected?.key)
     }
   }
 

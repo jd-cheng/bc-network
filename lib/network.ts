@@ -1,27 +1,17 @@
+import { IDimension } from "@/store/dimensions";
 import { INetwork } from "@/store/networks";
 import { getCrossedNeighborLabel } from "./crossedcube";
-import { buildNeighborLabel } from "./hypercube";
+import { buildHypercube, getEdgeByDimension as getHyperEdgeByDimension } from "./hypercube";
 
 
 
-
-export const getNeigborByDimension = (network:INetwork, node:string, dimension: number) =>{
-  const { type, graph } = network
-  const nodeLabel = graph.getNodeAttribute(node, 'label')
-  let neigLabel = ''
-
-  switch(type){
-    case 'hyper':
-      neigLabel = buildNeighborLabel(nodeLabel, dimension)
-      break;
-    case 'crossed':
-      neigLabel = getCrossedNeighborLabel(nodeLabel, dimension)
-      break
+export const getEdgeByDimension = (network:INetwork, dimension: number, node?:string)=>{
+  switch(network.type){
+    case "hyper":
+      return getHyperEdgeByDimension(network.graph, dimension, node)
+    default:
+      return []
   }
-    
-  return graph.findNeighbor(node, (neighbor, attributes)=>{
-    return neigLabel === attributes.label
-  })
 }
 
 
@@ -29,6 +19,11 @@ export const validataNetowrk = (network:INetwork)=>{
 
 }
 
-export const buildNetwork = (network:INetwork) =>{
+export const buildNetwork = (network:INetwork, type: string, start?:string) =>{
 
+  switch(type){
+    case 'hyper':
+      buildHypercube(network.graph, network.dimension, start)
+      break;
+  }
 }

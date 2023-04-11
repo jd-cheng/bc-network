@@ -19,9 +19,12 @@ export default function Dimension() {
   
   
   return (
-    <Card size='md' direction='column' align="center">
+    <Card size='md' direction='column' align="center" 
+      position='absolute' left='10px' top='50%'  
+      transform= 'translateY(-50%)'
+    >
       <CardHeader borderBottomWidth='1px'>
-        <Heading>Dimension</Heading>
+        <Heading size='md'>Dimension</Heading>
       </CardHeader>
             <CardBody>
 

@@ -10,7 +10,7 @@
         "y": -300,
         "size": 20,
         "color": "#B30000",
-        "label": "node-0",
+        "label": "0000",
         "highlighted": false
       }
     },
@@ -21,7 +21,7 @@
         "y": -212.13203435596424,
         "size": 20,
         "color": "#B30000",
-        "label": "node-1",
+        "label": "0111",
         "highlighted": false
       }
     },
@@ -32,7 +32,7 @@
         "y": 0,
         "size": 20,
         "color": "#B30000",
-        "label": "node-2",
+        "label": "1001",
         "highlighted": false
       }
     },
@@ -43,7 +43,7 @@
         "y": 212.13203435596424,
         "size": 20,
         "color": "#B30000",
-        "label": "node-3",
+        "label": "0100",
         "highlighted": false
       }
     },
@@ -54,7 +54,7 @@
         "y": 300,
         "size": 20,
         "color": "#B30000",
-        "label": "node-4",
+        "label": "1111",
         "highlighted": false
       }
     },
@@ -65,7 +65,7 @@
         "y": 212.13203435596424,
         "size": 20,
         "color": "#B30000",
-        "label": "node-5",
+        "label": "1000",
         "highlighted": false
       }
     },
@@ -76,7 +76,7 @@
         "y": 0,
         "size": 20,
         "color": "#B30000",
-        "label": "node-6",
+        "label": "0110",
         "highlighted": false
       }
     },
@@ -87,7 +87,7 @@
         "y": -212.13203435596424,
         "size": 20,
         "color": "#B30000",
-        "label": "node-7",
+        "label": "1011",
         "highlighted": false
       }
     },
@@ -98,7 +98,7 @@
         "y": -600,
         "size": 20,
         "color": "#B30000",
-        "label": "node-8",
+        "label": "0011",
         "highlighted": false
       }
     },
@@ -109,7 +109,7 @@
         "y": -424.2640687119285,
         "size": 20,
         "color": "#B30000",
-        "label": "node-9",
+        "label": "0001",
         "highlighted": false
       }
     },
@@ -120,7 +120,7 @@
         "y": 0,
         "size": 20,
         "color": "#B30000",
-        "label": "node-10",
+        "label": "0101",
         "highlighted": false
       }
     },
@@ -131,7 +131,7 @@
         "y": 424.2640687119285,
         "size": 20,
         "color": "#B30000",
-        "label": "node-11",
+        "label": "1101",
         "highlighted": false
       }
     },
@@ -142,7 +142,7 @@
         "y": 600,
         "size": 20,
         "color": "#B30000",
-        "label": "node-12",
+        "label": "1100",
         "highlighted": false
       }
     },
@@ -153,7 +153,7 @@
         "y": 424.2640687119285,
         "size": 20,
         "color": "#B30000",
-        "label": "node-13",
+        "label": "1110",
         "highlighted": false
       }
     },
@@ -164,7 +164,7 @@
         "y": 0,
         "size": 20,
         "color": "#B30000",
-        "label": "node-14",
+        "label": "1010",
         "highlighted": false
       }
     },
@@ -175,7 +175,7 @@
         "y": -424.2640687119285,
         "size": 20,
         "color": "#B30000",
-        "label": "node-15",
+        "label": "0010",
         "highlighted": false
       }
     }

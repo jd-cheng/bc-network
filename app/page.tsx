@@ -21,7 +21,8 @@ export default function Home() {
       <Header/>
       <Box as="main" position='relative' flex='1 1 auto'>
         <Network/>
-        <Toolbar/>
+        {/* <Toolbar/> */}
+        <Dimension/>
       </Box>
       <Sidebar/>
 

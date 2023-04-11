@@ -1,5 +1,6 @@
 import { INetwork } from "@/store/networks"
 import { sin45 } from "@/utils/degree"
+import Graph from "graphology"
 
 export const defaultHypercubeNodePosionDimension1 = [
 
@@ -38,22 +39,12 @@ export const defaultHypercubeNodePosionDimension4 = [
 ]
 
 
-export const buildHypercube= (network:INetwork, start?:string)=>{
-  //dimension = 1
-  // 0 => 0
-  // 1 => 1
-  //dimension = 2
-  //0 => 00
-  //1 => 01
-  //2 => 10
-  //3 => 11
+export const buildHypercube= (graph:Graph, dimension: number, start?:string)=>{
 
-  const { graph, dimension } = network
   const labels = Array.from({length: Math.pow(2,dimension)}, (value, key)=>{
     let label:string = key.toString(2)
     return '0'.repeat(dimension-label.length)+ label
   })
-  // console.log('labels', labels)
 
   //label nodes
 
@@ -67,13 +58,12 @@ export const buildHypercube= (network:INetwork, start?:string)=>{
 
   //connect nodes
   graph.forEachNode((node,{label})=>{
-    // console.log(node)
-    const neighborLabel = new Set(Array.from({length:dimension},(_, key)=>buildNeighborLabel(label,key+1)))
+
+    const neighborLabel = new Set(Array.from({length:dimension},(_, key)=>generateNeighborLabel(label,key+1)))
     console.log('neighborLabel', neighborLabel)
     const neighbors = graph.filterNodes((node, {label})=>{
       return neighborLabel.has(label)
     })
-    // console.log('neigbors', neighbors)
 
     for(const neighbor of neighbors){
       if(graph.hasEdge(node, neighbor) || graph.hasEdge(neighbor, node)){
@@ -87,7 +77,7 @@ export const buildHypercube= (network:INetwork, start?:string)=>{
 
 
 
-export const buildNeighborLabel = (label: string, dimension: number) =>{
+export const generateNeighborLabel = (label: string, dimension: number) =>{
   if(dimension<1 || dimension>label.length){
     return ''
   }
@@ -99,12 +89,18 @@ export const buildNeighborLabel = (label: string, dimension: number) =>{
 
 }
 
-export const getNeigbor = (network:INetwork, node:string, dimension: number) =>{
-  const { graph } = network
-  const nodeLabel = graph.getNodeAttribute(node, 'label')
-  const neigLabel = buildNeighborLabel(nodeLabel, dimension)
+export const getEdgeByDimension = (graph:Graph, dimension:number , node?:string) =>{
 
-  return graph.findNeighbor(node, (neighbor, attributes)=>{
-    return neigLabel === attributes.label
+  return graph.filterEdges((edge)=>{
+
+    if(node && !graph.hasExtremity(edge, node)){
+      return false
+    } 
+    const [nodeX, nodeY] = graph.extremities(edge)
+    const labelX = graph.getNodeAttribute(nodeX, 'label')
+    const labelY = graph.getNodeAttribute(nodeY, 'label')
+    return (labelX ^ labelY).toString(2).length === dimension
   })
+
 }
+

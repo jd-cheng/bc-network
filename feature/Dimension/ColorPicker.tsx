@@ -18,6 +18,9 @@ export default function ColorPicker({color, setColor}: IProp) {
       <PopoverBody >
         <HexColorPicker color={color} onChange={setColor} />
       </PopoverBody>
+      <PopoverFooter>
+        <Button> Set </Button>
+      </PopoverFooter>
     </PopoverContent>
 
   )

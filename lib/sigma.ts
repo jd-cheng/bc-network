@@ -1,8 +1,9 @@
+import { IDimension } from "@/store/dimensions";
 import { INetwork } from "@/store/networks";
 import { ISelected } from "@/store/selected";
 import Graph from "graphology";
 import Sigma from "sigma";
-import { getNeigborByDimension } from "./network";
+import { getEdgeByDimension } from "./network";
 
 interface ISigma {
   render: Sigma | null;
@@ -54,32 +55,32 @@ export const renderSelected = (network:INetwork, nextSelected:ISelected | null, 
 
 }
 
-export const renderNeighborByDimension = (network:INetwork, node: string, dimension: number) => {
-  const { graph } = network 
-  const neighbor = getNeigborByDimension(network, node, dimension)
+export const resetNetwork = (network:INetwork)=>{
 
-  graph.updateNodeAttribute(neighbor, 'color' ,oldVal=>'')
-  
 }
 
-export const renderDimension  = (network: INetwork, dimension: number, node?:string) => {
+export const renderDimension = (network:INetwork, dimension: IDimension, node?: string) => {
+  console.log('render dimension')
   const { graph } = network 
-  
-  if(node){
-    //only render neighbor edges by dimension
-  } else {
-    //render and edges by dimension
+  const { dimension: d, color } = dimension
+
+
+  const edges = getEdgeByDimension(network, d, node)
+  for(const edge of edges){
+    graph.updateEdgeAttribute(edge, 'color' ,oldVal=>color)
   }
-
+  
 }
 
-export const clearDimension  = (network: INetwork, dimension: number, node?:string) => {
+
+export const clearDimension  = (network: INetwork, dimension: IDimension, node?:string) => {
   const { graph } = network 
-  
-  if(node){
-    //only render neighbor edges by dimension
-  } else {
-    //render and edges by dimension
+  const { dimension: d, color } = dimension
+
+
+  const edges = getEdgeByDimension(network, d, node)
+  for(const edge of edges){
+    graph.updateNodeAttribute(edge, 'color' ,oldVal=>'')
   }
 
 }
