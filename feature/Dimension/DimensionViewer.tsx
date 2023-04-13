@@ -55,6 +55,11 @@ export default function DimensionViewer({dimension}: IProp) {
     renderDimension(network, dimension, null)
     isRender && renderDimension(network, dimension, color, node?.key)
 
+    return ()=>{
+      console.log('unmount dimension viewer')
+      renderDimension(network, dimension, null)
+    }
+
   }, [node])
 
 

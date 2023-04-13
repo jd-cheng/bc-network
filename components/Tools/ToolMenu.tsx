@@ -1,4 +1,6 @@
-import { useToolStore } from '@/store/tools'
+import DimensionList from '@/feature/Dimension/DimensionList'
+import NetworkBuilder from '@/feature/NetworkBuilder'
+import { ToolType, useToolStore } from '@/store/tools'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { 
   Menu, 
@@ -9,7 +11,7 @@ import {
   MenuItemOption, 
   MenuOptionGroup } from '@chakra-ui/react'
 import React from 'react'
-import ToolPanel from './ToolPanel'
+
 
 export default function ToolMenu() {
 
@@ -51,7 +53,10 @@ export default function ToolMenu() {
           </MenuOptionGroup>
         </MenuList>
       </Menu>
-      <ToolPanel/>
+      <Box position='absolute' top='56px' zIndex='overlay' borderWidth='1px' borderRadius='md' hidden={!selected || selected === ToolType.IST}>
+        <DimensionList/>
+        <NetworkBuilder/>
+      </Box>
     </Box>
   )
 }

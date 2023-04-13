@@ -9,12 +9,6 @@ export enum NetworkType {
   TWISTED = 'twisted',
 }
 
-export const networkTypes = [
-  NetworkType.HYPER,
-  NetworkType.CROSSED,
-  NetworkType.TWISTED
-]
-
 export interface INetwork {
   key: string
   graph: Graph

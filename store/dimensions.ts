@@ -31,7 +31,7 @@ const initialState = [
 
 
 export const useDimensionStore = create<DimensionState>((set)=>({
-  dimensions: initialState,
+  dimensions: [],
   selected: null,
   setDimensions: (dimensions)=>set(produce((state)=>{
     state.dimensions = dimensions

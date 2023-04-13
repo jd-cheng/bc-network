@@ -8,7 +8,7 @@ interface NetworkBuilderState {
   builders: NetworkType[]
   selected: NetworkType | null
   setBuilders:(builders: NetworkType[])=>void
-  setSelected:(builder: NetworkType)=>void
+  setSelected:(builder: NetworkType | null)=>void
 }
 
 const initialState = [
