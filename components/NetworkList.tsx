@@ -15,25 +15,9 @@ export default function NetworkList() {
     (state)=>[state.networks, state.selected, state.setSelected]
   )
 
-
-  
-  const handleChange = (value:string | string[])=>{
-    console.log('select network')
-    //radio type menu only accept string
-    if( value instanceof Array) {
-      console.log('invalid value')
-      return
-    }
-
-    const index = parseInt(value)
-
-    if(index< 0 || index>= networks.length){
-      console.log('invalid index')
-      return
-    }
-    const nextNetwork = networks[index]
-    setSelected(nextNetwork)
-
+  const handleNetwork = (key:string)=>{
+    const nextNetwork = networks.find((network)=>network.key === key)
+    nextNetwork &&setSelected(nextNetwork.key === selected?.key? null: nextNetwork)
   }
 
   return (
@@ -43,18 +27,20 @@ export default function NetworkList() {
     left="50%"
     transform= 'translateX(-50%)'
     zIndex='popover'
+    bgColor='white'
   >
-    <Menu matchWidth isLazy closeOnSelect={false}>
-      <MenuButton as={Button} minWidth='320px' variant='outline' rightIcon={<ChevronDownIcon/>}>
+    <Menu matchWidth isLazy closeOnSelect={false}  >
+      <MenuButton as={Button} minWidth='320px' variant="outline" rightIcon={<ChevronDownIcon/>} zIndex="popover" >
         {selected? selected.graph.getAttribute('name'): "BC Network"}
       </MenuButton>
-      <MenuList >
-        <MenuOptionGroup type='radio' onChange={handleChange} >
-          {networks.map((network, index)=>(
+      <MenuList zIndex="popover" >
+        <MenuOptionGroup type="radio" value={selected?.key}>
+          {networks.map((network)=>(
             <MenuItemOption 
               key={network.key} 
-              value={index.toString()} 
+              value={network.key}
               as={Button}
+              onClick={()=>handleNetwork(network.key)}
             >
               {network.graph.getAttribute('name')}
             </MenuItemOption>

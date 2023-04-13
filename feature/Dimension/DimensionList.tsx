@@ -30,13 +30,6 @@ export default function DimensionList() {
       align='center' 
       minWidth='240px' 
       justify='space-between' 
-      position='absolute' 
-      top='56px' 
-      zIndex='overlay' 
-      borderWidth='1px' 
-      borderRadius='md' 
-      py='8px'
-      hidden={!network}
     >
       {dimensions.map((dimension)=>(
         <DimensionViewer key={dimension.key} dimension={dimension} />

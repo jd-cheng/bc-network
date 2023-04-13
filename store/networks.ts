@@ -9,6 +9,12 @@ export enum NetworkType {
   TWISTED = 'twisted',
 }
 
+export const networkTypes = [
+  NetworkType.HYPER,
+  NetworkType.CROSSED,
+  NetworkType.TWISTED
+]
+
 export interface INetwork {
   key: string
   graph: Graph
@@ -21,7 +27,7 @@ interface NetworkState {
   selected: INetwork | null
   addNetwork: (network: INetwork) =>void
   deleteNetwork: (index:number) => void
-  setSelected: (network: INetwork) => void
+  setSelected: (network: INetwork| null) => void
   closeNetwork: (network: string) => void
 }
 

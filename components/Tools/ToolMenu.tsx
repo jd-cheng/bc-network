@@ -1,7 +1,13 @@
-import NetworkBuilder from '@/feature/NetworkBuilder'
 import { useToolStore } from '@/store/tools'
-import {  ChevronDownIcon, ChevronLeftIcon,  } from '@chakra-ui/icons'
-import { Menu, MenuButton, IconButton, MenuList, MenuItem, Button, Box, MenuItemOption, MenuOptionGroup, Flex } from '@chakra-ui/react'
+import { ChevronDownIcon } from '@chakra-ui/icons'
+import { 
+  Menu, 
+  MenuButton, 
+  MenuList,
+  Button, 
+  Box, 
+  MenuItemOption, 
+  MenuOptionGroup } from '@chakra-ui/react'
 import React from 'react'
 import ToolPanel from './ToolPanel'
 
@@ -9,13 +15,9 @@ export default function ToolMenu() {
 
   const [tools,selected, setSelected] = useToolStore((state)=>[state.tools, state.selected,state.setSelected])
 
-  const handleTool = (newTool:string | string[])=>{
+  const handleTool = (nextTool:string)=>{
     console.log('select tool')
-    if(newTool instanceof Array){
-      console.log('invalid value')
-      return
-    }
-    setSelected(newTool)
+    setSelected(nextTool === selected? null: nextTool)
   }
 
   return (
@@ -25,23 +27,31 @@ export default function ToolMenu() {
       right='16px' 
       zIndex='popover'
     >
-      <Menu matchWidth isLazy closeOnSelect={false} placement="left-start">
-        <MenuButton as={Button} minWidth='240px' variant='outline' leftIcon={<ChevronLeftIcon/>}       
-
+      <Menu matchWidth isLazy >
+        <MenuButton 
+          as={Button} 
+          minWidth='240px' 
+          variant='outline' 
+          leftIcon={<ChevronDownIcon/>}       
         >
           {selected? selected: "Select Tool"}
         </MenuButton>
-        <MenuList>
-          <MenuOptionGroup onChange={handleTool} type="radio">
+        <MenuList zIndex='popover'>
+          <MenuOptionGroup  type="radio" value={selected? selected: undefined}  >
             {tools.map((tool)=>(
-              <MenuItemOption as={Button} key={tool} value={tool} size='sm'> {tool} </MenuItemOption>
+              <MenuItemOption 
+                as={Button} 
+                key={tool}
+                value={tool} 
+                onClick={()=>handleTool(tool)}
+              > 
+                {tool} 
+              </MenuItemOption>
             ))}
           </MenuOptionGroup>
         </MenuList>
       </Menu>
       <ToolPanel/>
     </Box>
-
-
   )
 }

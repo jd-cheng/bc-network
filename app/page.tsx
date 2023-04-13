@@ -8,7 +8,6 @@ import NetworkMenu from '@/components/NetworkMenu'
 import { Box } from '@chakra-ui/react'
 import NetworkList from '@/components/NetworkList'
 import ToolMenu from '@/components/Tools/ToolMenu'
-import Dimension from '@/feature/Dimension/Dimension'
 import ToolPanel from '@/components/Tools/ToolPanel'
 
 
