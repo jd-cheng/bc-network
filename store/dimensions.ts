@@ -2,28 +2,30 @@ import produce from "immer";
 import { create } from "zustand";
 
 export interface IDimension {
-  dimension: number
+  key: number
   color: string
-  isRendered: boolean
+  isRender: boolean
 }
 
 
 interface DimensionState {
   dimensions: IDimension[],
   setDimensions: (dimensions: IDimension[]) => void
-  updateDimensionColor: (dimension: IDimension, color: string)=> void
+  setColor: (dimension: IDimension, color: string)=> void
+  setIsRender: (dimension: IDimension, isRender:boolean)=>void
+
 }
 
 const initialState = [
   {
-    dimension: 1,
+    key: 1,
     color: "#b32aa9",
-    isRendered: false
+    isRender: false
   },
   {
-    dimension:2,
+    key:2,
     color: "#42f595",
-    isRendered: false
+    isRender: false
   }
 ]
 
@@ -34,7 +36,12 @@ export const useDimensionStore = create<DimensionState>((set)=>({
   setDimensions: (dimensions)=>set(produce((state)=>{
     state.dimensions = dimensions
   })),
-  updateDimensionColor:(dimension, color)=>set((produce((state)=>{
-    state.dimensions[dimension.dimension-1].color = color
-  })))
+  setColor:(dimension, color)=>set((produce((state)=>{
+    const { key } = dimension
+    state.dimensions[key-1].color = color
+  }))),
+  setIsRender: (dimension, isRender) =>set(produce((state)=>{
+    const { key } = dimension
+    state.dimensions[key-1].isRender = isRender
+  }))
 }))

@@ -35,28 +35,13 @@ export const resetNetwork = (network:INetwork)=>{
 
 }
 
-export const renderDimension = (network:INetwork, dimension: IDimension, node?: string) => {
+export const renderDimension = (network:INetwork, dimension: IDimension, nextColor:string | null, node?: string) => {
   console.log('render dimension')
   const { graph } = network 
-  const { dimension: d, color } = dimension
+  const { key } = dimension
 
-
-  const edges = getEdgeByDimension(network, d, node)
+  const edges = getEdgeByDimension(network, key, node)
   for(const edge of edges){
-    graph.updateEdgeAttribute(edge, 'color' ,oldVal=>color)
-  }
-  
-}
-
-
-export const clearDimension  = (network: INetwork, dimension: IDimension, node?:string) => {
-  const { graph } = network 
-  const { dimension: d, color } = dimension
-
-
-  const edges = getEdgeByDimension(network, d, node)
-  for(const edge of edges){
-    graph.updateNodeAttribute(edge, 'color' ,oldVal=>'')
-  }
-
+    graph.updateEdgeAttribute(edge, 'color' ,oldVal=>nextColor)
+  }  
 }
