@@ -9,8 +9,6 @@ interface IProp{
 }
 
 export default function ColorPicker({color, setColor}: IProp) {
-  console.log('render color picker')
-
 
   return (
     <PopoverContent w='auto'>

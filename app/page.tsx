@@ -1,10 +1,10 @@
 "use client"
 
 import Network from '@/components/Network'
-import NetworkMenu from '@/components/NetworkMenu'
 import { Box } from '@chakra-ui/react'
-import NetworkList from '@/components/NetworkList'
 import ToolMenu from '@/components/Tools/ToolMenu'
+import NetworkMenu from '@/feature/Network/NetworkMenu'
+import NetworkList from '@/feature/Network/NetworkList'
 
 
 export default function Home() {

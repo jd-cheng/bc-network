@@ -14,7 +14,7 @@ import {
   Stack} from '@chakra-ui/react';
 
 import React from 'react'
-import FileInput from './FileInput';
+import FileInput from '../../feature/Network/FileInput';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSidebarState } from '@/store/sidebar';
 

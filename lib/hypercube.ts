@@ -40,7 +40,6 @@ export const defaultHypercubeNodePosionDimension4 = [
 
 
 export const buildHypercube= (graph:Graph, dimension: number, start?:string)=>{
-  console.log()
   const labels = Array.from({length: Math.pow(2,dimension)}, (value, key)=>{
     let label:string = key.toString(2)
     return '0'.repeat(dimension-label.length)+ label
@@ -76,7 +75,6 @@ export const buildHypercube= (graph:Graph, dimension: number, start?:string)=>{
 }
 
 
-
 export const generateNeighborLabel = (label: string, dimension: number) =>{
   if(dimension<1 || dimension>label.length){
     return ''
@@ -99,10 +97,12 @@ export const getEdgeByDimension = (graph:Graph, dimension:number , node?:string)
     const [nodeX, nodeY] = graph.extremities(edge)
     const labelX = graph.getNodeAttribute(nodeX, 'label')
     const labelY = graph.getNodeAttribute(nodeY, 'label')
-    console.log((parseInt(labelX,2) ^ parseInt(labelY,2)))
     
     return Math.log2(parseInt(labelX,2) ^ parseInt(labelY,2))+1 === dimension
   })
 
 }
 
+export const isEdgeByDimension = (labelX:string, labelY:string, dimension:number)=>{
+  return Math.log2(parseInt(labelX,2) ^ parseInt(labelY,2))+1 === dimension
+}

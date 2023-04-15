@@ -35,14 +35,18 @@ export default function NetworkBuilder() {
   useEffect(()=>{
     if(!network || !node) { return }
 
-    selected && buildNetwork(network, selected, dimension, node.key)
-  }, [node])
+    tool === ToolType.BC && selected && buildNetwork(network, selected, dimension, node.key)
+
+    return ()=>{
+      console.log('unmount network builder')
+    }
+  }, [node, tool])
 
   
   return (
 
     <Menu>
-      <MenuButton as={Button}  leftIcon={<ChevronDownIcon/>} minWidth='240px' hidden={tool !== ToolType.BC}>
+      <MenuButton as={Button}  leftIcon={<ChevronDownIcon/>} minWidth='240px' hidden={tool !== ToolType.BC || !network}>
         {selected? selected: 'Select Type' }
       </MenuButton>
       <MenuList >

@@ -4,6 +4,7 @@ import {
   useDimensionStore } from '@/store/dimensions'
 import { useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
+import { ToolType, useToolStore } from '@/store/tools'
 import { 
   ViewIcon, 
   ViewOffIcon } from '@chakra-ui/icons'
@@ -28,6 +29,7 @@ export default function DimensionViewer({dimension}: IProp) {
 
   const network = useNetworkStore((state)=>state.selected)
   const node = useNodeStore((state)=>state.selected)
+  const tool = useToolStore((state)=>state.selected)
 
   const { key, color, isRender } = dimension
   const [setIsRender,setColor] = useDimensionStore((state)=>[state.setIsRender, state.setColor])
@@ -51,16 +53,17 @@ export default function DimensionViewer({dimension}: IProp) {
 
   useEffect(()=>{
     if(!network) { return }
+    console.log('render dimension viewer')
 
     renderDimension(network, dimension, null)
-    isRender && renderDimension(network, dimension, color, node?.key)
+    tool === ToolType.DIMENSION && isRender && renderDimension(network, dimension, color, node?.key)
 
     return ()=>{
       console.log('unmount dimension viewer')
       renderDimension(network, dimension, null)
     }
 
-  }, [node])
+  }, [node, tool])
 
 
   return (

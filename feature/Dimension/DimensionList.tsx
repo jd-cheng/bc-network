@@ -1,3 +1,4 @@
+import { renderDimension } from '@/lib/sigma'
 import { useDimensionStore } from '@/store/dimensions'
 import { useNetworkStore } from '@/store/networks'
 import { ToolType, useToolStore } from '@/store/tools'
@@ -8,15 +9,14 @@ import DimensionViewer from './DimensionViewer'
 
 
 export default function DimensionList() {
-  console.log('render dimension list')
   const network = useNetworkStore((state)=>state.selected)
-  const tool = useToolStore((state)=>state.selected) 
+  const [tool, setTool] = useToolStore((state)=>[state.selected, state.setSelected]) 
   const [dimensions, setDimensions] = useDimensionStore((state)=>[state.dimensions, state.setDimensions])
 
 
   useEffect(()=>{
     if(!network) {return}
-
+    console.log('render dimension list')
     const dimension = network.graph.getAttribute('dimension')
     const newDimensions = Array.from({length: dimension}, (value, index)=>{
       return {key: index+1, color: randomHexColor(), isRender: false}
@@ -24,7 +24,11 @@ export default function DimensionList() {
 
     setDimensions(newDimensions)
 
-  }, [network])
+    return ()=>{
+      console.log('unmount dimension viewer')
+    }
+
+  }, [network, tool])
   
   
   return (
