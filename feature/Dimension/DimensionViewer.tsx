@@ -1,10 +1,8 @@
 import { renderDimension } from '@/lib/sigma'
-import { 
-  IDimension, 
-  useDimensionStore } from '@/store/dimensions'
 import { useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
 import { ToolType, useToolStore } from '@/store/tools'
+import { randomHexColor } from '@/utils/color'
 import { 
   ViewIcon, 
   ViewOffIcon } from '@chakra-ui/icons'
@@ -16,47 +14,56 @@ import {
   Popover, 
   PopoverTrigger, 
   PopoverAnchor } from '@chakra-ui/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import ColorPicker from './ColorPicker'
 
 interface IProp {
-  dimension: IDimension
+  dimension: number
 }
 
 
-export default function DimensionViewer({dimension}: IProp) {
+export default function DimensionViewer({dimension}:IProp) {
   console.log('render dimension viewer', dimension)
 
   const network = useNetworkStore((state)=>state.selected)
   const node = useNodeStore((state)=>state.selected)
   const tool = useToolStore((state)=>state.selected)
+  const [isRendered, setIsRendered] = useState(false)
+  const [color, setColor] = useState(randomHexColor)
 
-  const { key, color, isRender } = dimension
-  const [setIsRender,setColor] = useDimensionStore((state)=>[state.setIsRender, state.setColor])
+  // const { key, color, isRender } = dimension
+  // const [setIsRender,setColor] = useDimensionStore((state)=>[state.setIsRender, state.setColor])
 
   const handleColor = (nextColor:string) =>{
     console.log('handle color')
-    if(!network || !isRender) {return}
+    if(!network || !isRendered) {return}
     
     renderDimension(network, dimension, nextColor, node?.key)
-    setColor(dimension, nextColor)
+    setColor(nextColor)
   }
 
-  const handleIsRender = ()=>{
-    console.log('handle isRender')
+  const handleIsRendered = ()=>{
+    console.log('handle isRendered')
     if(!network) {return}
 
-    const nextIsRender = !isRender
+    const nextIsRender = !isRendered
     renderDimension(network, dimension, nextIsRender?color : null, node?.key)
-    setIsRender(dimension, nextIsRender)
+    setIsRendered(nextIsRender)
   }
+
+  useEffect(()=>{
+    // init
+    if(!network) { return }
+    setIsRendered(false)
+    setColor(randomHexColor())
+  }, [network])
 
   useEffect(()=>{
     if(!network) { return }
     console.log('render dimension viewer')
 
     renderDimension(network, dimension, null)
-    tool === ToolType.DIMENSION && isRender && renderDimension(network, dimension, color, node?.key)
+    tool === ToolType.DIMENSION && isRendered && renderDimension(network, dimension, color, node?.key)
 
     return ()=>{
       console.log('unmount dimension viewer')
@@ -76,8 +83,8 @@ export default function DimensionViewer({dimension}: IProp) {
           <PopoverTrigger>
             <Box as="button" bg={color} w="32px" h="32px"  />
           </PopoverTrigger>
-          <Text>{key}-dimension</Text>
-          <IconButton aria-label='' icon={isRender?<ViewIcon/>: <ViewOffIcon/>} onClick={handleIsRender}/>
+          <Text>{dimension}-dimension</Text>
+          <IconButton aria-label='' icon={isRendered?<ViewIcon/>: <ViewOffIcon/>} onClick={handleIsRendered}/>
         </Stack>
       </PopoverAnchor>
 

@@ -1,25 +1,21 @@
-import { renderDimension } from '@/lib/sigma'
-import { useDimensionStore } from '@/store/dimensions'
 import { useNetworkStore } from '@/store/networks'
 import { ToolType, useToolStore } from '@/store/tools'
-import { randomHexColor } from '@/utils/color'
 import { Stack } from '@chakra-ui/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import DimensionViewer from './DimensionViewer'
 
 
 export default function DimensionList() {
   const network = useNetworkStore((state)=>state.selected)
-  const [tool, setTool] = useToolStore((state)=>[state.selected, state.setSelected]) 
-  const [dimensions, setDimensions] = useDimensionStore((state)=>[state.dimensions, state.setDimensions])
-
+  const tool = useToolStore((state)=>state.selected) 
+  const [dimensions, setDimensions] = useState<number[]>([])
 
   useEffect(()=>{
     if(!network) {return}
     console.log('render dimension list')
     const dimension = network.graph.getAttribute('dimension')
     const newDimensions = Array.from({length: dimension}, (value, index)=>{
-      return {key: index+1, color: randomHexColor(), isRender: false}
+      return index+1
     })
 
     setDimensions(newDimensions)
@@ -28,7 +24,7 @@ export default function DimensionList() {
       console.log('unmount dimension viewer')
     }
 
-  }, [network, tool])
+  }, [network])
   
   
   return (
@@ -40,7 +36,7 @@ export default function DimensionList() {
       hidden={tool !== ToolType.DIMENSION || !network}
     >
       {dimensions.map((dimension)=>(
-        <DimensionViewer key={dimension.key} dimension={dimension} />
+        <DimensionViewer key={dimension} dimension={dimension} />
       ))}
     </Stack>
   )

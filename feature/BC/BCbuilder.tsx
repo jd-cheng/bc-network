@@ -17,7 +17,7 @@ import {
   MenuOptionGroup } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 
-export default function NetworkBuilder() {
+export default function BCuilder() {
   
 
   const network = useNetworkStore((state)=>state.selected)

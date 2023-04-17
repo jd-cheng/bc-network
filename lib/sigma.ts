@@ -1,4 +1,3 @@
-import { IDimension } from "@/store/dimensions";
 import { INetwork } from "@/store/networks";
 import { INode } from "@/store/nodes";
 import Sigma from "sigma";
@@ -35,13 +34,12 @@ export const resetNetwork = (network:INetwork)=>{
 
 }
 
-export const renderDimension = (network:INetwork, dimension: IDimension, nextColor:string | null, node?: string) => {
+export const renderDimension = (network:INetwork, dimension: number, color:string | null, node?: string) => {
   console.log('render dimension')
   const { graph } = network 
-  const { key } = dimension
 
-  const edges = getEdgeByDimension(network, key, node)
+  const edges = getEdgeByDimension(network, dimension, node)
   for(const edge of edges){
-    graph.updateEdgeAttribute(edge, 'color' ,oldVal=>nextColor)
+    graph.updateEdgeAttribute(edge, 'color' ,oldVal=>color)
   }  
 }

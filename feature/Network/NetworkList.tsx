@@ -29,10 +29,10 @@ export default function NetworkList() {
     zIndex='popover'
   >
     <Menu matchWidth isLazy closeOnSelect={false}  >
-      <MenuButton as={Button} minWidth='320px' variant="outline" rightIcon={<ChevronDownIcon/>} zIndex="overlay" >
+      <MenuButton as={Button} minWidth='320px' variant="outline" rightIcon={<ChevronDownIcon/>} zIndex="popover" >
         {selected? selected.graph.getAttribute('name'): "BC Network"}
       </MenuButton>
-      <MenuList zIndex="overlay" >
+      <MenuList  >
         <MenuOptionGroup type="radio" value={selected?.key}>
           {networks.map((network)=>(
             <MenuItemOption 

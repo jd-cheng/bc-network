@@ -1,5 +1,5 @@
+import BCuilder from '@/feature/BC/BCbuilder'
 import DimensionList from '@/feature/Dimension/DimensionList'
-import NetworkBuilder from '@/feature/NetworkBuilder'
 import { ToolType, useToolStore } from '@/store/tools'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { 
@@ -55,7 +55,7 @@ export default function ToolMenu() {
       </Menu>
       <Box position='absolute' top='56px' zIndex='overlay' borderWidth='1px' borderRadius='md' hidden={!selected || selected === ToolType.IST}>
         <DimensionList/>
-        <NetworkBuilder/>
+        <BCuilder/>
       </Box>
     </Box>
   )
