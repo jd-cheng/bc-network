@@ -39,7 +39,5 @@ export const renderDimension = (network:INetwork, dimension: number, color:strin
   const { graph } = network 
 
   const edges = getEdgeByDimension(network, dimension, node)
-  for(const edge of edges){
-    graph.updateEdgeAttribute(edge, 'color' ,oldVal=>color)
-  }  
+  edges.forEach((edge)=>{graph.updateEdgeAttribute(edge, 'color' ,oldVal=>color)})
 }

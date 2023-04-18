@@ -20,7 +20,7 @@ import React, { useEffect } from 'react'
 export default function BCuilder() {
   
 
-  const network = useNetworkStore((state)=>state.selected)
+  const [network,setNetwork] = useNetworkStore((state)=>[state.selected, state.setSelected])
   const node = useNodeStore((state)=>state.selected)
   const tool = useToolStore((state)=>state.selected)
   const [builders, selected, setSelected] = useNetworkBuilderStore((state)=>[state.builders, state.selected, state.setSelected])
@@ -30,12 +30,18 @@ export default function BCuilder() {
     console.log('build network', nextBuilder)
     setSelected(selected === nextBuilder? null: nextBuilder)
 
+    
+
   }
 
   useEffect(()=>{
     if(!network || !node) { return }
 
-    tool === ToolType.BC && selected && buildNetwork(network, selected, dimension, node.key)
+   if(tool === ToolType.BC && selected){
+    buildNetwork(network, selected, dimension, node.key)
+    setNetwork({...network})
+
+   } 
 
     return ()=>{
       console.log('unmount network builder')

@@ -1,13 +1,16 @@
-import { hypercube, raw } from "@/lib/graph";
 import Graph from "graphology";
 import produce from "immer";
 import { create } from "zustand";
+import hyper_data from '@/data/hyper_data.json'
+import raw_data from '@/data/raw_data.json'
+import crossed_data from '@/data/crossed_data.json'
 
 export enum NetworkType {
   HYPER = 'hyper',
   CROSSED = 'crossed',
   TWISTED = 'twisted',
 }
+
 
 export interface INetwork {
   key: string
@@ -25,10 +28,21 @@ interface NetworkState {
   closeNetwork: (network: string) => void
 }
 
+export const hypercube = new Graph()
+export const raw = new Graph()
+export const crossedcube = new Graph()
+hypercube.import(hyper_data)
+raw.import(raw_data)
+crossedcube.import(crossed_data)
+
 const initialState = [
   {
     key: 'hyper',
     graph: hypercube
+  },
+  {
+    key: 'crossed',
+    graph: crossedcube
   },
   {
     key: 'raw',

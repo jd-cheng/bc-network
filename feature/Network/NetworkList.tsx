@@ -26,7 +26,7 @@ export default function NetworkList() {
     top='16px'
     left="50%"
     transform= 'translateX(-50%)'
-    zIndex='popover'
+    zIndex='overlay'
   >
     <Menu matchWidth isLazy closeOnSelect={false}  >
       <MenuButton as={Button} minWidth='320px' variant="outline" rightIcon={<ChevronDownIcon/>} zIndex="popover" >

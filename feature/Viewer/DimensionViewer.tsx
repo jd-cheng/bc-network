@@ -1,7 +1,6 @@
 import { renderDimension } from '@/lib/sigma'
 import { useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
-import { ToolType, useToolStore } from '@/store/tools'
 import { randomHexColor } from '@/utils/color'
 import { 
   ViewIcon, 
@@ -17,22 +16,18 @@ import {
 import React, { useEffect, useState } from 'react'
 import ColorPicker from './ColorPicker'
 
+
 interface IProp {
   dimension: number
 }
 
 
 export default function DimensionViewer({dimension}:IProp) {
-  console.log('render dimension viewer', dimension)
 
   const network = useNetworkStore((state)=>state.selected)
   const node = useNodeStore((state)=>state.selected)
-  const tool = useToolStore((state)=>state.selected)
   const [isRendered, setIsRendered] = useState(false)
   const [color, setColor] = useState(randomHexColor)
-
-  // const { key, color, isRender } = dimension
-  // const [setIsRender,setColor] = useDimensionStore((state)=>[state.setIsRender, state.setColor])
 
   const handleColor = (nextColor:string) =>{
     console.log('handle color')
@@ -52,25 +47,27 @@ export default function DimensionViewer({dimension}:IProp) {
   }
 
   useEffect(()=>{
-    // init
-    if(!network) { return }
     setIsRendered(false)
     setColor(randomHexColor())
+
+    return ()=>{
+      network && renderDimension(network, dimension, null)
+    }
+    
   }, [network])
 
   useEffect(()=>{
     if(!network) { return }
-    console.log('render dimension viewer')
+    console.log('render dimension viewer', node)
 
-    renderDimension(network, dimension, null)
-    tool === ToolType.DIMENSION && isRendered && renderDimension(network, dimension, color, node?.key)
+    isRendered && renderDimension(network, dimension, color, node?.key)
 
     return ()=>{
       console.log('unmount dimension viewer')
       renderDimension(network, dimension, null)
     }
 
-  }, [node, tool])
+  }, [node])
 
 
   return (

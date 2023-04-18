@@ -1,4 +1,3 @@
-import BCuilder from '@/feature/BC/BCbuilder'
 import DimensionList from '@/feature/Dimension/DimensionList'
 import { ToolType, useToolStore } from '@/store/tools'
 import { ChevronDownIcon } from '@chakra-ui/icons'
@@ -9,8 +8,10 @@ import {
   Button, 
   Box, 
   MenuItemOption, 
-  MenuOptionGroup } from '@chakra-ui/react'
+  MenuOptionGroup, 
+  IconButton} from '@chakra-ui/react'
 import React from 'react'
+import BCuilder from './BCbuilder'
 
 
 export default function ToolMenu() {
@@ -31,13 +32,10 @@ export default function ToolMenu() {
     >
       <Menu matchWidth isLazy >
         <MenuButton 
-          as={Button} 
-          minWidth='240px' 
+          as={IconButton} 
           variant='outline' 
-          leftIcon={<ChevronDownIcon/>}       
-        >
-          {selected? selected: "Select Tool"}
-        </MenuButton>
+          icon={<ChevronDownIcon/>}       
+        />
         <MenuList zIndex='popover'>
           <MenuOptionGroup  type="radio" value={selected? selected: undefined}  >
             {tools.map((tool)=>(
@@ -55,7 +53,7 @@ export default function ToolMenu() {
       </Menu>
       <Box position='absolute' top='56px' zIndex='overlay' borderWidth='1px' borderRadius='md' hidden={!selected || selected === ToolType.IST}>
         <DimensionList/>
-        <BCuilder/>
+        <Attribu
       </Box>
     </Box>
   )

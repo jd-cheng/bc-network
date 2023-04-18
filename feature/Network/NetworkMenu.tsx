@@ -1,10 +1,10 @@
 import { HamburgerIcon, AddIcon, EditIcon, DownloadIcon, SettingsIcon } from '@chakra-ui/icons'
 import { Menu, MenuButton, IconButton, MenuList, MenuItem, Box, Button } from '@chakra-ui/react'
 import React, { useRef, useState } from 'react'
-import NetworkImport from './NetworkImport'
+import AddNetwork from './AddNetwork'
 
 export enum NetworkMenuType {
-  IMPORT='import',
+  ADD='add',
   EXPORT='export',
   SETTING='setting'
 }
@@ -28,7 +28,7 @@ export default function NetworkMenu() {
 
 
   return (
-    <Box position='fixed' top='16px' left='16px' zIndex='popover'>
+    <Box position='fixed' top='16px' left='16px' zIndex='overlay'>
       <Menu >
         <MenuButton
           as={IconButton}
@@ -37,8 +37,8 @@ export default function NetworkMenu() {
           variant='outline'
         />
         <MenuList>
-          <MenuItem as={Button} icon={<AddIcon />} onClick={()=>setType(NetworkMenuType.IMPORT)}>
-            Import Network
+          <MenuItem as={Button} icon={<AddIcon />} onClick={()=>setType(NetworkMenuType.ADD)}>
+            Add Network
           </MenuItem>
           <MenuItem as={Button} icon={<DownloadIcon/>} >
             Export Network
@@ -48,7 +48,7 @@ export default function NetworkMenu() {
           </MenuItem>
         </MenuList>
       </Menu>
-      <NetworkImport type={type} onClose={onClose}/>
+      <AddNetwork type={type} onClose={onClose}/>
     </Box>
   )
 }

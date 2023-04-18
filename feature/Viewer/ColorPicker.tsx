@@ -1,6 +1,5 @@
-import { useDimensionStore } from '@/store/dimensions'
 import { PopoverContent, PopoverArrow, PopoverBody, PopoverFooter, Button } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { HexColorPicker } from 'react-colorful'
 
 interface IProp{

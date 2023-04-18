@@ -1,7 +1,5 @@
-import hyper_data from '@/data/hyper_data.json'
-import raw_data from '@/data/raw_data.json'
-
 import Graph from 'graphology';
+import { Attributes } from 'graphology-types';
 
 export interface NodeAttributes {
   x?: number;
@@ -22,8 +20,8 @@ export interface EdgeAttributes  {
 } 
 export interface GraphAttributes {
   name: string;
-  type?: string;
-  dimension?: number
+  type: string;
+  dimension: number
 }
 
 
@@ -65,7 +63,3 @@ export interface Edge {
 
 
 
-export const hypercube = new Graph()
-export const raw = new Graph()
-hypercube.import(hyper_data)
-raw.import(raw_data)
