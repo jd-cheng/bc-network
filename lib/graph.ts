@@ -39,27 +39,5 @@ export interface Edge {
 }
 
 
-// export const updateNetworkAttributes = (networkKey: string, attributes: NetworkAttributes) =>{
-//   graph.updateAttribute('networks', oldVal=>{
-//     if(!oldVal) { console.log('network does not exist', networkKey);return [] }
-
-//     const networks = oldVal
-//     networks.forEach((network)=>{
-//       if(network.key !== networkKey) { return }
-
-//       network.attributes = attributes
-//     })
-
-//     return networks
-//   })
-// }
-
-// export const getNetworkAttributes = (networkKey:string)=>{
-//   return graph.getAttribute('networks').find((network)=>{
-//     return network.key === networkKey
-//   })
-
-// }
-
 
 

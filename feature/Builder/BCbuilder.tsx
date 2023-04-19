@@ -4,9 +4,9 @@ import {
   NetworkType, 
   useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
-import { 
-  ToolType, 
-  useToolStore } from '@/store/tools'
+// import { 
+//   ToolType, 
+//   useToolStore } from '@/store/tools'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { 
   Button,  
@@ -22,7 +22,7 @@ export default function BCuilder() {
 
   const [network,setNetwork] = useNetworkStore((state)=>[state.selected, state.setSelected])
   const node = useNodeStore((state)=>state.selected)
-  const tool = useToolStore((state)=>state.selected)
+  // const tool = useToolStore((state)=>state.selected)
   const [builders, selected, setSelected] = useNetworkBuilderStore((state)=>[state.builders, state.selected, state.setSelected])
   const dimension = 4
 
@@ -34,25 +34,25 @@ export default function BCuilder() {
 
   }
 
-  useEffect(()=>{
-    if(!network || !node) { return }
+  // useEffect(()=>{
+  //   if(!network || !node) { return }
 
-   if(tool === ToolType.BC && selected){
-    buildNetwork(network, selected, dimension, node.key)
-    setNetwork({...network})
+  //  if(tool === ToolType.BC && selected){
+  //   buildNetwork(network, selected, dimension, node.key)
+  //   setNetwork({...network})
 
-   } 
+  //  } 
 
-    return ()=>{
-      console.log('unmount network builder')
-    }
-  }, [node, tool])
+  //   return ()=>{
+  //     console.log('unmount network builder')
+  //   }
+  // }, [node, tool])
 
   
   return (
 
     <Menu>
-      <MenuButton as={Button}  leftIcon={<ChevronDownIcon/>} minWidth='240px' hidden={tool !== ToolType.BC || !network}>
+      <MenuButton as={Button}  leftIcon={<ChevronDownIcon/>} minWidth='240px' hidden={!network}>
         {selected? selected: 'Select Type' }
       </MenuButton>
       <MenuList >

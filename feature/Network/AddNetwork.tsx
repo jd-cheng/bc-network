@@ -1,5 +1,5 @@
 import { GraphAttributes } from '@/lib/graph';
-import { NetworkType } from '@/store/networks';
+import { NetworkType, useNetworkStore } from '@/store/networks';
 import { 
   Modal, 
   ModalOverlay, 
@@ -12,7 +12,9 @@ import {
   FormLabel,
   Input,
   Select,
-  Divider} from '@chakra-ui/react'
+  Divider,
+  useToast} from '@chakra-ui/react'
+import Graph from 'graphology';
 import React, { 
   useEffect, 
   useState } from 'react'
@@ -44,8 +46,9 @@ const networkTypes = [
 export default function AddNetwork({type, onClose}:IProp) {
 
   const { register, setValue, setError , handleSubmit } = useForm<GraphAttributes>();
-  const [file, setFile] = useState<File>() 
+  const [addNetwork, setNetwork] = useNetworkStore((state)=>[state.addNetwork,state.setSelected])
   const [graphData, setGraphData] = useState<any>()
+  const toast = useToast()
 
   useEffect(()=>{
 
@@ -69,17 +72,36 @@ export default function AddNetwork({type, onClose}:IProp) {
     }
   }, [graphData])
 
+  const showToast = ()=>{
+    toast({
+      description: 'network successfully added',
+      position: 'top',
+      status: 'success',
+      isClosable: true,
+    })
+  }
+
   const onSubmit: SubmitHandler<GraphAttributes> = (data)=>{
     console.log('submit network')
     console.log(data)
-    const { name, type, dimension } = data
+    console.log(graphData)
+    const graph = new Graph()
+    const network = {key: crypto.randomUUID(), graph}
+
+    if(graphData){
+      graph.import(graphData)
+      addNetwork(network)
+    } else {
+      const { name, type, dimension } = data
+    }
+
+    showToast()
+    onClose()
+    setNetwork(network)
 
   }
 
   const handleAdd = ()=>{
-    if(file){
-
-    }
   }
 
 

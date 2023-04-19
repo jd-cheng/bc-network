@@ -4,14 +4,10 @@ import Network from '@/components/Network'
 import { Box } from '@chakra-ui/react'
 import NetworkMenu from '@/feature/Network/NetworkMenu'
 import NetworkList from '@/feature/Network/NetworkList'
-import ToolMenu from '@/feature/Tools/ToolMenu'
 import Viewer from '@/feature/Viewer/Viewer'
 
 
 export default function Home() {
-
-
-
   return (
     <>
       <header>
@@ -22,9 +18,7 @@ export default function Home() {
       </header>
       <Box as="main" position='relative' flex='1 1 auto'>
         <Network/>
-        {/* <Toolbar/> */}
       </Box>
-
     </>
 
   )
