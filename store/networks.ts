@@ -11,6 +11,11 @@ export enum NetworkType {
   TWISTED = 'twisted',
 }
 
+export const networkTypes = [
+  {text: 'Hypercube', value: NetworkType.HYPER},
+  {text: 'Crossed Cube', value: NetworkType.CROSSED},
+  {text: 'Twisted Cube', value: NetworkType.TWISTED},
+]
 
 export interface INetwork {
   key: string

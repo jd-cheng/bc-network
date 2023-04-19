@@ -1,5 +1,5 @@
 import { GraphAttributes } from '@/lib/graph';
-import { NetworkType, useNetworkStore } from '@/store/networks';
+import { NetworkType, networkTypes, useNetworkStore } from '@/store/networks';
 import { 
   Modal, 
   ModalOverlay, 
@@ -37,11 +37,7 @@ interface IProp {
   onClose: ()=>void
 }
 
-const networkTypes = [
-  {text: 'Hypercube', value: NetworkType.HYPER},
-  {text: 'Crossed Cube', value: NetworkType.CROSSED},
-  {text: 'Twisted Cube', value: NetworkType.TWISTED},
-]
+
 
 export default function AddNetwork({type, onClose}:IProp) {
 

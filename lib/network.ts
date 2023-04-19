@@ -32,14 +32,14 @@ export const getEdgeByDimension = (network:INetwork, dimension: number, node?:st
 }
 
 
-export const buildNetwork = (network:INetwork, type: string, dimension:number, start?:string) =>{
+export const buildNetwork = (network:INetwork, type: string, start?:string) =>{
 
   const { graph } = network 
+  const dimension = graph.getAttribute('dimension')
   
   graph.updateAttributes(attr=>({
     ...attr,
     type,
-    dimension,
   }))
 
   graph.clearEdges()
