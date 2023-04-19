@@ -1,5 +1,5 @@
 import { GraphAttributes } from '@/lib/graph';
-import { NetworkType, networkTypes, useNetworkStore } from '@/store/networks';
+import { graphs, NetworkType, networkTypes, useNetworkStore } from '@/store/networks';
 import { 
   Modal, 
   ModalOverlay, 
@@ -81,16 +81,13 @@ export default function AddNetwork({type, onClose}:IProp) {
     console.log('submit network')
     console.log(data)
     console.log(graphData)
+
+    const network = {key: crypto.randomUUID(), attributes:{...data}}
     const graph = new Graph()
-    const network = {key: crypto.randomUUID(), graph}
+    graph.import(graphData)
+    graphs.set(network.key, graph)
 
-    if(graphData){
-      graph.import(graphData)
-      addNetwork(network)
-    } else {
-      const { name, type, dimension } = data
-    }
-
+    addNetwork(network)
     showToast()
     onClose()
     setNetwork(network)

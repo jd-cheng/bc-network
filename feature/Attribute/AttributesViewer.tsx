@@ -1,9 +1,9 @@
-import { Flex, Heading, Stack, Text } from '@chakra-ui/react'
+import { Heading, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 
 interface IProp {
   name: string
-  value: string
+  value: string | number
 }
 
 export default function AttributesViewer({name, value}: IProp) {

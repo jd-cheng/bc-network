@@ -4,6 +4,7 @@ import { create } from "zustand";
 import hyper_data from '@/data/hyper_data.json'
 import raw_data from '@/data/raw_data.json'
 import crossed_data from '@/data/crossed_data.json'
+import { GraphAttributes, NetworkAttributes } from "@/lib/graph";
 
 export enum NetworkType {
   HYPER = 'hyper',
@@ -18,11 +19,9 @@ export const networkTypes = [
 ]
 
 export interface INetwork {
-  key: string
-  graph: Graph
-}
-
-
+  key: string,
+  attributes: NetworkAttributes
+} 
 
 interface NetworkState {
   networks: INetwork[]
@@ -33,27 +32,40 @@ interface NetworkState {
   closeNetwork: (network: string) => void
 }
 
-export const hypercube = new Graph()
-export const raw = new Graph()
-export const crossedcube = new Graph()
-hypercube.import(hyper_data)
-raw.import(raw_data)
-crossedcube.import(crossed_data)
-
+export const graphs = new Map<string, Graph>()
 const initialState = [
   {
-    key: 'hyper',
-    graph: hypercube
+    key: crypto.randomUUID(),
+    attributes:{
+      name: 'hypercube',
+      type: NetworkType.HYPER,
+      dimension: 4
+    }
   },
   {
-    key: 'crossed',
-    graph: crossedcube
-  },
-  {
-    key: 'raw',
-    graph: raw
+    key: crypto.randomUUID(),
+    attributes:{
+      name: 'crossed cube',
+      type: NetworkType.CROSSED,
+      dimension: 3
+    }
+
   }
 ] as INetwork[]
+
+const initialFunc = ()=>{
+  const hypercube = new Graph()
+  const raw = new Graph()
+  const crossedcube = new Graph()
+  hypercube.import(hyper_data)
+  raw.import(raw_data)
+  crossedcube.import(crossed_data)
+
+  graphs.set(initialState[0].key, hypercube)
+  graphs.set(initialState[1].key, crossedcube)
+}
+
+initialFunc()
 
 export const useNetworkStore = create<NetworkState>((set)=>({
   networks: initialState,

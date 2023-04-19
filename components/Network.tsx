@@ -1,7 +1,8 @@
 import { renderSetting } from '@/lib/sigma'
-import { useNetworkStore } from '@/store/networks'
+import { graphs, useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
 import { Box } from '@chakra-ui/react'
+import Graph from 'graphology'
 import React, { useEffect, useRef } from 'react'
 import Sigma from 'sigma'
 import { 
@@ -33,8 +34,9 @@ export default function Network() {
   useEffect(() => {
     if(!containerRef.current || !network) { return }
     console.log('render network')
-
-    const render = new Sigma(network.graph, containerRef.current)
+    
+    const graph = graphs.get(network.key) as Graph
+    const render = new Sigma(graph, containerRef.current)
     render.on("clickNode", clickNode);
     render.on("clickStage",clickStage);
   

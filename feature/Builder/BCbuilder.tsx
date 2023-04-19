@@ -11,7 +11,8 @@ import {
   MenuButton, 
   MenuItemOption, 
   MenuList, 
-  MenuOptionGroup } from '@chakra-ui/react'
+  MenuOptionGroup, 
+  Select} from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 
 export default function BCuilder() {
@@ -41,24 +42,10 @@ export default function BCuilder() {
 
   
   return (
-    <Menu>
-      <MenuButton as={Button}  leftIcon={<ChevronDownIcon/>} minWidth='240px' hidden={!network}>
-        {builderType? builderType: 'Select Type' }
-      </MenuButton>
-      <MenuList >
-        <MenuOptionGroup type="radio" value={builderType?builderType: undefined} >
-          {networkTypes.map((type)=>(
-            <MenuItemOption
-              as={Button} 
-              key={type.value}
-              value={type.value}
-              onClick={()=>handleBuilderType(type.value)}
-            >
-              {type.text}
-            </MenuItemOption>
-          ))}
-        </MenuOptionGroup>
-      </MenuList>
-    </Menu>
+    <Select variant="filled" placeholder='Select Type'>
+      {networkTypes.map((type)=>(
+        <option value={type.value}>{type.text}</option>
+      ))}
+    </Select>
   )
 }

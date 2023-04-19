@@ -1,6 +1,8 @@
 import { 
+  graphs,
   INetwork, 
   NetworkType } from "@/store/networks";
+import Graph from "graphology";
 import {
   generateNeighborLabel as generateCrossedNeighborLabel, 
   isEdgeByDimension as isCrossedEdgeByDimension } from "./crossedcube";
@@ -10,7 +12,7 @@ import {
 
 export const getEdgeByDimension = (network:INetwork, dimension: number, node?:string)=>{
   console.log('get edges by dimension')
-  const { graph } = network
+  const graph = graphs.get(network.key) as Graph
   const type = graph.getAttribute('type')
 
   return graph.filterEdges((edge)=>{
@@ -34,7 +36,7 @@ export const getEdgeByDimension = (network:INetwork, dimension: number, node?:st
 
 export const buildNetwork = (network:INetwork, type: string, start?:string) =>{
 
-  const { graph } = network 
+  const graph = graphs.get(network.key) as Graph
   const dimension = graph.getAttribute('dimension')
   
   graph.updateAttributes(attr=>({

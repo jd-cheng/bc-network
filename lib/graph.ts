@@ -1,6 +1,3 @@
-import Graph from 'graphology';
-import { Attributes } from 'graphology-types';
-
 export interface NodeAttributes {
   x?: number;
   y?: number;
@@ -24,7 +21,7 @@ export interface GraphAttributes {
   dimension: number
 }
 
-
+export interface NetworkAttributes extends GraphAttributes{}
 
 export interface Node {
   key: string
@@ -37,6 +34,9 @@ export interface Edge {
   target: string
   attributes?: EdgeAttributes
 }
+
+
+
 
 
 

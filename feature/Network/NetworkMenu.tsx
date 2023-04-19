@@ -1,7 +1,8 @@
 import { HamburgerIcon, AddIcon, EditIcon, DownloadIcon, SettingsIcon } from '@chakra-ui/icons'
-import { Menu, MenuButton, IconButton, MenuList, MenuItem, Box, Button } from '@chakra-ui/react'
+import { Menu, MenuButton, IconButton, MenuList, MenuItem, Box, Button, MenuGroup } from '@chakra-ui/react'
 import React, { useRef, useState } from 'react'
 import AddNetwork from './AddNetwork'
+import NetList from './NetworkList'
 
 export enum NetworkMenuType {
   ADD='add',
@@ -12,6 +13,7 @@ export enum NetworkMenuType {
 export default function NetworkMenu() {
 
   const [type, setType] = useState<NetworkMenuType | null>(null)
+
 
   const onClose = ()=>{
     setType(null)
@@ -37,15 +39,19 @@ export default function NetworkMenu() {
           variant='outline'
         />
         <MenuList>
-          <MenuItem as={Button} icon={<AddIcon />} onClick={()=>setType(NetworkMenuType.ADD)}>
-            Add Network
-          </MenuItem>
-          <MenuItem as={Button} icon={<DownloadIcon/>} >
-            Export Network
-          </MenuItem>
-          <MenuItem as={Button} icon={<SettingsIcon />} >
-            Settings 
-          </MenuItem>
+          <NetList/>
+          <MenuGroup title='Others'>
+            <MenuItem as={Button} icon={<AddIcon />} onClick={()=>setType(NetworkMenuType.ADD)}>
+              Add Network
+            </MenuItem>
+            <MenuItem as={Button} icon={<DownloadIcon/>} >
+              Export Network
+            </MenuItem>
+            <MenuItem as={Button} icon={<SettingsIcon />} >
+              Settings 
+            </MenuItem>
+          </MenuGroup>
+
         </MenuList>
       </Menu>
       <AddNetwork type={type} onClose={onClose}/>

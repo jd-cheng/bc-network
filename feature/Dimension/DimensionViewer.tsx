@@ -76,9 +76,9 @@ export default function DimensionViewer({dimension}:IProp) {
       isLazy
     >
       <PopoverAnchor>
-        <Stack direction='row' align='center'>
+        <Stack direction='row' align='center' >
           <PopoverTrigger>
-            <Box as="button" bg={color} w="32px" h="32px"  />
+            <Box as="button" bg={color} w="24px" h="24px"  />
           </PopoverTrigger>
           <Text>{dimension}-dimension</Text>
           <IconButton aria-label='' icon={isRendered?<ViewIcon/>: <ViewOffIcon/>} onClick={handleIsRendered}/>
