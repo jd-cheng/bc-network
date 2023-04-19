@@ -26,7 +26,7 @@ interface IProp {
 
 export default function ToolPanel() {
   return (
-    <Card minW='224px'>
+    <Card>
       <CardBody>
         <AttriubteList/>
       </CardBody>
