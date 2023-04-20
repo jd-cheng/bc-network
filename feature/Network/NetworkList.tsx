@@ -9,13 +9,13 @@ export default function NetList() {
   )
   
   return (
-    <MenuOptionGroup type="radio" value={selected?.key} title='Networks'>
+    <MenuOptionGroup type="radio" value={selected} title='Networks'>
       {networks.map((network)=>(
         <MenuItemOption 
           key={network.key} 
           value={network.key}
           as={Button}
-          onClick={()=>setSelected(network)}
+          onClick={()=>setSelected(network.key)}
         >
           {network.attributes.name}
         </MenuItemOption>

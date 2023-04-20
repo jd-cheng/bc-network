@@ -1,5 +1,5 @@
-import { GraphAttributes } from '@/lib/graph';
-import { graphs, NetworkType, networkTypes, useNetworkStore } from '@/store/networks';
+import { GraphAttributes, NetworkAttributes } from '@/lib/graph';
+import { graphs, networkTypes, useNetworkStore } from '@/store/networks';
 import { 
   Modal, 
   ModalOverlay, 
@@ -23,7 +23,7 @@ import {
   useForm } from 'react-hook-form';
 import FileInput from './FileInput';
 import { NetworkMenuType } from './NetworkMenu';
-
+import {v4 as uuidv4} from 'uuid';
 
 
 interface NetworkFormValues {
@@ -49,7 +49,7 @@ export default function AddNetwork({type, onClose}:IProp) {
   useEffect(()=>{
 
     if(!graphData) { return }
-    const attributes = graphData.attributes
+    const attributes = graphData.attributes as NetworkAttributes
       
     if('dimension' in attributes){
       setValue("dimension", attributes['dimension'])
@@ -80,17 +80,19 @@ export default function AddNetwork({type, onClose}:IProp) {
   const onSubmit: SubmitHandler<GraphAttributes> = (data)=>{
     console.log('submit network')
     console.log(data)
+
+
+
     console.log(graphData)
 
-    const network = {key: crypto.randomUUID(), attributes:{...data}}
+    const network = {key: uuidv4(), attributes:{...data}}
     const graph = new Graph()
     graph.import(graphData)
-    graphs.set(network.key, graph)
 
-    addNetwork(network)
+    addNetwork(network, graph)
     showToast()
     onClose()
-    setNetwork(network)
+    setNetwork(network.key)
 
   }
 

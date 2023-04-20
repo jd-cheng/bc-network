@@ -1,12 +1,7 @@
 import { graphs, INetwork } from "@/store/networks";
-import { INode } from "@/store/nodes";
 import Graph from "graphology";
-import Sigma from "sigma";
+import { Coordinates } from "sigma/types";
 import { getEdgeByDimension } from "./network";
-
-interface ISigma {
-  render: Sigma | null;
-}
 
 
 export const renderSetting = {
@@ -14,27 +9,18 @@ export const renderSetting = {
 }
 
 
-
-export const sigma: ISigma = {
-  render: null,
-} 
-
-
-export const renderSelectedNode = (network:INetwork, nextNode:INode | null, preNode:INode | null)=> {
+export const renderSelectedNode = (network:string, nextNode?: string, preNode?: string)=> {
   
   console.log('render selected node', nextNode, preNode)
-  const graph = graphs.get(network.key) as Graph
+  const graph = graphs.get(network) as Graph
 
   //clear previously seleced elements effect
-  preNode && graph.updateNodeAttribute(preNode.key, 'highlighted', oldVal=>false)
+  preNode && graph.removeNodeAttribute(preNode, 'highlighted')
   //render currently selected element
-  nextNode && graph.updateNodeAttribute(nextNode.key, 'highlighted', oldVal=>true)
+  nextNode && graph.setNodeAttribute(nextNode, 'highlighted', true)
 
 }
 
-export const resetNetwork = (network:INetwork)=>{
-
-}
 
 export const renderDimension = (network:INetwork, dimension: number, color:string | null, node?: string) => {
   console.log('render dimension')
@@ -42,4 +28,11 @@ export const renderDimension = (network:INetwork, dimension: number, color:strin
 
   const edges = getEdgeByDimension(network, dimension, node)
   edges.forEach((edge)=>{graph.updateEdgeAttribute(edge, 'color' ,oldVal=>color)})
+}
+
+
+export const renderDragNode = (network:string, node:string, coordinates:Coordinates ) =>{
+  const graph = graphs.get(network) as Graph
+  graph.setNodeAttribute(node, 'x',coordinates.x)
+  graph.setNodeAttribute(node, 'y', coordinates.y)
 }

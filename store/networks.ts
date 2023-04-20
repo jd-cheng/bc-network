@@ -4,7 +4,8 @@ import { create } from "zustand";
 import hyper_data from '@/data/hyper_data.json'
 import raw_data from '@/data/raw_data.json'
 import crossed_data from '@/data/crossed_data.json'
-import { GraphAttributes, NetworkAttributes } from "@/lib/graph";
+import { NetworkAttributes } from "@/lib/graph";
+import {v4 as uuidv4} from 'uuid';
 
 export enum NetworkType {
   HYPER = 'hyper',
@@ -25,17 +26,19 @@ export interface INetwork {
 
 interface NetworkState {
   networks: INetwork[]
-  selected: INetwork | null
-  addNetwork: (network: INetwork) =>void
-  deleteNetwork: (index:number) => void
-  setSelected: (network: INetwork| null) => void
-  closeNetwork: (network: string) => void
+  selected?: string
+  addNetwork: (network: INetwork, graph: Graph) =>void
+  deleteNetwork: (key:string) => void
+  updateNetwork: (key:string, attributes: NetworkAttributes)=>void
+  setSelected: (key?: string) => void
+  updateSelected: (attributes: NetworkAttributes)=>void
+
 }
 
 export const graphs = new Map<string, Graph>()
 const initialState = [
   {
-    key: crypto.randomUUID(),
+    key: uuidv4(),
     attributes:{
       name: 'hypercube',
       type: NetworkType.HYPER,
@@ -43,7 +46,7 @@ const initialState = [
     }
   },
   {
-    key: crypto.randomUUID(),
+    key: uuidv4(),
     attributes:{
       name: 'crossed cube',
       type: NetworkType.CROSSED,
@@ -67,20 +70,35 @@ const initialFunc = ()=>{
 
 initialFunc()
 
+export const getGraph = (network:INetwork) => graphs.get(network.key)
+
 export const useNetworkStore = create<NetworkState>((set)=>({
   networks: initialState,
-  selected: null ,
-  addNetwork: (network)=>set(produce((state:NetworkState)=>{
-    console.log('add network')
+  addNetwork: (network, graph)=>set(produce((state:NetworkState)=>{
     state.networks.push(network)
+    graphs.set(network.key, graph)
   })),
-  deleteNetwork: (index)=> set(produce((state: NetworkState)=>{
+
+  deleteNetwork: (key)=> set(produce((state: NetworkState)=>{
+    const index = state.networks.findIndex((network)=>network.key === key)
     state.networks.splice(index, 1)
+    graphs.delete(key)
   })),
-  setSelected: (network)=>set(produce((state)=>{
-    state.selected = network
+
+  updateNetwork: (key, attributes)=>set(produce((state: NetworkState)=>{
+    const index = state.networks.findIndex((network)=>network.key === key)
+    state.networks[index].attributes = attributes
   })),
-  closeNetwork: (network)=>null
+
+  setSelected: (key)=>set(produce((state: NetworkState)=>{
+    const selected = state.networks.find((network)=>network.key === key)
+    state.selected = key
+  })),
+
+  updateSelected: (attributes)=>set(produce((state:NetworkState)=>{
+    // if(state.selected) state.selected.attributes = attributes
+  })),
+
 }))
 
 

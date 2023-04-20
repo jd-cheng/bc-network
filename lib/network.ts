@@ -90,3 +90,26 @@ export const buildNetwork = (network:INetwork, type: string, start?:string) =>{
 export const validataNetowrk = (network:INetwork)=>{
 
 }
+
+export const isValidDimension = (network: INetwork, graph: Graph)=>{
+  return network.attributes.dimension === Math.log2(graph.size)
+}
+
+export const isValidLabels = (network: INetwork, graph: Graph)=>{
+
+  if(!isValidDimension(network, graph)) {
+    return false
+  }
+
+  const { dimension } = network.attributes
+  const labels = Array.from({length: Math.pow(2,dimension)}, (value, key)=>{
+    let label:string = key.toString(2)
+    return '0'.repeat(dimension-label.length)+ label
+  })
+
+  let flag = true
+
+  graph.forEachNode((node,{label})=>{
+    if(!label){ }
+  })
+}

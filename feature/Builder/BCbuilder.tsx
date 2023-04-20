@@ -4,45 +4,39 @@ import {
   networkTypes, 
   useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
-import { ChevronDownIcon } from '@chakra-ui/icons'
-import { 
-  Button,  
-  Menu, 
-  MenuButton, 
-  MenuItemOption, 
-  MenuList, 
-  MenuOptionGroup, 
-  Select} from '@chakra-ui/react'
+import { Select } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 
 export default function BCuilder() {
   
-
-  const [network,setNetwork] = useNetworkStore((state)=>[state.selected, state.setSelected])
+  const [network,updateSelected, updateNetwork] = useNetworkStore((state)=>[state.selected, state.updateSelected,state.updateNetwork])
   const node = useNodeStore((state)=>state.selected)
-  const [builderType, setBuilderType] = useState<NetworkType>()
+  const [type, setType] = useState<NetworkType>()
   
-  const handleBuilderType = (nextType:NetworkType)=>{
-    console.log('build network', nextType)
-    setBuilderType(builderType === nextType? undefined: nextType)
+  const handleType = (evt: React.ChangeEvent<HTMLSelectElement>)=>{
+    console.log(evt)
+    const nextType = evt.target.value as NetworkType
+    setType(type === nextType? undefined: nextType)
   }
 
   useEffect(()=>{
     if(!network || !node) { return }
 
-    if(builderType){
-      buildNetwork(network, builderType, node.key)
-      setNetwork({...network})
+    if(type){
+      buildNetwork(network, type, node.key)
+      updateSelected({...network.attributes, type})
+      updateNetwork(network.key, {...network.attributes, type})
+      
     } 
 
     return ()=>{
       console.log('unmount network builder')
     }
-  }, [node])
+  }, [node, type])
 
   
   return (
-    <Select variant="filled" placeholder='Select Type'>
+    <Select variant="filled" placeholder='Select Type' value={type} onChange={handleType}>
       {networkTypes.map((type)=>(
         <option value={type.value}>{type.text}</option>
       ))}

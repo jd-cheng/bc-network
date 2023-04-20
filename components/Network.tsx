@@ -1,50 +1,116 @@
-import { renderSetting } from '@/lib/sigma'
+import { renderDragNode, renderSelectedNode, renderSetting } from '@/lib/sigma'
 import { graphs, useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
 import { Box } from '@chakra-ui/react'
 import Graph from 'graphology'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Sigma from 'sigma'
 import { 
   SigmaNodeEventPayload, 
   SigmaStageEventPayload } from 'sigma/sigma'
+import { MouseCoords } from 'sigma/types'
 
+let isDragging = false
 
 export default function Network() {
 
+  const rendererRef = useRef<Sigma>()
   const containerRef = useRef<HTMLDivElement>(null)
   const network = useNetworkStore((state) =>state.selected)
-  const setSelectedNode = useNodeStore((state) => state.setSelected)
+  const [node, setNode] = useNodeStore((state) => [state.selected, state.setSelected])
+  
 
-  const clickNode = (evt: SigmaNodeEventPayload ) => {
+  const clickNode = ({node: nextNode}: SigmaNodeEventPayload ) => {
+    if(!network || node === nextNode) { return } 
+    console.log("select:",nextNode)
 
-    console.log("select:",evt)
-    if(!network) { return } 
-    let nextNode = {key:evt.node}
-    setSelectedNode(network,nextNode)
+    renderSelectedNode(network,nextNode,node)
+    setNode(nextNode)
 
   }
 
   const clickStage = (evt: SigmaStageEventPayload)=>{
     if(!network) { return }
-    setSelectedNode(network, null)
+    renderSelectedNode(network,undefined,node)
+    setNode()
   } 
 
+  const downNode = ({node: nextNode}: SigmaNodeEventPayload) =>{
+    if(!network) {return}
+    console.log('down node', nextNode)
+    if(nextNode === node) {
+      isDragging = true;
+    }
+
+  }
+
+  const mouseMoveBody = (coordinates: MouseCoords)=>{
+    if (!isDragging || !node || !network || !rendererRef.current) return;
+    // Get new position of node
+    const renderer = rendererRef.current
+    const newCoord = renderer.viewportToGraph(coordinates);
+    renderDragNode(network, node, newCoord)
+  
+    // Prevent sigma to move camera:
+    coordinates.preventSigmaDefault();
+    coordinates.original.preventDefault();
+    coordinates.original.stopPropagation();
+  }
+
+  const mouseUp = ()=>{
+    console.log('mouse up')
+    isDragging = false;
+  }
+
+  const mouseDown = ()=>{
+    console.log('mouse down')
+    if(!rendererRef.current) return
+    const renderer = rendererRef.current
+
+    if (!renderer.getCustomBBox()) renderer.setCustomBBox(renderer.getBBox());
+  }
 
   useEffect(() => {
     if(!containerRef.current || !network) { return }
     console.log('render network')
     
-    const graph = graphs.get(network.key) as Graph
-    const render = new Sigma(graph, containerRef.current)
-    render.on("clickNode", clickNode);
-    render.on("clickStage",clickStage);
-  
+    const graph = graphs.get(network) as Graph
+    const renderer = new Sigma(graph, containerRef.current)
+    const mouseCaptor = renderer.getMouseCaptor()
+
+    rendererRef.current = renderer
+    
     return () => {
       console.log("unmount network")
-      render.kill()
+      renderer.kill()
     }
-  }, [network, containerRef])
+  }, [network,containerRef])
+
+  useEffect(()=>{
+    if(!rendererRef.current || !network) { return }
+    console.log('mount listener')
+    const renderer = rendererRef.current
+    const mouseCaptor = renderer.getMouseCaptor()
+    renderer.on("clickNode", clickNode);
+    renderer.on("clickStage",clickStage);
+    renderer.on("downNode", downNode)
+    mouseCaptor.on('mousemovebody', mouseMoveBody)
+    mouseCaptor.on('mouseup', mouseUp)
+    mouseCaptor.on('mousedown',mouseDown)
+
+    return ()=>{
+      console.log('unmount listener')
+      renderer.removeListener("clickNode", clickNode);
+      renderer.removeListener("clickStage",clickStage);
+      renderer.removeListener("downNode", downNode)
+      mouseCaptor.removeListener('mousemovebody', mouseMoveBody)
+      mouseCaptor.removeListener('mouseup', mouseUp)
+      mouseCaptor.removeListener('mousedown',mouseDown)
+    }
+
+  }, [network,node])
+
+
   
 
   return (
