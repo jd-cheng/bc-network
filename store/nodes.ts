@@ -1,7 +1,8 @@
 import { NodeAttributes } from '@/lib/graph'
-import { renderSelectedNode } from '@/lib/sigma'
+import Graph from 'graphology'
 import produce from 'immer'
 import { create } from 'zustand'
+import { graphs } from './networks'
 
 export interface INode {
   key: string
@@ -10,36 +11,39 @@ export interface INode {
 
 
 interface NodeState {
-  nodes: INode []
+  nodes: string []
   selected?: string
-  setNodes: (nodes:INode[]) => void
-  addNode: (node: INode) => void
+  setNodes: (nodes: string[]) => void
+  addNode: (network:string, node:INode) => void
   deleteNode: (key: string) => void
-  updateNode: (key:string, attributes:NodeAttributes) =>void
-  setSelected: (key?:string) => void
+  updateNode: (network:string, node:string, attributes:NodeAttributes) =>void
+  setSelected: (node?:string) => void
 }
 
 export const useNodeStore = create<NodeState>((set) => ({
+
   nodes: [],
-  setNodes: (nodes:INode[]) =>set(produce((state)=>{
+  setNodes: (nodes:string[]) =>set(produce((state)=>{
     state.nodes = nodes
   })),
 
-  addNode: (node:INode)=>set(produce((state)=>{
-    state.nodes.push(node)
+  addNode: (network, node)=>set(produce((state)=>{
+    const graph = graphs.get(network) as Graph   // We create a new node
+    graph.addNode(node.key, node.attributes);
+    state.nodes.push(node.key)
   })),
 
   deleteNode: (key:string)=>set(produce((state: NodeState)=>{
-    const index = state.nodes.findIndex((node)=>node.key === key)
-    state.nodes.splice(index,1)
+
   })),
 
-  updateNode: (key:string, attributes:NodeAttributes) => set(produce((state:NodeState)=>{
-    const index = state.nodes.findIndex((node)=>node.key === key)
-    state.nodes[index].attributes = attributes
+  updateNode: (network:string, node:string, attributes:NodeAttributes) => set(produce((state:NodeState)=>{
+    const graph = graphs.get(network) as Graph
+    graph.updateAttribute(node,preAttr=>({...preAttr, ...attributes}))
+     
   })),
   
-  setSelected: (key) =>set(produce((state)=>{
-    state.selected = key
+  setSelected: (node) =>set(produce((state: NodeState)=>{
+    state.selected = node
   }))
 }))

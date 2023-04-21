@@ -33,7 +33,7 @@ export default function DimensionViewer({dimension}:IProp) {
     console.log('handle color')
     if(!network || !isRendered) {return}
     
-    renderDimension(network, dimension, nextColor, node?.key)
+    renderDimension(network, dimension, nextColor, node)
     setColor(nextColor)
   }
 
@@ -42,7 +42,7 @@ export default function DimensionViewer({dimension}:IProp) {
     if(!network) {return}
 
     const nextIsRender = !isRendered
-    renderDimension(network, dimension, nextIsRender?color : null, node?.key)
+    renderDimension(network, dimension, nextIsRender?color : null, node)
     setIsRendered(nextIsRender)
   }
 
@@ -60,7 +60,7 @@ export default function DimensionViewer({dimension}:IProp) {
     if(!network) { return }
     console.log('render dimension viewer', node)
 
-    isRendered && renderDimension(network, dimension, color, node?.key)
+    isRendered && renderDimension(network, dimension, color, node)
 
     return ()=>{
       console.log('unmount dimension viewer')

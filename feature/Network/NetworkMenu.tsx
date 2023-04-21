@@ -1,8 +1,7 @@
-import { HamburgerIcon, AddIcon, EditIcon, DownloadIcon, SettingsIcon } from '@chakra-ui/icons'
-import { Menu, MenuButton, IconButton, MenuList, MenuItem, Box, Button, MenuGroup } from '@chakra-ui/react'
-import React, { useRef, useState } from 'react'
-import AddNetwork from './AddNetwork'
-import NetList from './NetworkList'
+import { HamburgerIcon } from '@chakra-ui/icons'
+import { IconButton, Popover, PopoverContent, PopoverTrigger, useDisclosure } from '@chakra-ui/react'
+import React from 'react'
+import MenuPanel from './MenuPanel'
 
 export enum NetworkMenuType {
   ADD='add',
@@ -12,49 +11,25 @@ export enum NetworkMenuType {
 
 export default function NetworkMenu() {
 
-  const [type, setType] = useState<NetworkMenuType | null>(null)
-
-
-  const onClose = ()=>{
-    setType(null)
-  }
-
-  const handleImport = (evt: React.ChangeEvent<HTMLInputElement>)=>{
-    console.log(evt.target.files?.item(0))
-
-  }
-
-  const handleExport = ()=>{
-
-  }
-
+  const { isOpen, onToggle } = useDisclosure()
 
   return (
-    <Box position='fixed' top='16px' left='16px' zIndex='overlay'>
-      <Menu >
-        <MenuButton
-          as={IconButton}
-          aria-label='Options'
-          icon={<HamburgerIcon />}
+    <Popover placement="bottom-start" closeOnBlur={false} isLazy isOpen={isOpen}>
+      <PopoverTrigger>
+        <IconButton
+          position='fixed' 
+          top='16px' 
+          left='16px' 
+          zIndex='overlay'
+          icon={<HamburgerIcon/>}
+          aria-label=''
           variant='outline'
+          onClick={onToggle}
         />
-        <MenuList>
-          <NetList/>
-          <MenuGroup title='Others'>
-            <MenuItem as={Button} icon={<AddIcon />} onClick={()=>setType(NetworkMenuType.ADD)}>
-              Add Network
-            </MenuItem>
-            <MenuItem as={Button} icon={<DownloadIcon/>} >
-              Export Network
-            </MenuItem>
-            <MenuItem as={Button} icon={<SettingsIcon />} >
-              Settings 
-            </MenuItem>
-          </MenuGroup>
-
-        </MenuList>
-      </Menu>
-      <AddNetwork type={type} onClose={onClose}/>
-    </Box>
+      </PopoverTrigger>
+      <PopoverContent maxW='224px'>
+        <MenuPanel/>
+      </PopoverContent>
+    </Popover> 
   )
 }

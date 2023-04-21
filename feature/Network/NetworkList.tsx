@@ -1,25 +1,27 @@
-import { useNetworkStore } from '@/store/networks'
-import { Button, MenuItemOption, MenuOptionGroup } from '@chakra-ui/react'
+import { graphs, useNetworkStore } from '@/store/networks'
+import { Button, List, ListItem } from '@chakra-ui/react'
 import React from 'react'
 
-export default function NetList() {
+export default function NetworkList() {
+  
 
   const [networks, selected, setSelected] = useNetworkStore(
     (state)=>[state.networks, state.selected, state.setSelected]
   )
   
   return (
-    <MenuOptionGroup type="radio" value={selected} title='Networks'>
+    <List>
       {networks.map((network)=>(
-        <MenuItemOption 
-          key={network.key} 
-          value={network.key}
+        <ListItem 
+          key={network} 
           as={Button}
-          onClick={()=>setSelected(network.key)}
+          onClick={()=>setSelected(network)}
+          width="full"
+          justifyContent='flex-start'
         >
-          {network.attributes.name}
-        </MenuItemOption>
+          {graphs.get(network)?.getAttribute('name')}
+        </ListItem>
       ))}
-    </MenuOptionGroup>
+    </List>
   )
 }

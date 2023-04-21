@@ -1,7 +1,4 @@
-import { INetwork } from "@/store/networks"
 import Graph from "graphology"
-
-
 
 export const buildCrossedcube = (graph:Graph, dimension: number, start?:string)=>{
   const labels = Array.from({length: Math.pow(2,dimension)}, (value, key)=>{
@@ -68,16 +65,6 @@ export const generateNeighborLabel = (node: string, dimension: number)=>{
     }
   }
   return neighbor
-}
-
-export const getNeighbor = (network:INetwork, node:string, dimension: number) => {
-  const { graph } = network
-  const nodeLabel = graph.getNodeAttribute(node, 'label')
-  const neigLabel = generateNeighborLabel(nodeLabel, dimension)
-    
-  return graph.findNeighbor(node, (neighbor, attributes)=>{
-    return neigLabel === attributes.label
-  })
 }
 
 export const getEdgeByDimension = (graph:Graph, dimension:number , node?:string) =>{

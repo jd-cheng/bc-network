@@ -22,9 +22,9 @@ export const renderSelectedNode = (network:string, nextNode?: string, preNode?: 
 }
 
 
-export const renderDimension = (network:INetwork, dimension: number, color:string | null, node?: string) => {
+export const renderDimension = (network:string, dimension: number, color:string | null, node?: string) => {
   console.log('render dimension')
-  const graph = graphs.get(network.key) as Graph
+  const graph = graphs.get(network) as Graph
 
   const edges = getEdgeByDimension(network, dimension, node)
   edges.forEach((edge)=>{graph.updateEdgeAttribute(edge, 'color' ,oldVal=>color)})

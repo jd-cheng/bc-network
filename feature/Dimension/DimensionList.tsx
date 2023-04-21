@@ -1,4 +1,4 @@
-import { useNetworkStore } from '@/store/networks'
+import { graphs, useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
 import { Stack } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
@@ -14,7 +14,7 @@ export default function DimensionList() {
     if(!network) { return }
     console.log('render dimension viewers')
 
-    const dimension = network.attributes.dimension
+    const dimension = graphs.get(network)?.getAttribute('dimension')
     const newDimensions = Array.from({length: dimension}, (value, index)=>{
       return index+1
     })

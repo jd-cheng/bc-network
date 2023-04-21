@@ -1,7 +1,7 @@
 import AttriubteList from '@/feature/Attribute/AttriubteList'
-import BCuilder from '@/feature/Builder/BCbuilder'
-import ISTbuilder from '@/feature/Builder/ISTbuilder'
+import Builder from '@/feature/Builder/Builder'
 import DimensionList from '@/feature/Dimension/DimensionList'
+import ISTbuilder from '@/feature/IST/ISTbuilder'
 import { Card, CardBody, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react'
 import React from 'react'
 
@@ -15,7 +15,7 @@ export enum ToolType {
 
 export const tools = [
   {type: ToolType.DIMENSION, text:'Dimension', comp:<DimensionList/>},
-  {type: ToolType.BC, text:'BC', comp: <BCuilder/>},
+  {type: ToolType.BC, text:'BC', comp: <Builder/>},
   {type: ToolType.IST, text:'IST', comp: <ISTbuilder/>}
 ]
 

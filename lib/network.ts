@@ -10,9 +10,9 @@ import {
   generateNeighborLabel as generateHyperNeighborLabel,
   isEdgeByDimension as isHyperEdgeByDimension } from "./hypercube";
 
-export const getEdgeByDimension = (network:INetwork, dimension: number, node?:string)=>{
+export const getEdgeByDimension = (network:string, dimension: number, node?:string)=>{
   console.log('get edges by dimension')
-  const graph = graphs.get(network.key) as Graph
+  const graph = graphs.get(network) as Graph
   const type = graph.getAttribute('type')
 
   return graph.filterEdges((edge)=>{
@@ -91,17 +91,24 @@ export const validataNetowrk = (network:INetwork)=>{
 
 }
 
-export const isValidDimension = (network: INetwork, graph: Graph)=>{
-  return network.attributes.dimension === Math.log2(graph.size)
+export const isValidDimension = (network: string)=>{
+  const graph = graphs.get(network) as Graph
+  return graph.getAttribute("dimension") === Math.log2(graph.order)
 }
 
-export const isValidLabels = (network: INetwork, graph: Graph)=>{
+export const validateDimension = (network: string)=>{
+  const graph = graphs.get(network) as Graph
+  const dimension = graph.getAttribute("dimension")
+  return Math.pow(2,dimension)- graph.order
+}
 
-  if(!isValidDimension(network, graph)) {
+export const isValidLabels = (network: string)=>{
+  const graph = graphs.get(network) as Graph
+  if(!isValidDimension(network)) {
     return false
   }
 
-  const { dimension } = network.attributes
+  const dimension = graph.getAttribute("dimension")
   const labels = Array.from({length: Math.pow(2,dimension)}, (value, key)=>{
     let label:string = key.toString(2)
     return '0'.repeat(dimension-label.length)+ label
