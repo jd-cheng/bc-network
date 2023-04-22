@@ -3,6 +3,12 @@ import { isValidDimension, validateDimension } from '@/lib/network'
 import { graphs, networkTypes, useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
 import { 
+  Button,
+  ButtonGroup,
+  Card,
+  CardBody,
+  CardFooter,
+  Divider,
   FormControl, 
   FormErrorMessage, 
   FormLabel, 
@@ -68,32 +74,37 @@ export default function NetworkEditor() {
   }, [nodes,dimension])
 
   return (
-    <form>
-      <Stack direction='column' position='fixed' top="16px" right="16px" zIndex='overlay'>
+    <Card position='fixed' top="16px" right="16px" zIndex='overlay' maxW='224px'>
+      <CardBody>
+        <form>
+            <FormControl>
+              <FormLabel>Name</FormLabel>
+              <Input {...register('name')}/>
+            </FormControl>
 
-        <FormControl>
-          <FormLabel>Name</FormLabel>
-          <Input {...register('name')}/>
-        </FormControl>
+            <FormControl>
+              <FormLabel>Type</FormLabel>
+              <Select {...register("type")}>
+                {networkTypes.map((type)=>(
+                  <option key={type.value} value={type.value}>{type.text}</option>
+                ))}
+              </Select>
+            </FormControl>
 
-        <FormControl>
-          <FormLabel>Type</FormLabel>
-          <Select {...register("type")}>
-            {networkTypes.map((type)=>(
-              <option key={type.value} value={type.value}>{type.text}</option>
-            ))}
-          </Select>
-        </FormControl>
+            <FormControl isInvalid={!!errors.dimension}>
+              <FormLabel>Dimension</FormLabel>
+              <NumberField control={control} name="dimension"/>
+              <FormErrorMessage>
+                {errors.dimension && errors.dimension.message}
+              </FormErrorMessage>
+            </FormControl>
+        </form>
+        <ButtonGroup isAttached variant='outline'>
+          <Button>Save</Button>
+          <Button>Reset</Button>
+        </ButtonGroup>
+      </CardBody>
 
-        <FormControl isInvalid={!!errors.dimension}>
-          <FormLabel>Dimension</FormLabel>
-          <NumberField control={control} name="dimension"/>
-          <FormErrorMessage>
-            {errors.dimension && errors.dimension.message}
-          </FormErrorMessage>
-        </FormControl>
-
-      </Stack>
-    </form>
+    </Card>
   )
 }

@@ -39,7 +39,7 @@ export const useNodeStore = create<NodeState>((set) => ({
 
   updateNode: (network:string, node:string, attributes:NodeAttributes) => set(produce((state:NodeState)=>{
     const graph = graphs.get(network) as Graph
-    graph.updateAttribute(node,preAttr=>({...preAttr, ...attributes}))
+    graph.updateNodeAttributes(node,preAttr=>({...preAttr, ...attributes}))
      
   })),
   
