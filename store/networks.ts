@@ -25,9 +25,9 @@ export interface INetwork {
 } 
 
 interface NetworkState {
-  networks: string []
-  selected?: string
-  addNetwork: (network: string) =>void
+  networks: INetwork []
+  selected?: INetwork
+  addNetwork: (network: INetwork) =>void
   deleteNetwork: (network:string) => void
   updateNetwork: (network:string, attributes: Partial<NetworkAttributes>)=>void
   setSelected: (network?: string) => void
@@ -39,9 +39,9 @@ export const createNetwork = (data?:any)=>{
   if(data){
     graph.import(data)
   }
-  const network = uuidv4()
+  const network = {key:uuidv4(), attributes:{}} as INetwork
 
-  graphs.set(network, graph)
+  graphs.set(network.key, graph)
   return network
 }
 
@@ -57,7 +57,7 @@ export const useNetworkStore = create<NetworkState>((set)=>({
   networks: initialState,
   addNetwork: (network)=>set(produce((state:NetworkState)=>{
     state.networks.push(network)
-    graphs.set(network, new Graph())
+    graphs.set(network.key, new Graph())
   })),
 
   deleteNetwork: (network)=> set(produce((state: NetworkState)=>{
