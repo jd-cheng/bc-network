@@ -102,6 +102,23 @@ export const validateDimension = (network: string)=>{
   return Math.pow(2,dimension)- graph.order
 }
 
+export const validateNodes = (network:string)=>{
+  const graph = graphs.get(network) as Graph
+  const dimension = graph.getAttribute("dimension")
+  const labels = new Set(Array.from({length: Math.pow(2,dimension)}, (value, key)=>{
+    let label:string = key.toString(2)
+    return '0'.repeat(dimension-label.length)+ label
+  }))
+
+  graph.forEachNode((node,{label})=>{
+    if(labels.has(label)){
+      labels.delete(label)
+    }
+  })
+
+  return Array.from(labels)
+}
+
 export const isValidLabels = (network: string)=>{
   const graph = graphs.get(network) as Graph
   if(!isValidDimension(network)) {

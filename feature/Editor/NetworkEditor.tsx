@@ -1,5 +1,5 @@
 import { NetworkAttributes } from '@/lib/graph'
-import { isValidDimension, validateDimension } from '@/lib/network'
+import { isValidDimension, validateDimension, validateNodes } from '@/lib/network'
 import { graphs, networkTypes, useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
 import { 
@@ -16,20 +16,27 @@ import {
   Select, 
   Stack } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import Builder from '../Builder/Builder'
 import { NumberField } from './NumberField'
 
 export default function NetworkEditor() {
 
 
-  const nodes = useNodeStore((state)=>state.nodes)
   const [network,updateNetwork] = useNetworkStore((state)=>[state.selected,state.updateNetwork])
-  const { control, register, watch, setValue,setError,clearErrors, getFieldState ,formState:{errors}, handleSubmit } = useForm<NetworkAttributes>({
+  const { control, register,  setValue, watch ,formState:{errors}, handleSubmit } = useForm<NetworkAttributes>({
     mode:"onChange",
     defaultValues:{
       type:""
     }
   })
+
+
+  const onSubmit: SubmitHandler<NetworkAttributes> = (data)=>{
+    if (!network) return
+    console.log(data)
+    // updateNetwork(network, data)
+  }
 
   const dimension = watch("dimension")
   const type = watch("type")
@@ -49,29 +56,14 @@ export default function NetworkEditor() {
   }, [network])
 
   useEffect(()=>{
-    if(!network || !name) return
-    updateNetwork(network, {name})
-  }, [name])
-
-  useEffect(()=>{
-    if(!network || !type) return
-    updateNetwork(network, {type})
-  }, [type])
-
-  useEffect(()=>{
-    console.log("update dimension")
-    if(!network || !dimension) return
-    updateNetwork(network, {dimension})
-    const result = validateDimension(network)
-
-    result < 0 && setError("dimension",{message:"Exceed "+Math.abs(result)+" nodes"})
-    result > 0 && setError("dimension", {message:`Need ${result} more nodes`})
-
-    return ()=>{
-      errors.dimension&&clearErrors("dimension")
-    }
-
-  }, [nodes,dimension])
+    if(!network) return
+    const attributes = {} as NetworkAttributes
+    if (name) attributes.name = name
+    if(type) attributes.type = type
+    if(dimension) attributes.dimension = dimension
+    console.log(attributes)
+    updateNetwork(network, attributes)
+  }, [name,type, dimension])
 
   return (
     <Card position='fixed' top="16px" right="16px" zIndex='overlay' maxW='224px'>
@@ -91,20 +83,17 @@ export default function NetworkEditor() {
               </Select>
             </FormControl>
 
-            <FormControl isInvalid={!!errors.dimension}>
+            <FormControl>
               <FormLabel>Dimension</FormLabel>
               <NumberField control={control} name="dimension"/>
-              <FormErrorMessage>
-                {errors.dimension && errors.dimension.message}
-              </FormErrorMessage>
             </FormControl>
         </form>
         <ButtonGroup isAttached variant='outline'>
-          <Button>Save</Button>
+          <Button onClick={handleSubmit(onSubmit)}>Build</Button>
           <Button>Reset</Button>
         </ButtonGroup>
       </CardBody>
-
+      <Builder control={control}/>
     </Card>
   )
 }
