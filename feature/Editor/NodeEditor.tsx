@@ -17,27 +17,27 @@ export default function NodeEditor() {
   
   const network = useNetworkStore((state)=>state.selected)
   const [node,updateNode] = useNodeStore((state)=>[state.selected,state.updateNode])
-  const {register, watch, setValue, handleSubmit } = useForm<NodeAttributes>({
+  const {register, watch, setValue, handleSubmit } = useForm<Partial<NodeAttributes>>({
     mode:"onChange",
+    values: node?.attributes
   })
 
   const label = watch("label")
 
-  useEffect(()=>{
-    handleSubmit(()=>{})()
-  },[])
+  // useEffect(()=>{
+  //   handleSubmit(()=>{})()
+  // },[])
 
-  useEffect(()=>{
-    if(!network || !node) return
+  // useEffect(()=>{
+  //   if(!network || !node) return
+  //   setValue("label",node.attributes.label)
+  // }, [network,node])
 
-    const attributes = graphs.get(network)?.getNodeAttributes(node) as NodeAttributes
-    setValue("label",attributes.label)
-  }, [network,node])
 
   useEffect(()=>{
     if(!network || !node) return
     console.log("update label",node, label)
-    updateNode(network, node, {label})
+    updateNode(network.key, node.key, {label})
   }, [label])
 
   return (

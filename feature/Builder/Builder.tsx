@@ -11,21 +11,17 @@ import { useWatch, UseWatchProps } from 'react-hook-form'
 
 
 
-export default function Builder({control}: UseWatchProps<NetworkAttributes>) {
+export default function Builder() {
   
   const [network,updateNetwork] = useNetworkStore((state)=>[state.selected, state.updateNetwork])
   const [nodes] = useNodeStore((state)=>[state.nodes])
-  const dimension = useWatch({control, name:"dimension"})
-  const type = useWatch({control, name:"type"})
   const [missingNodes, setMissingNodes] = useState<string[]>([])
 
   
   useEffect(()=>{
-
-    if(!network || !dimension) return
-    console.log(dimension)
-    setMissingNodes(validateNodes(network))
-  },[dimension])
+    if(!network) return
+    setMissingNodes(validateNodes(network.key))
+  },[network])
 
   
   return (

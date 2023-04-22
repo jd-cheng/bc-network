@@ -6,44 +6,62 @@ import { graphs } from './networks'
 
 export interface INode {
   key: string
-  attributes: NodeAttributes
+  attributes: Partial<NodeAttributes>
 }
 
 
 interface NodeState {
-  nodes: string []
-  selected?: string
-  setNodes: (nodes: string[]) => void
+  nodes: INode []
+  selected?: INode
+  setNodes: (nodes: INode[]) => void
   addNode: (network:string, node:INode) => void
-  deleteNode: (key: string) => void
-  updateNode: (network:string, node:string, attributes:NodeAttributes) =>void
-  setSelected: (node?:string) => void
+  deleteNode: (network:string, key: string) => void
+  updateNode: (network:string, key:string, attributes:Partial<NodeAttributes>) =>void
+  setSelected: (key?:string) => void
 }
 
 export const useNodeStore = create<NodeState>((set) => ({
 
   nodes: [],
-  setNodes: (nodes:string[]) =>set(produce((state)=>{
+  setNodes: (nodes:INode[]) =>set(produce((state)=>{
     state.nodes = nodes
   })),
 
   addNode: (network, node)=>set(produce((state)=>{
+
+    state.nodes.push(node)
+
     const graph = graphs.get(network) as Graph   // We create a new node
     graph.addNode(node.key, node.attributes);
-    state.nodes.push(node.key)
-  })),
-
-  deleteNode: (key:string)=>set(produce((state: NodeState)=>{
 
   })),
 
-  updateNode: (network:string, node:string, attributes:NodeAttributes) => set(produce((state:NodeState)=>{
+  deleteNode: (network:string, key:string)=>set(produce((state: NodeState)=>{
+    const index = state.nodes.findIndex((node)=>node.key === key)
+    state.nodes.splice(index,1)
+
+    key === state.selected?.key && (state.selected = undefined)
+
     const graph = graphs.get(network) as Graph
-    graph.updateNodeAttributes(node,preAttr=>({...preAttr, ...attributes}))
-     
+    graph.dropNode(key)
+  })),
+
+  updateNode: (network:string, key:string, attributes:Partial<NodeAttributes>) => set(produce((state:NodeState)=>{
+
+
+    const node = state.nodes.find((node)=>node.key === key) as INode
+    const newAttributes = {...node.attributes, ...attributes}
+
+    node.attributes = newAttributes
+
+    key === state.selected?.key && (state.selected.attributes = newAttributes)
+
+    const graph = graphs.get(network) as Graph
+    graph.updateNodeAttributes(key,oldAttr=>({...oldAttr, ...newAttributes}))
+    console.log(graph.getNodeAttribute(key,"label"))     
   })),
   
-  setSelected: (node) =>set(produce((state: NodeState)=>{
-    state.selected = node
+  setSelected: (key) =>set(produce((state: NodeState)=>{
+    state.selected = state.nodes.find((node)=>node.key === key)
   }))
 }))

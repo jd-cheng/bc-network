@@ -11,7 +11,7 @@ export default function AddNetwork() {
   const handleAddNetwork = ()=>{
     const network = createNetwork()
     addNetwork(network)
-    setNetwork(network)
+    setNetwork(network.key)
     toast({
       description: 'network successfully added',
       position: 'top',

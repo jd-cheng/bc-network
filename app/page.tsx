@@ -6,6 +6,7 @@ import NetworkMenu from '@/feature/Network/NetworkMenu'
 import Pointer from '@/components/Pointer'
 import NetworkEditor from '@/feature/Editor/NetworkEditor'
 import NodeEditor from '@/feature/Editor/NodeEditor'
+import DimensionList from '@/feature/Dimension/DimensionList'
 
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
       <header>
         <NetworkMenu/>
         <NetworkEditor/>
+        {/* <DimensionList/> */}
         <NodeEditor/>
       </header>
       <Box as="main" position='relative' flex='1 1 auto'>

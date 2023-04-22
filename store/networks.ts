@@ -28,9 +28,9 @@ interface NetworkState {
   networks: INetwork []
   selected?: INetwork
   addNetwork: (network: INetwork) =>void
-  deleteNetwork: (network:string) => void
-  updateNetwork: (network:string, attributes: Partial<NetworkAttributes>)=>void
-  setSelected: (network?: string) => void
+  deleteNetwork: (key:string) => void
+  updateNetwork: (key:string, attributes: Partial<NetworkAttributes>)=>void
+  setSelected: (key?: string) => void
 
 }
 
@@ -39,7 +39,7 @@ export const createNetwork = (data?:any)=>{
   if(data){
     graph.import(data)
   }
-  const network = {key:uuidv4(), attributes:{}} as INetwork
+  const network = {key:uuidv4(), attributes:graph.getAttributes()} as INetwork
 
   graphs.set(network.key, graph)
   return network
@@ -51,6 +51,8 @@ const initialState = [
  createNetwork(crossed_data)
 ]
 
+
+
 export const getGraph = (network:INetwork) => graphs.get(network.key)
 
 export const useNetworkStore = create<NetworkState>((set)=>({
@@ -60,23 +62,32 @@ export const useNetworkStore = create<NetworkState>((set)=>({
     graphs.set(network.key, new Graph())
   })),
 
-  deleteNetwork: (network)=> set(produce((state: NetworkState)=>{
-    const index = state.networks.findIndex((network)=>network === network)
+  deleteNetwork: (key)=> set(produce((state: NetworkState)=>{
+    const index = state.networks.findIndex((network)=>network.key === key)
     state.networks.splice(index, 1)
-    graphs.delete(network)
+
+    key === state.selected?.key &&(state.selected = undefined)
+
+    graphs.delete(key)
   })),
 
-  updateNetwork: (network, attributes)=>set(produce((state: NetworkState)=>{
-    const graph = graphs.get(network) as Graph
-    graph.updateAttributes(preAttr=>({...preAttr, ...attributes}))
+  updateNetwork: (key, attributes)=>set(produce((state: NetworkState)=>{
+    //update network
+    const network = state.networks.find((network)=>network.key === key) as INetwork
+    const newAttributes = {...network.attributes, ...attributes}
+    network.attributes = newAttributes
+    
+    //update selected
+    key === state.selected?.key && (state.selected.attributes = newAttributes)
+
+    //update graph
+    const graph = graphs.get(key) as Graph
+    graph.updateAttributes(oldAttr=>({...oldAttr, ...newAttributes}))
   })),
 
-  setSelected: (network)=>set(produce((state: NetworkState)=>{
-    state.selected = network
+  setSelected: (key)=>set(produce((state: NetworkState)=>{
+    state.selected = state.networks.find((network)=>network.key === key)
   })),
-
-
-
 }))
 
 

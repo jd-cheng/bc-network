@@ -1,7 +1,5 @@
 import { NetworkAttributes } from '@/lib/graph'
-import { isValidDimension, validateDimension, validateNodes } from '@/lib/network'
 import { graphs, networkTypes, useNetworkStore } from '@/store/networks'
-import { useNodeStore } from '@/store/nodes'
 import { 
   Button,
   ButtonGroup,
@@ -24,46 +22,39 @@ export default function NetworkEditor() {
 
 
   const [network,updateNetwork] = useNetworkStore((state)=>[state.selected,state.updateNetwork])
-  const { control, register,  setValue, watch ,formState:{errors}, handleSubmit } = useForm<NetworkAttributes>({
+  const { control, register,  watch ,formState:{errors}, handleSubmit } = useForm<NetworkAttributes>({
     mode:"onChange",
-    defaultValues:{
-      type:""
-    }
+    values: network?.attributes
   })
-
-
-  const onSubmit: SubmitHandler<NetworkAttributes> = (data)=>{
-    if (!network) return
-    console.log(data)
-    // updateNetwork(network, data)
-  }
 
   const dimension = watch("dimension")
   const type = watch("type")
   const name = watch("name")
 
   useEffect(()=>{
-    handleSubmit(()=>{})()
-  },[])
+    if(!network) return
+    updateNetwork(network.key,  {name})
+  }, [name])
 
   useEffect(()=>{
     if(!network) return
-
-    const attributes = graphs.get(network)?.getAttributes() as NetworkAttributes
-    setValue("name",attributes.name)
-    setValue("dimension",attributes.dimension)
-    setValue("type",attributes.type)
-  }, [network])
+    updateNetwork(network.key,  {type})
+  }, [type])
 
   useEffect(()=>{
     if(!network) return
-    const attributes = {} as NetworkAttributes
-    if (name) attributes.name = name
-    if(type) attributes.type = type
-    if(dimension) attributes.dimension = dimension
-    console.log(attributes)
-    updateNetwork(network, attributes)
-  }, [name,type, dimension])
+    updateNetwork(network.key,  {dimension})
+  }, [dimension])
+
+  // useEffect(()=>{
+  //   if(!network) return
+  //   const attributes = {} as NetworkAttributes
+  //   if (name) attributes.name = name
+  //   if(type) attributes.type = type
+  //   if(dimension) attributes.dimension = dimension
+  //   console.log(attributes)
+  //   updateNetwork(network.key, attributes)
+  // }, [name,type, dimension])
 
   return (
     <Card position='fixed' top="16px" right="16px" zIndex='overlay' maxW='224px'>
@@ -88,12 +79,12 @@ export default function NetworkEditor() {
               <NumberField control={control} name="dimension"/>
             </FormControl>
         </form>
-        <ButtonGroup isAttached variant='outline'>
+        {/* <ButtonGroup isAttached variant='outline'>
           <Button onClick={handleSubmit(onSubmit)}>Build</Button>
           <Button>Reset</Button>
-        </ButtonGroup>
+        </ButtonGroup> */}
       </CardBody>
-      <Builder control={control}/>
+      <Builder/>
     </Card>
   )
 }

@@ -1,3 +1,4 @@
+import { NodeAttributes } from '@/lib/graph'
 import { renderDragNode, renderSelectedNode } from '@/lib/sigma'
 import {  graphs, useNetworkStore } from '@/store/networks'
 import { INode, useNodeStore } from '@/store/nodes'
@@ -23,17 +24,17 @@ export default function Network() {
   const [node, setNode, setNodes, addNode] = useNodeStore((state) => [ state.selected, state.setSelected, state.setNodes,state.addNode])
 
   const clickNode = ({node: nextNode}: SigmaNodeEventPayload ) => {
-    if(!network || node === nextNode || pointer !== PointerType.SELECT) { return } 
+    if(!network || pointer !== PointerType.SELECT) { return } 
     console.log("select:",nextNode)
   
-    renderSelectedNode(network,nextNode,node)
+    renderSelectedNode(network.key,nextNode,node?.key)
     setNode(nextNode)
 
   }
 
   const clickStage = ({event:{x, y}}: SigmaStageEventPayload)=>{
     if(!network || !rendererRef.current) { return }
-    console.log(pointer)
+
     const newNode = {} as INode
     if(pointer === PointerType.ADDNODE){
       const coordinates = rendererRef.current.viewportToGraph({ x,y });
@@ -43,16 +44,16 @@ export default function Network() {
         size:10,
         color:"#B30000"
       }
-      addNode(network, newNode)
+      addNode(network.key, newNode)
     }
-    renderSelectedNode(network, newNode.key, node)
+    renderSelectedNode(network.key, newNode.key, node?.key)
     setNode(newNode.key)
   } 
 
   const downNode = ({node: nextNode}: SigmaNodeEventPayload) =>{
     if(!network) {return}
     console.log('down node', nextNode)
-    if(nextNode === node) {
+    if(nextNode === node?.key) {
       isDragging = true;
     }
   }
@@ -62,7 +63,7 @@ export default function Network() {
     // Get new position of node
     const renderer = rendererRef.current
     const newCoord = renderer.viewportToGraph(coordinates);
-    renderDragNode(network, node, newCoord)
+    renderDragNode(network.key, node.key, newCoord)
   
     // Prevent sigma to move camera:
     coordinates.preventSigmaDefault();
@@ -83,25 +84,46 @@ export default function Network() {
 
   }
 
+  useEffect(()=> {
+    //init renderer
+    if(!containerRef.current) return
+  
+    const renderer = new Sigma(new Graph, containerRef.current)
+    rendererRef.current = renderer
+
+    return ()=>{
+      renderer.kill()
+    }
+
+  },[containerRef])
+
   useEffect(() => {
-    if(!containerRef.current || !network) { return }
+    if(!containerRef.current || !rendererRef.current || !network) { return }
     console.log('render network')
     
-    const graph = graphs.get(network) as Graph
-    const renderer = new Sigma(graph, containerRef.current)
-    setNodes(graph.nodes())
+    const graph = graphs.get(network.key) as Graph
 
-    rendererRef.current = renderer
+    const nodes = graph.nodes().map((node)=>{
+      const attributes = {} as NodeAttributes
+      attributes.label = graph.getNodeAttribute(node,"label")
+      attributes.color = graph.getNodeAttribute(node,"color")
+      attributes.size = graph.getNodeAttribute(node, "size")
+      return {key:node, attributes}
+    })
+
+    rendererRef.current.setGraph(graph)
+    setNodes(nodes)
+
     
     return () => {
       console.log("unmount network")
-      renderer.kill()
     }
-  }, [network,containerRef])
+  }, [network])
 
   useEffect(()=>{
-    if(!rendererRef.current || !network) { return }
+    if(!containerRef.current || !rendererRef.current || !network) { return }
     console.log('mount listener')
+    
     const renderer = rendererRef.current
     const mouseCaptor = renderer.getMouseCaptor()
     renderer.on("clickNode", clickNode);

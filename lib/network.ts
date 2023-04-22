@@ -91,16 +91,6 @@ export const validataNetowrk = (network:INetwork)=>{
 
 }
 
-export const isValidDimension = (network: string)=>{
-  const graph = graphs.get(network) as Graph
-  return graph.getAttribute("dimension") === Math.log2(graph.order)
-}
-
-export const validateDimension = (network: string)=>{
-  const graph = graphs.get(network) as Graph
-  const dimension = graph.getAttribute("dimension")
-  return Math.pow(2,dimension)- graph.order
-}
 
 export const validateNodes = (network:string)=>{
   const graph = graphs.get(network) as Graph
@@ -117,23 +107,4 @@ export const validateNodes = (network:string)=>{
   })
 
   return Array.from(labels)
-}
-
-export const isValidLabels = (network: string)=>{
-  const graph = graphs.get(network) as Graph
-  if(!isValidDimension(network)) {
-    return false
-  }
-
-  const dimension = graph.getAttribute("dimension")
-  const labels = Array.from({length: Math.pow(2,dimension)}, (value, key)=>{
-    let label:string = key.toString(2)
-    return '0'.repeat(dimension-label.length)+ label
-  })
-
-  let flag = true
-
-  graph.forEachNode((node,{label})=>{
-    if(!label){ }
-  })
 }

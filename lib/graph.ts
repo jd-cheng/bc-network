@@ -1,11 +1,7 @@
 export interface NodeAttributes {
-  x?: number;
-  y?: number;
-  label?: string;
-  color?: string;
-  size?: number;
-  hidden?: boolean;
-  highlighted?: boolean
+  label: string;
+  size: number
+  color:string
 }
 
 export interface EdgeAttributes  {

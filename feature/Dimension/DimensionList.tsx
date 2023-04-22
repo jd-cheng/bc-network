@@ -14,7 +14,7 @@ export default function DimensionList() {
     if(!network) { return }
     console.log('render dimension viewers')
 
-    const dimension = graphs.get(network)?.getAttribute('dimension')
+    const dimension = graphs.get(network.key)?.getAttribute('dimension')
     const newDimensions = Array.from({length: dimension}, (value, index)=>{
       return index+1
     })
