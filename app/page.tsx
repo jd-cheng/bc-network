@@ -5,6 +5,7 @@ import { Box } from '@chakra-ui/react'
 import NetworkMenu from '@/feature/Network/NetworkMenu'
 import Toolbar from '@/components/Toolbar'
 import NetworkEditor from '@/feature/Builder/NetworkEditor'
+import Pointer from '@/components/Pointer'
 
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
       <Box as="main" position='relative' flex='1 1 auto'>
         <Network/>
       </Box>
+      <Pointer/>
     </>
 
   )

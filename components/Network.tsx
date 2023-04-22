@@ -1,6 +1,7 @@
 import { renderDragNode, renderSelectedNode } from '@/lib/sigma'
 import {  graphs, useNetworkStore } from '@/store/networks'
-import { useNodeStore } from '@/store/nodes'
+import { INode, useNodeStore } from '@/store/nodes'
+import { PointerType, usePointerStore } from '@/store/pointers'
 import { Box } from '@chakra-ui/react'
 import Graph from 'graphology'
 import React, { useEffect, useRef } from 'react'
@@ -18,10 +19,11 @@ export default function Network() {
   const rendererRef = useRef<Sigma>()
   const containerRef = useRef<HTMLDivElement>(null)
   const network = useNetworkStore((state) =>state.selected)
+  const pointer = usePointerStore((state)=>state.pointer)
   const [node, setNode, setNodes, addNode] = useNodeStore((state) => [ state.selected, state.setSelected, state.setNodes,state.addNode])
 
   const clickNode = ({node: nextNode}: SigmaNodeEventPayload ) => {
-    if(!network || node === nextNode) { return } 
+    if(!network || node === nextNode || pointer !== PointerType.SELECT) { return } 
     console.log("select:",nextNode)
   
     renderSelectedNode(network,nextNode,node)
@@ -31,19 +33,19 @@ export default function Network() {
 
   const clickStage = ({event:{x, y}}: SigmaStageEventPayload)=>{
     if(!network || !rendererRef.current) { return }
-
-    const coordinates = rendererRef.current.viewportToGraph({ x,y });
-    const newNode = {
-      key: uuidv4(),
-      attributes:{
+    console.log(pointer)
+    const newNode = {} as INode
+    if(pointer === PointerType.ADDNODE){
+      const coordinates = rendererRef.current.viewportToGraph({ x,y });
+      newNode.key = uuidv4()
+      newNode.attributes = {
         ...coordinates,
         size:10,
-        color: "#B30000"
+        color:"#B30000"
       }
+      addNode(network, newNode)
     }
-
-    addNode(network, newNode)
-    renderSelectedNode(network, newNode.key,node)
+    renderSelectedNode(network, newNode.key, node)
     setNode(newNode.key)
   } 
 
@@ -111,15 +113,17 @@ export default function Network() {
 
     return ()=>{
       console.log('unmount listener')
+      if(!renderer)  return
       renderer.removeListener("clickNode", clickNode);
       renderer.removeListener("clickStage",clickStage);
       renderer.removeListener("downNode", downNode)
+      if(!mouseCaptor) return
       mouseCaptor.removeListener('mousemovebody', mouseMoveBody)
       mouseCaptor.removeListener('mouseup', mouseUp)
       mouseCaptor.removeListener('mousedown',mouseDown)
     }
 
-  }, [network,node])
+  }, [network,node,pointer])
 
   return (
     <Box top='0' left='0' w='100%' h='100%' ref={containerRef}></Box>
