@@ -88,18 +88,17 @@ export default function Network() {
     //init renderer
     if(!containerRef.current) return
   
-    const renderer = new Sigma(new Graph, containerRef.current)
+    const renderer = new Sigma(new Graph(), containerRef.current)
     rendererRef.current = renderer
 
     return ()=>{
       renderer.kill()
     }
-
   },[containerRef])
 
   useEffect(() => {
     if(!containerRef.current || !rendererRef.current || !network) { return }
-    console.log('render network')
+    console.log('load network')
     
     const graph = graphs.get(network.key) as Graph
 

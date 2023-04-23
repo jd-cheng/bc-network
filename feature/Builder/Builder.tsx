@@ -18,10 +18,10 @@ export default function Builder() {
   const [missingNodes, setMissingNodes] = useState<string[]>([])
 
   
-  useEffect(()=>{
-    if(!network) return
-    setMissingNodes(validateNodes(network.key))
-  },[network])
+  // useEffect(()=>{
+  //   if(!network) return
+  //   setMissingNodes(validateNodes(network.key))
+  // },[network])
 
   
   return (

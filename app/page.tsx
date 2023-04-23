@@ -16,7 +16,7 @@ export default function Home() {
         <NetworkMenu/>
         <NetworkEditor/>
         {/* <DimensionList/> */}
-        <NodeEditor/>
+        {/* <NodeEditor/> */}
       </header>
       <Box as="main" position='relative' flex='1 1 auto'>
         <Network/>

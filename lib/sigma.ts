@@ -1,6 +1,7 @@
-import { graphs, INetwork } from "@/store/networks";
+import { graphs, INetwork, NetworkType } from "@/store/networks";
 import Graph from "graphology";
 import { Coordinates } from "sigma/types";
+import { getISTs } from "./hypercube";
 import { getEdgeByDimension } from "./network";
 
 
@@ -35,4 +36,19 @@ export const renderDragNode = (network:string, node:string, coordinates:Coordina
   const graph = graphs.get(network) as Graph
   graph.setNodeAttribute(node, 'x',coordinates.x)
   graph.setNodeAttribute(node, 'y', coordinates.y)
+}
+
+
+export const renderIST = (network:string, root:string, index:number) =>{
+  const graph = graphs.get(network) as Graph
+  const { type, dimension } = graph.getAttributes()
+
+  const trees = getISTs(graph, root) as any[][]
+  trees[index].forEach(([nodeSource,nodeTarget])=>{
+    const edge = graph.findEdge((edge)=>{
+      return graph.hasExtremity(edge, nodeSource) && graph.hasExtremity(edge,nodeTarget)
+    })
+    graph.updateEdgeAttribute(edge,"color",olvC=>"#B30000")
+  })
+
 }

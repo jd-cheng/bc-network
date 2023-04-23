@@ -1,21 +1,6 @@
-import { INetwork } from "@/store/networks"
+import { graphs, INetwork } from "@/store/networks"
 import { sin45 } from "@/utils/degree"
 import Graph from "graphology"
-
-export const defaultHypercubeNodePosionDimension1 = [
-
-]
-
-
-export const defaultHypercubeNodePosionDimension2 = [
-
-]
-
-
-export const defaultNodesCoordinate = [
-
-]
-
 
 
 export const defaultHypercubeNodePosionDimension4 = [
@@ -100,9 +85,125 @@ export const getEdgeByDimension = (graph:Graph, dimension:number , node?:string)
     
     return Math.log2(parseInt(labelX,2) ^ parseInt(labelY,2))+1 === dimension
   })
-
 }
+
+
 
 export const isEdgeByDimension = (labelX:string, labelY:string, dimension:number)=>{
   return Math.log2(parseInt(labelX,2) ^ parseInt(labelY,2))+1 === dimension
+}
+
+export const getNeighborByDimension = (graph: Graph, node:string, dimension:number)=>{
+  const nodeLabel = graph.getNodeAttribute(node,"label")
+  const neighborLabel = generateNeighborLabel(nodeLabel,dimension)
+  return graph.findNeighbor(node, (neighbour,{label})=>{
+    return neighborLabel === label
+  })
+}
+
+export const getISTs = (graph:Graph, root:string)=>{
+
+  const dimension  = graph.getAttribute("dimension")
+  const trees:any = []
+  const arrs = [
+    [2,3,4,1],
+    [3,4,1,2],
+    [4,1,2,3],
+    [1,2,3,4]
+  ]
+
+
+  arrs.forEach((arr,index)=>{
+    const tree = []
+    const queue = [getNeighborByDimension(graph,root,index+1)]
+    for(let i = 0; i< dimension; i++){
+      const d = queue.length
+      for(let j = 0;j < d;j++){
+        const source = queue[j] as string
+        const target = getNeighborByDimension(graph,source,arr[i])
+        queue.push(target)
+        tree.push([graph.getNodeAttribute(source,"label"),graph.getNodeAttribute(target,"label")])
+      }
+    }
+
+    trees.push(tree)
+  })
+
+  console.log(trees)
+  return trees
+}
+
+export const getISTWithEdges = (graph:Graph, root:string, index:number)=>{
+
+  const dimension  = graph.getAttribute("dimension")
+  const trees:any = []
+  const arrs = [
+
+    [2,3,4,1], //(j+1)%3
+    [3,4,1,2],
+    [4,1,2,3],
+      [1,2,3,4], //(j+1)%4
+  ]
+  // const arrs = Array.from({length:dimension},(value,index)=>{
+  //   const tmp = Array.from({length:dimension},(value,index)=>{
+  //     return index+1
+  //   })
+
+  //   for(let k = 0; k< index;k++){
+  //     const head = tmp.shift() as number
+  //     tmp.push(head)
+  //   }
+  //   return tmp
+  // })
+
+
+  arrs.forEach((arr,index)=>{
+    const tree = []
+    const queue = [getNeighborByDimension(graph,root,index+1)]
+    for(let i = 0; i< dimension; i++){
+      const d = queue.length
+      for(let j = 0;j < d;j++){
+        const source = queue[j] as string
+        const target = getNeighborByDimension(graph,source,arr[i])
+        queue.push(target)
+        tree.push(graph.findEdge((edge)=>{
+          return graph.hasExtremity(edge,source) && graph.hasExtremity(edge,target)
+        }))
+      }
+    }
+    trees.push(tree)
+  })
+
+  return trees[index]
+}
+
+
+export const getISTWithEdgesByIndex = (graph:Graph, root:string, index:number)=>{
+
+  const dimension  = graph.getAttribute("dimension")
+  const arr = Array.from({length:dimension},(value,index)=>{
+    return index+1
+  })  
+
+  for(let k = 0; k< index;k++){
+    const head = arr.shift() as number
+    arr.push(head)
+  }
+  console.log(arr)
+
+  const tree:string[] = []
+  const queue = [getNeighborByDimension(graph,root,index+1)]
+  for(let i = 0; i< dimension; i++){
+    const d = queue.length
+    for(let j = 0;j < d;j++){
+      const source = queue[j] as string
+      const target = getNeighborByDimension(graph,source,arr[i])
+      queue.push(target)
+      tree.push(graph.findEdge((edge)=>{
+        return graph.hasExtremity(edge,source) && graph.hasExtremity(edge,target)
+      })as string)
+    }
+  }
+  console.log(tree)
+  return tree
 }

@@ -87,10 +87,6 @@ export const buildNetwork = (network:INetwork, type: string, start?:string) =>{
   })
 }
 
-export const validataNetowrk = (network:INetwork)=>{
-
-}
-
 
 export const validateNodes = (network:string)=>{
   const graph = graphs.get(network) as Graph
@@ -107,4 +103,8 @@ export const validateNodes = (network:string)=>{
   })
 
   return Array.from(labels)
+}
+
+export const getISTs =(network:string, root:string)=>{
+  
 }

@@ -14,7 +14,7 @@ export default function NetworkMenu() {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
-    <Popover placement="bottom-start" closeOnBlur={false} isLazy isOpen={isOpen}>
+    <Popover placement="bottom-start" isLazy isOpen={isOpen}>
       <PopoverTrigger>
         <IconButton
           position='fixed' 
