@@ -11,7 +11,7 @@ import { useWatch, UseWatchProps } from 'react-hook-form'
 
 
 
-export default function Builder() {
+export default function BCBuilder() {
   
   const [network,updateNetwork] = useNetworkStore((state)=>[state.selected, state.updateNetwork])
   const [nodes] = useNodeStore((state)=>[state.nodes])

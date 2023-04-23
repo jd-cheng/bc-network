@@ -2,7 +2,7 @@ import { graphs, useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
 import { Stack } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import DimensionViewer from './DimensionViewer'
+import DimensionBuilder from './DimensionViewer'
 
 export default function DimensionList() {
 
@@ -30,7 +30,7 @@ export default function DimensionList() {
       justify='space-between' 
     >
       {dimensions.map((dimension)=>(
-        <DimensionViewer key={dimension} dimension={dimension} />
+        <DimensionBuilder key={dimension} dimension={dimension} />
       ))}
     </Stack>
   )

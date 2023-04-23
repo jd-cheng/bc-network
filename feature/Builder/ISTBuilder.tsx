@@ -51,11 +51,6 @@ export default function ISTBuilder({index}:IProp) {
     if(!network) {return}
 
     onToggle()
-    // if(!isOpen){
-    //   const graph = graphs.get(network.key)as Graph
-    //   for(const edge of edges){
-    //     graph.setEdgeAttribute(edge,"color","")
-    //   }  
   }
 
   const handleForward = ()=>{

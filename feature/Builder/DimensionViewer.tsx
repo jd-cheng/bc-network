@@ -22,7 +22,7 @@ interface IProp {
 }
 
 
-export default function DimensionViewer({dimension}:IProp) {
+export default function DimensionBuilder({dimension}:IProp) {
 
   const network = useNetworkStore((state)=>state.selected)
   const node = useNodeStore((state)=>state.selected)

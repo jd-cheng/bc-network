@@ -3,12 +3,13 @@ import { create } from "zustand";
 
 export enum PointerType {
   SELECT,
+  DRAG,
   ADDNODE,
 }
 
 interface PointerState {
-  pointer: PointerType
-  setPointer: (pointer:PointerType)=>void
+  pointer?: PointerType
+  setPointer: (pointer?:PointerType)=>void
 }
 
 export const usePointerStore = create<PointerState>((set)=>({
