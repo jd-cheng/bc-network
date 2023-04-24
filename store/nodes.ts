@@ -30,7 +30,6 @@ export const useNodeStore = create<NodeState>((set) => ({
   addNode: (network, node)=>set(produce((state)=>{
 
     state.nodes.push(node)
-
     const graph = graphs.get(network) as Graph   // We create a new node
     graph.addNode(node.key, node.attributes);
 

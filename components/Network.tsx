@@ -46,7 +46,7 @@ export default function Network() {
       }
       addNode(network.key, newNode)
     }
-    renderSelectedNode(network.key, newNode.key, node?.key)
+    //improvment needing
     setNode(newNode.key)
   } 
 

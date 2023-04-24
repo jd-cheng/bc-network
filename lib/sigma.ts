@@ -13,9 +13,10 @@ export const renderSelectedNode = (network:string, nextNode?: string, preNode?: 
   
   console.log('render selected node', nextNode, preNode)
   const graph = graphs.get(network) as Graph
+  console.log(graph)
 
   //clear previously seleced elements effect
-  preNode && graph.removeNodeAttribute(preNode, 'highlighted')
+  preNode && graph.setNodeAttribute(preNode, 'highlighted',false)
   //render currently selected element
   nextNode && graph.setNodeAttribute(nextNode, 'highlighted', true)
 
