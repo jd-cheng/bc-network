@@ -1,7 +1,8 @@
 import { HamburgerIcon } from '@chakra-ui/icons'
-import { IconButton, Popover, PopoverContent, PopoverTrigger, useDisclosure } from '@chakra-ui/react'
+import { IconButton, Menu, MenuButton, MenuList, Text, Flex, Divider, MenuItem } from '@chakra-ui/react'
 import React from 'react'
-import MenuPanel from './MenuPanel'
+import AddNetwork from './AddNetwork'
+import NetworkList from './NetworkList'
 
 export enum NetworkMenuType {
   ADD='add',
@@ -10,26 +11,26 @@ export enum NetworkMenuType {
 }
 
 export default function NetworkMenu() {
-
-  const { isOpen, onToggle } = useDisclosure()
-
   return (
-    <Popover placement="bottom-start" isLazy isOpen={isOpen}>
-      <PopoverTrigger>
-        <IconButton
-          position='fixed' 
-          top='16px' 
-          left='16px' 
-          zIndex='overlay'
-          icon={<HamburgerIcon/>}
-          aria-label=''
-          variant='outline'
-          onClick={onToggle}
-        />
-      </PopoverTrigger>
-      <PopoverContent maxW='224px'>
-        <MenuPanel/>
-      </PopoverContent>
-    </Popover> 
+    <Menu isLazy>
+      <MenuButton
+        as={IconButton}
+        position='fixed' 
+        top='16px' 
+        left='16px' 
+        zIndex='overlay'
+        icon={<HamburgerIcon/>}
+        aria-label=''
+        variant='outline'
+      />
+      <MenuList>
+        <Flex justify="space-between" align="center" mx="3">
+          <Text fontWeight="semibold">Networks</Text>
+          <AddNetwork/>
+        </Flex>
+        <Divider/>
+        <NetworkList/>
+      </MenuList>
+    </Menu>
   )
 }
