@@ -1,8 +1,8 @@
 import { NodeAttributes } from '@/lib/graph'
 import { renderDragNode, renderSelectedNode } from '@/lib/sigma'
-import {  graphs, useNetworkStore } from '@/store/networks'
+import { useCursorStore, CursorType } from '@/store/cursors'
+import { graphs, useNetworkStore } from '@/store/networks'
 import { INode, useNodeStore } from '@/store/nodes'
-import { PointerType, usePointerStore } from '@/store/pointers'
 import { Box } from '@chakra-ui/react'
 import Graph from 'graphology'
 import React, { useEffect, useRef } from 'react'
@@ -20,11 +20,11 @@ export default function Network() {
   const rendererRef = useRef<Sigma>()
   const containerRef = useRef<HTMLDivElement>(null)
   const network = useNetworkStore((state) =>state.selected)
-  const pointer = usePointerStore((state)=>state.pointer)
+  const cursor = useCursorStore((state)=>state.cursor)
   const [node, setNode, setNodes, addNode] = useNodeStore((state) => [ state.selected, state.setSelected, state.setNodes,state.addNode])
 
   const clickNode = ({node: nextNode}: SigmaNodeEventPayload ) => {
-    if(!network || pointer !== PointerType.SELECT) { return } 
+    if(!network || cursor !== CursorType.SELECT) { return } 
     console.log("select:",nextNode)
   
     renderSelectedNode(network.key,nextNode,node?.key)
@@ -36,7 +36,7 @@ export default function Network() {
     if(!network || !rendererRef.current) { return }
 
     const newNode = {} as INode
-    if(pointer === PointerType.ADDNODE){
+    if(cursor === CursorType.ADDNODE){
       const coordinates = rendererRef.current.viewportToGraph({ x,y });
       newNode.key = uuidv4()
       newNode.attributes = {
@@ -51,15 +51,14 @@ export default function Network() {
   } 
 
   const downNode = ({node: nextNode}: SigmaNodeEventPayload) =>{
-    if(!network) {return}
+    if(!network || cursor !== CursorType.DRAG) {return}
     console.log('down node', nextNode)
-    if(nextNode === node?.key) {
-      isDragging = true;
-    }
+    isDragging = true;
+    setNode(nextNode)
   }
 
   const mouseMoveBody = (coordinates: MouseCoords)=>{
-    if (!isDragging || !node || !network || !rendererRef.current) return;
+    if (!isDragging || !node || !network || !rendererRef.current || cursor !== CursorType.DRAG) return;
     // Get new position of node
     const renderer = rendererRef.current
     const newCoord = renderer.viewportToGraph(coordinates);
@@ -78,7 +77,7 @@ export default function Network() {
 
   const mouseDown = ()=>{
     console.log('mouse down')
-    if(!rendererRef.current) return
+    if(!rendererRef.current || cursor !== CursorType.DRAG) return
     const renderer = rendererRef.current
     if (!renderer.getCustomBBox()) renderer.setCustomBBox(renderer.getBBox());
 
@@ -144,7 +143,7 @@ export default function Network() {
       mouseCaptor.removeListener('mousedown',mouseDown)
     }
 
-  }, [network,node,pointer])
+  }, [network,node,cursor])
 
   return (
     <Box top='0' left='0' w='100%' h='100%' ref={containerRef}></Box>

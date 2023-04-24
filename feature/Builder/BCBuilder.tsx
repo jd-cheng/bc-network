@@ -32,35 +32,48 @@ export default function BCBuilder() {
   
   return (
     <Stack direction='column' spacing="1">
-      <Flex direction='row' justify="space-between" align="center">
-        <Text fontWeight="semibold">
-          Nodes
-          <Badge ml='1' colorScheme={missingNodes.length?"red":"green"}>
-            {missingNodes.length?"Invalid": "Valid"}
-          </Badge>
-        </Text>
-        <Button size="sm" variant="outline">
-          Auto Fix
-        </Button>
-      </Flex>
-      <Wrap>
-        {missingNodes.map((node)=>(
-          <WrapItem key={node}>
-            <Button  
-              colorScheme='red'
-              size="sm"
-            >
-              {node}
-            </Button>
-          </WrapItem>
-        ))}
-      </Wrap>
-      <FormLabel size='sm'>
-        Edges
-        <Badge ml='1' colorScheme={missingNodes.length?"gray":missingEdges.length?"red":"green"}>
-          {missingNodes.length?"Disabled":missingEdges.length?"Invalid":"Valid"}
+      <FormLabel size="sm">
+        Nodes
+        <Badge ml="2" colorScheme={missingNodes.length?"red":"green"}>
+          {missingNodes.length?"missing": "Valid"}
         </Badge>
       </FormLabel>
+      <Wrap maxH="20" minH="40px" overflowY="scroll" borderWidth="1px" borderRadius="md" p="1">
+        {missingNodes.map((node)=>(
+            <WrapItem key={node}>
+              <Badge  
+                colorScheme='red'
+                borderRadius="full"
+                _hover={{"cursor":"pointer"}}
+              >
+                {node}
+              </Badge>
+            </WrapItem>
+          ))
+        }
+      </Wrap>
+
+      <FormLabel size='sm'>
+        Edges
+        <Badge ml="2" colorScheme={missingNodes.length?"red":"green"}>
+                {missingNodes.length?"missing": "Valid"}
+        </Badge>
+      </FormLabel>
+      
+        <Wrap maxH="20" minH="40px" overflowY="scroll" borderWidth="1px" borderRadius="md" p="1">
+          {missingNodes.map((node)=>(
+              <WrapItem key={node}>
+                <Badge  
+                  colorScheme='red'
+                  borderRadius="full"
+                  _hover={{"cursor":"pointer"}}
+                >
+                  {node}
+                </Badge>
+              </WrapItem>
+            ))
+          }
+        </Wrap>
     </Stack>
   )
 }

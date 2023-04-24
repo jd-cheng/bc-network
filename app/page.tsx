@@ -3,10 +3,8 @@
 import Network from '@/components/Network'
 import { Box } from '@chakra-ui/react'
 import NetworkMenu from '@/feature/Network/NetworkMenu'
-import Pointer from '@/components/Pointer'
-import NetworkEditor from '@/feature/Editor/NetworkEditor'
-import NodeEditor from '@/feature/Editor/NodeEditor'
 import ToolMenu from '@/components/ToolMenu'
+import Cursor from '@/components/Cursor'
 
 
 export default function Home() {
@@ -17,7 +15,7 @@ export default function Home() {
       <Box as="main" position='relative' flex='1 1 auto'>
         <Network/>
       </Box>
-      <Pointer/>
+      <Cursor/>
     </>
 
   )

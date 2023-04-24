@@ -4,11 +4,6 @@ import {
   PopoverContent, 
   PopoverTrigger, 
   Stack, 
-  Tab, 
-  TabList, 
-  TabPanel, 
-  TabPanels, 
-  Tabs, 
   useDisclosure } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import {  RxDashboard as ToolbarIcon } from "react-icons/rx";
