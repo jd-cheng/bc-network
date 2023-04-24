@@ -3,6 +3,7 @@ import {
   Popover, 
   PopoverContent, 
   PopoverTrigger, 
+  Stack, 
   Tab, 
   TabList, 
   TabPanel, 
@@ -17,6 +18,8 @@ import NetworkEditor from '@/feature/Editor/NetworkEditor';
 import NodeEditor from '@/feature/Editor/NodeEditor';
 import NetworkPanel from './NetworkPanel';
 import NodePanel from './NodePanel';
+import Editors from './Editors';
+import Builders from './Builders';
 
 
 
@@ -25,12 +28,6 @@ export default function ToolMenu() {
 
   const network = useNetworkStore((state)=>state.selected)
   const { isOpen, onToggle, onOpen, onClose } = useDisclosure()
-  const [tabIndex, setTabIndex] = useState(0)
-  // const node = useNodeStore((state)=>state.selected)
-  // useEffect(()=>{
-  //   if(!network || !node) return
-  //   setTabIndex(1)
-  // }, [node?.key])
 
   return (
     <Popover placement="bottom-start" closeOnBlur={false} isLazy isOpen={isOpen}>
@@ -48,27 +45,10 @@ export default function ToolMenu() {
         />
       </PopoverTrigger>
       <PopoverContent width="min-content" px="3" py="2">
-        <Tabs 
-          index={tabIndex}
-          onChange={(index)=>setTabIndex(index)}
-          isFitted 
-          isLazy 
-          size="sm" 
-          minW="224px"
-        >
-          <TabList mb='1em'>
-            <Tab>Network</Tab>
-            <Tab>Node</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel p={0}>
-              <NetworkPanel/>
-            </TabPanel>
-            <TabPanel p={0}>
-              <NodePanel/>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+        <Stack direction="column" spacing="2">
+          <Editors/>
+          <Builders/>
+        </Stack>
       </PopoverContent>
     </Popover> 
   )
