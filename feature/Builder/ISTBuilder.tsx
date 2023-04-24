@@ -1,4 +1,6 @@
-import { getISTs, getISTWithEdges, getISTWithEdgesByIndex } from '@/lib/hypercube'
+import { getISTByIndex, getNodeLabel } from '@/lib/network'
+import { renderIST } from '@/lib/sigma'
+import { IEdge } from '@/store/edges'
 import { graphs, useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
 import { randomHexColor } from '@/utils/color'
@@ -21,7 +23,6 @@ import {
   useDisclosure} from '@chakra-ui/react'
 import Graph from 'graphology'
 import React, { useEffect, useState } from 'react'
-import { TbTool } from "react-icons/tb";
 
 
 interface IProp {
@@ -33,31 +34,23 @@ export default function ISTBuilder({index}:IProp) {
 
   const network = useNetworkStore((state)=>state.selected)
   const node = useNodeStore((state)=>state.selected)
-  const [isBuilding, setIsBuilding] = useState(false)
   const [color, setColor] = useState(randomHexColor)
-  const [edges, setEdges] = useState<string[]>([])
+  const [tree, setTree] = useState<IEdge[]>([])
   const [pointer, setPointer] = useState<number>(-1)
   const { isOpen, onToggle } = useDisclosure()
 
   const handleColor = (nextColor:string) =>{
     console.log('handle color')
-    if(!network || !isBuilding) {return}
+    if(!network) {return}
     
     setColor(nextColor)
-  }
-
-  const handleIsBuilding = ()=>{
-    console.log('handle isRendered')
-    if(!network) {return}
-
-    onToggle()
   }
 
   const handleForward = ()=>{
     if(!network || !node) return
     const graph = graphs.get(network.key) as Graph
     console.log(pointer)
-    graph.setEdgeAttribute(edges[pointer+1],"color",color)
+    graph.setEdgeAttribute(tree[pointer+1],"color",color)
 
     setPointer(pointer+1)
   }
@@ -66,21 +59,25 @@ export default function ISTBuilder({index}:IProp) {
     if(!network || !node) return
     const graph = graphs.get(network.key) as Graph
     console.log(pointer)
-    graph.setEdgeAttribute(edges[pointer],"color","")
+    graph.setEdgeAttribute(tree[pointer],"color","")
 
     setPointer(pointer-1)
   }
 
   useEffect(()=>{
     if(!network || !node) { return }
-    console.log('render IST builder', node)
 
-    // console.log(getISTs(graphs.get(network.key),node.key))
-    setEdges(getISTWithEdges(graphs.get(network.key)as Graph, node.key,index))
+    const tree = getISTByIndex(network.key,node.key,index).map((edge)=>{
+      const graph = graphs.get(network.key) as Graph
+      return{key:edge, source:graph.source(edge), target:graph.target(edge)}
+    })
+
+    setTree(tree)
     setPointer(-1)
 
     return ()=>{
       console.log('unmount IST builder')
+      tree.length && renderIST(network.key,node.key,index)
     }
 
   }, [node])
@@ -94,29 +91,36 @@ export default function ISTBuilder({index}:IProp) {
       <PopoverAnchor>
         <Stack direction='row' align='center' justify='space-between' w='full'>
           <PopoverTrigger>
-            <Box as="button" bg={color} w="24px" h="24px"  />
+            <Box as="button" bg={color} w="32px" h="32px"  />
           </PopoverTrigger>
           <Text >{index+1}th-IST</Text>
           <IconButton 
             aria-label='' 
-            icon={<TbTool/>} 
-            onClick={handleIsBuilding} 
-            isActive={isOpen} 
+            icon={isOpen?<ViewIcon/>:<ViewOffIcon/>} 
+            onClick={onToggle} 
             isDisabled={!node}
+            variant="outline"
           />
         </Stack>
       </PopoverAnchor>
       <Collapse in={isOpen} animateOpacity>
-            <ButtonGroup isAttached>
+            <ButtonGroup isAttached variant='outline'>
               <IconButton
                   aria-label=""
                   icon={<ArrowBackIcon/>}
+                  isDisabled={pointer<0}
                   onClick={hanldeBack}
                 />
+                <Button>
+                  {network && node && tree.length && pointer&& 
+                    getNodeLabel(network?.key,tree[pointer].source).join(" - ").join(getNodeLabel(network?.key,tree[pointer].target))
+                  }
+                </Button>
                 <IconButton
                   aria-label=""
                   icon={<ArrowForwardIcon/>}
                   onClick={handleForward}
+                  isDisabled={pointer>=tree.length-1}
                 />
             </ButtonGroup>
           </Collapse>

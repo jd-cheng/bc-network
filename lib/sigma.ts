@@ -1,8 +1,7 @@
-import { graphs, INetwork, NetworkType } from "@/store/networks";
+import { graphs } from "@/store/networks";
 import Graph from "graphology";
 import { Coordinates } from "sigma/types";
-import { getISTs } from "./hypercube";
-import { getEdgeByDimension } from "./network";
+import { getEdgeByDimension, getISTByIndex } from "./network";
 
 
 export const renderSetting = {
@@ -39,16 +38,21 @@ export const renderDragNode = (network:string, node:string, coordinates:Coordina
 }
 
 
-export const renderIST = (network:string, root:string, index:number) =>{
+export const renderIST = (network:string, root:string, index:number,color?:string) =>{
   const graph = graphs.get(network) as Graph
-  const { type, dimension } = graph.getAttributes()
 
-  const trees = getISTs(graph, root) as any[][]
-  trees[index].forEach(([nodeSource,nodeTarget])=>{
-    const edge = graph.findEdge((edge)=>{
-      return graph.hasExtremity(edge, nodeSource) && graph.hasExtremity(edge,nodeTarget)
-    })
-    graph.updateEdgeAttribute(edge,"color",olvC=>"#B30000")
-  })
+  const tree = getISTByIndex(network,root,index) as string[]
+
+  for(const edge of tree){
+    graph.updateEdgeAttribute(edge,"color",oldColor=>color)
+  }
+
+  // const trees = getISTs(graph, root) as any[][]
+  // tree[index].forEach(([nodeSource,nodeTarget])=>{
+  //   const edge = graph.findEdge((edge)=>{
+  //     return graph.hasExtremity(edge, nodeSource) && graph.hasExtremity(edge,nodeTarget)
+  //   })
+  //   graph.updateEdgeAttribute(edge,"color",olvC=>"#B30000")
+  // })
 
 }

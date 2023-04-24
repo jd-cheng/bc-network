@@ -1,6 +1,8 @@
 import { graphs, useNetworkStore } from '@/store/networks';
+import { useNodeStore } from '@/store/nodes';
 import { PointerType, usePointerStore } from '@/store/pointers';
 import { Button, ButtonGroup, Card, IconButton } from '@chakra-ui/react'
+import Graph from 'graphology';
 import React, { useEffect } from 'react'
 import { BiPointer, BiCircle } from "react-icons/bi"
 import { TbHandFinger } from "react-icons/tb";
@@ -9,6 +11,7 @@ export default function Pointer() {
 
   const [pointer, setPointer] = usePointerStore((state)=>[state.pointer, state.setPointer])
   const network = useNetworkStore((state)=>state.selected)
+  const node = useNodeStore((state)=>state.selected)
 
   useEffect(()=>{
     setPointer(network&&PointerType.SELECT)
@@ -37,6 +40,7 @@ export default function Pointer() {
           onClick={()=>setPointer(PointerType.ADDNODE)}
           isActive = {pointer === PointerType.ADDNODE}          
         />
+        {/* <Button onClick={()=>getISTByIndex(network?.key,node?.key,0)}>IST</Button> */}
       </ButtonGroup>
     </Card>
   )

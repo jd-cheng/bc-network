@@ -5,10 +5,11 @@ import {
 import Graph from "graphology";
 import {
   generateNeighborLabel as generateCrossedNeighborLabel, 
-  isEdgeByDimension as isCrossedEdgeByDimension } from "./crossedcube";
+  isEdgeByDimension as isCrossedEdgeByDimension, } from "./crossedcube";
 import { 
   generateNeighborLabel as generateHyperNeighborLabel,
-  isEdgeByDimension as isHyperEdgeByDimension } from "./hypercube";
+  isEdgeByDimension as isHyperEdgeByDimension,
+  getISTByIndex as getHyperISTByIndex } from "./hypercube";
 
 export const getEdgeByDimension = (network:string, dimension: number, node?:string)=>{
   console.log('get edges by dimension')
@@ -88,7 +89,7 @@ export const buildNetwork = (network:INetwork, type: string, start?:string) =>{
 }
 
 
-export const validateNodes = (network:string)=>{
+export const getMissingNodes = (network:string)=>{
   const graph = graphs.get(network) as Graph
   const dimension = graph.getAttribute("dimension")
   const labels = new Set(Array.from({length: Math.pow(2,dimension)}, (value, key)=>{
@@ -105,6 +106,36 @@ export const validateNodes = (network:string)=>{
   return Array.from(labels)
 }
 
-export const getISTs =(network:string, root:string)=>{
-  
+export const getMissingEdges=(network:string)=>{
+  const graph = graphs.get(network) as Graph
+  const { type, dimension } = graph.getAttributes()
+
+}
+
+
+export const getISTByIndex =(network:string, root:string, index:number)=>{
+  console.log('getISTByIndex')
+  const graph = graphs.get(network) as Graph
+  const type = graph.getAttribute("type")
+  let tree:string[] = []
+  switch(type){
+    case NetworkType.HYPER:
+      tree = getHyperISTByIndex(graph,root,index)
+      break;
+  }
+  return tree
+}
+
+
+export const getExtremitiesLabel = (network:string, edge:string)=>{
+  const graph = graphs.get(network) as Graph
+  const extremities = graph.extremities(edge)
+  console.log("extremities",extremities.map((node)=>graph.getNodeAttribute(node,"label")))
+  return extremities.map((node)=>graph.getNodeAttribute(node,"label"))
+
+}
+
+export const getNodeLabel = (network:string,node:string)=>{
+  const graph = graphs.get(network) as Graph
+  return(graph.getNodeAttribute(node,"label"))
 }

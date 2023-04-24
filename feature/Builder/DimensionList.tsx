@@ -2,7 +2,7 @@ import { graphs, useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
 import { Stack } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import DimensionBuilder from './DimensionViewer'
+import DimensionBuilder from './DimensionBuilder'
 
 export default function DimensionList() {
 

@@ -106,10 +106,11 @@ export const getISTs = (graph:Graph, root:string)=>{
   const dimension  = graph.getAttribute("dimension")
   const trees:any = []
   const arrs = [
+    [1,2,3,4],
     [2,3,4,1],
     [3,4,1,2],
     [4,1,2,3],
-    [1,2,3,4]
+
   ]
 
 
@@ -142,19 +143,8 @@ export const getISTWithEdges = (graph:Graph, root:string, index:number)=>{
     [2,3,4,1], //(j+1)%3
     [3,4,1,2],
     [4,1,2,3],
-      [1,2,3,4], //(j+1)%4
+    [1,2,3,4], //(j+1)%4
   ]
-  // const arrs = Array.from({length:dimension},(value,index)=>{
-  //   const tmp = Array.from({length:dimension},(value,index)=>{
-  //     return index+1
-  //   })
-
-  //   for(let k = 0; k< index;k++){
-  //     const head = tmp.shift() as number
-  //     tmp.push(head)
-  //   }
-  //   return tmp
-  // })
 
 
   arrs.forEach((arr,index)=>{
@@ -178,18 +168,23 @@ export const getISTWithEdges = (graph:Graph, root:string, index:number)=>{
 }
 
 
-export const getISTWithEdgesByIndex = (graph:Graph, root:string, index:number)=>{
-
+export const getISTByIndex = (graph:Graph, root:string, index:number)=>{
   const dimension  = graph.getAttribute("dimension")
-  const arr = Array.from({length:dimension},(value,index)=>{
-    return index+1
-  })  
+  const arrs = [
+    [2,3,4,1], //(j+1)%3
+    [3,4,1,2],
+    [4,1,2,3],
+    [1,2,3,4], //(j+1)%4
+  ]
+  // const arr = Array.from({length:dimension},(value,index)=>{
+  //   return index+1
+  // })  
 
-  for(let k = 0; k< index;k++){
-    const head = arr.shift() as number
-    arr.push(head)
-  }
-  console.log(arr)
+  // for(let k = 0; k< index;k++){
+  //   const head = arrs[index].shift() as number
+  //   arrs[index].push(head)
+  // }
+  // console.log(arrs[index])
 
   const tree:string[] = []
   const queue = [getNeighborByDimension(graph,root,index+1)]
@@ -197,13 +192,12 @@ export const getISTWithEdgesByIndex = (graph:Graph, root:string, index:number)=>
     const d = queue.length
     for(let j = 0;j < d;j++){
       const source = queue[j] as string
-      const target = getNeighborByDimension(graph,source,arr[i])
+      const target = getNeighborByDimension(graph,source,arrs[index][i])
       queue.push(target)
       tree.push(graph.findEdge((edge)=>{
         return graph.hasExtremity(edge,source) && graph.hasExtremity(edge,target)
       })as string)
     }
   }
-  console.log(tree)
   return tree
 }

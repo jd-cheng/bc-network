@@ -1,4 +1,7 @@
-import { PopoverContent, PopoverArrow, PopoverBody, PopoverFooter, Button } from '@chakra-ui/react'
+import { 
+  PopoverContent, 
+  PopoverArrow, 
+  PopoverBody } from '@chakra-ui/react'
 import React from 'react'
 import { HexColorPicker } from 'react-colorful'
 

@@ -1,14 +1,11 @@
-import { NetworkAttributes } from '@/lib/graph'
-import { validateNodes } from '@/lib/network'
+import { getMissingNodes } from '@/lib/network'
 import { 
   NetworkType, 
   networkTypes, 
   useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
-import { Badge, Card, CardBody, CardHeader, FormLabel, Heading, Select, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Wrap, WrapItem } from '@chakra-ui/react'
+import { Badge, Button, Text, FormLabel, Stack, Wrap, WrapItem, Flex } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { useWatch, UseWatchProps } from 'react-hook-form'
-
 
 
 export default function BCBuilder() {
@@ -17,12 +14,13 @@ export default function BCBuilder() {
   const [nodes] = useNodeStore((state)=>[state.nodes])
   const [missingNodes, setMissingNodes] = useState<string[]>([])
   const [missingEdges, setMissingEdges] = useState<string[]>([])
+  // const [redundantNodes]
 
   
   useEffect(()=>{
     if(!network) return
     console.log("missing nodes",missingNodes)
-    setMissingNodes(validateNodes(network.key))
+    setMissingNodes(getMissingNodes(network.key))
   },[network,nodes])
 
   /**
@@ -34,16 +32,26 @@ export default function BCBuilder() {
   
   return (
     <Stack direction='column' spacing="1">
-      <FormLabel size="sm">
-        Nodes
-        <Badge ml='1' colorScheme={missingNodes.length?"red":"green"}>
-          {missingNodes.length?"Invalid": "Valid"}
-        </Badge>
-      </FormLabel>
+      <Flex direction='row' justify="space-between" align="center">
+        <Text fontWeight="semibold">
+          Nodes
+          <Badge ml='1' colorScheme={missingNodes.length?"red":"green"}>
+            {missingNodes.length?"Invalid": "Valid"}
+          </Badge>
+        </Text>
+        <Button size="sm" variant="outline">
+          Auto Fix
+        </Button>
+      </Flex>
       <Wrap>
         {missingNodes.map((node)=>(
           <WrapItem key={node}>
-            <Badge  colorScheme='red'>{node}</Badge>
+            <Button  
+              colorScheme='red'
+              size="sm"
+            >
+              {node}
+            </Button>
           </WrapItem>
         ))}
       </Wrap>

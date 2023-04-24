@@ -13,11 +13,6 @@ import {
 import React, { useEffect, useState } from 'react'
 import {  RxDashboard as ToolbarIcon } from "react-icons/rx";
 import { useNetworkStore } from '@/store/networks';
-import ToolPanel from './ToolPanel';
-import NetworkEditor from '@/feature/Editor/NetworkEditor';
-import NodeEditor from '@/feature/Editor/NodeEditor';
-import NetworkPanel from './NetworkPanel';
-import NodePanel from './NodePanel';
 import Editors from './Editors';
 import Builders from './Builders';
 
