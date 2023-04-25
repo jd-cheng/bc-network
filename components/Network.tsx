@@ -57,6 +57,7 @@ export default function Network() {
     if(!network || cursor !== CursorType.DRAG) {return}
     console.log('down node', nextNode)
     isDragging = true;
+    renderSelectedNode(network.key,nextNode,node?.key)
     setNode(nextNode)
   }
 
