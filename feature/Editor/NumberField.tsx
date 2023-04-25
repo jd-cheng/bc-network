@@ -7,7 +7,7 @@ import {
   NumberDecrementStepper } from "@chakra-ui/react";
 import { useController, UseControllerProps } from "react-hook-form";
 
-export function NumberField({ name, control, rules, ...props }:UseControllerProps<NetworkAttributes>) {
+export function NumberField({ name, control, rules, ...props }:UseControllerProps<Partial<NetworkAttributes>>) {
   const {
     field: { ref, ...inputProps }
   } = useController({

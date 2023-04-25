@@ -99,9 +99,14 @@ export default function Network() {
   },[containerRef])
 
   useEffect(() => {
-    if(!containerRef.current || !rendererRef.current || !network) { return }
+    if(!containerRef.current || !rendererRef.current) { return }
     console.log('load network')
     
+    if(!network){
+      rendererRef.current.clear()
+      return
+    }
+
     const graph = graphs.get(network.key) as Graph
 
     const nodes = graph.nodes().map((node)=>{
@@ -115,11 +120,7 @@ export default function Network() {
     rendererRef.current.setGraph(graph)
     setNodes(nodes)
 
-    
-    return () => {
-      console.log("unmount network")
-    }
-  }, [network])
+  }, [network?.key])
 
   useEffect(()=>{
     if(!containerRef.current || !rendererRef.current || !network) { return }
@@ -144,7 +145,7 @@ export default function Network() {
       mouseCaptor.removeListener('mousedown',mouseDown)
     }
 
-  }, [network,node,cursor])
+  }, [network?.key,node?.key,cursor])
 
   return (
     <Box top='0' left='0' w='100%' h='100%' ref={containerRef}></Box>

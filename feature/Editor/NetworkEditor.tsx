@@ -18,7 +18,7 @@ export default function NetworkEditor() {
 
 
   const [network,updateNetwork,deleteNetwork] = useNetworkStore((state)=>[state.selected,state.updateNetwork,state.deleteNetwork])
-  const { control, register, watch ,formState:{errors}, setValue } = useForm<NetworkAttributes>({
+  const { control, register, watch ,formState:{errors}, setValue } = useForm<Partial<NetworkAttributes>>({
     mode:"onChange",
   })
 
@@ -27,10 +27,9 @@ export default function NetworkEditor() {
   const name = watch("name")
 
   useEffect(()=>{
-    if(!network) return
-    setValue("dimension", network.attributes.dimension)
-    setValue("type", network.attributes.type)
-    setValue("name", network.attributes.name)
+    setValue("dimension", network?.attributes.dimension)
+    setValue("type", network?.attributes.type)
+    setValue("name", network?.attributes.name)
   }, [network?.key])
 
   useEffect(()=>{

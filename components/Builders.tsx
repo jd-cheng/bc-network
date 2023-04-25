@@ -4,18 +4,14 @@ import ISTList from '@/feature/Builder/ISTList'
 import { useNetworkStore } from '@/store/networks'
 import { useNodeStore } from '@/store/nodes'
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 export default function Builders() {
 
   const network = useNetworkStore((state)=>state.selected)
   const node = useNodeStore((state)=>state.selected)
-  const [tabIndex, setTabIndex] = useState(0)
+  const [tabIndex, setTabIndex] = useState<number>(0)
 
-  // useEffect(()=>{
-  //   if(!network || !node) return
-  //   setTabIndex(1)
-  // }, [node?.key])
 
   return (
     <Tabs 
@@ -27,9 +23,9 @@ export default function Builders() {
       minW="224px"
     >
       <TabList mb='1em'>
-        <Tab>BC</Tab>
-        <Tab>Dimension</Tab>
-        <Tab>ISTs</Tab>
+        <Tab isDisabled={!network}>BC</Tab>
+        <Tab isDisabled={!network}>Dimension</Tab>
+        <Tab isDisabled={!network || !node}>ISTs</Tab>
       </TabList>
       <TabPanels>
         <TabPanel p={0}>
