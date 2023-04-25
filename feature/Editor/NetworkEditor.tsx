@@ -1,11 +1,13 @@
 import { NetworkAttributes } from '@/lib/graph'
 import { graphs, networkTypes, useNetworkStore } from '@/store/networks'
+import { DeleteIcon } from '@chakra-ui/icons'
 import { 
   Button,
   Card,
   CardBody,
   FormControl, 
   FormLabel, 
+  IconButton, 
   Input, 
   Select } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
@@ -15,7 +17,7 @@ import { NumberField } from './NumberField'
 export default function NetworkEditor() {
 
 
-  const [network,updateNetwork] = useNetworkStore((state)=>[state.selected,state.updateNetwork])
+  const [network,updateNetwork,deleteNetwork] = useNetworkStore((state)=>[state.selected,state.updateNetwork,state.deleteNetwork])
   const { control, register, watch ,formState:{errors}, setValue } = useForm<NetworkAttributes>({
     mode:"onChange",
   })
@@ -51,7 +53,18 @@ export default function NetworkEditor() {
   return (
     <form>
       <FormControl>
-        <FormLabel>Name</FormLabel>
+        <FormLabel display="flex" mr="0" alignItems="center" justifyContent="space-between">
+          Name
+          <IconButton
+            aria-label=''
+            icon={<DeleteIcon/>}
+            size="xs"
+            variant="outline"
+            colorScheme="red"
+            isDisabled={!network}
+            onClick={()=>network&&deleteNetwork(network.key)}
+          />
+        </FormLabel>
         <Input {...register('name')}/>
       </FormControl>
 

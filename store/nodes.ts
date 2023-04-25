@@ -29,9 +29,10 @@ export const useNodeStore = create<NodeState>((set) => ({
 
   addNode: (network, node)=>set(produce((state)=>{
 
-    state.nodes.push(node)
     const graph = graphs.get(network) as Graph   // We create a new node
-    graph.addNode(node.key, node.attributes);
+    graph.addNode(node.key, node.attributes)
+    state.nodes.push({key:node.key,attributes:{size:node.attributes.size, color:node.attributes.color}})//avoid coordinates
+
 
   })),
 
@@ -46,13 +47,10 @@ export const useNodeStore = create<NodeState>((set) => ({
   })),
 
   updateNode: (network:string, key:string, attributes:Partial<NodeAttributes>) => set(produce((state:NodeState)=>{
-
-
     const node = state.nodes.find((node)=>node.key === key) as INode
     const newAttributes = {...node.attributes, ...attributes}
 
     node.attributes = newAttributes
-
     key === state.selected?.key && (state.selected.attributes = newAttributes)
 
     const graph = graphs.get(network) as Graph

@@ -24,7 +24,7 @@ export default function Network() {
   const [node, setNode, setNodes, addNode] = useNodeStore((state) => [ state.selected, state.setSelected, state.setNodes,state.addNode])
 
   const clickNode = ({node: nextNode}: SigmaNodeEventPayload ) => {
-    if(!network || cursor !== CursorType.SELECT) { return } 
+    if(!network) { return } 
     console.log("select:",nextNode)
   
     renderSelectedNode(network.key,nextNode,node?.key)
@@ -42,12 +42,15 @@ export default function Network() {
       newNode.attributes = {
         ...coordinates,
         size:10,
-        color:"#B30000"
+        color:"#B30000",
       }
       addNode(network.key, newNode)
     }
     //improvment needing
+    renderSelectedNode(network.key,newNode.key,node?.key)
     setNode(newNode.key)
+
+
   } 
 
   const downNode = ({node: nextNode}: SigmaNodeEventPayload) =>{
@@ -133,11 +136,9 @@ export default function Network() {
 
     return ()=>{
       console.log('unmount listener')
-      if(!renderer)  return
       renderer.removeListener("clickNode", clickNode);
       renderer.removeListener("clickStage",clickStage);
       renderer.removeListener("downNode", downNode)
-      if(!mouseCaptor) return
       mouseCaptor.removeListener('mousemovebody', mouseMoveBody)
       mouseCaptor.removeListener('mouseup', mouseUp)
       mouseCaptor.removeListener('mousedown',mouseDown)

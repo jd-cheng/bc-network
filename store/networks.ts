@@ -64,9 +64,9 @@ export const useNetworkStore = create<NetworkState>((set)=>({
 
   deleteNetwork: (key)=> set(produce((state: NetworkState)=>{
     const index = state.networks.findIndex((network)=>network.key === key)
-    state.networks.splice(index, 1)
 
     key === state.selected?.key &&(state.selected = undefined)
+    state.networks.splice(index, 1)
 
     graphs.delete(key)
   })),
