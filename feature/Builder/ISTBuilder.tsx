@@ -90,17 +90,14 @@ export default function ISTBuilder({index}:IProp) {
 
     setTree(tree)
     setPointer(-1)
+    setIsRenderd(false)
 
     return ()=>{
       console.log('unmount IST builder')
       tree.length && renderIST(network.key,node.key,index)
-      onClose()
-      setTree([])
-      setPointer(-1)
-      setIsRenderd(false)
     }
 
-  }, [node])
+  }, [node?.key])
 
 
   return (

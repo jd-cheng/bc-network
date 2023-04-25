@@ -19,7 +19,7 @@ export const buildCrossedcube = (graph:Graph, dimension: number, start?:string)=
   //connect nodes
   graph.forEachNode((node,{label})=>{
 
-    const neighborLabel = new Set(Array.from({length:dimension},(_, key)=>generateNeighborLabel(label,key+1)))
+    const neighborLabel = new Set(Array.from({length:dimension},(_, key)=>createNeighborLabel(label,key+1)))
     console.log('neighborLabel', neighborLabel)
     const neighbors = graph.filterNodes((node, {label})=>{
       return neighborLabel.has(label)
@@ -36,35 +36,37 @@ export const buildCrossedcube = (graph:Graph, dimension: number, start?:string)=
 }
 
 
-export const generateNeighborLabel = (node: string, dimension: number)=>{
+export const createNeighborLabel = (nodeLabel: string, dimension: number)=>{
 
   const reverseIdx = (idx: number)=>{
-    return node.length-idx-1
+    return nodeLabel.length-idx-1
   }
 
-  if(dimension<1 || dimension>node.length){
+  if(dimension<1 || dimension>nodeLabel.length){
     return ''
   }
 
-  const diffIdx = node.length-dimension //0
-  const lamda = reverseIdx(diffIdx-1)//5
-  let neighbor = node //11100
+  const diffIdx = nodeLabel.length-dimension //0
+  const lamda = reverseIdx(diffIdx-1)//3
+  let neighborLabel = nodeLabel //001
 
 
-  neighbor = node.substring(0,diffIdx)+(parseInt(node[diffIdx],2) ^ 1)+node.substring(diffIdx+1)
-
+  neighborLabel = nodeLabel.substring(0,diffIdx)+(parseInt(nodeLabel[diffIdx]) ^ 1).toString(2)+nodeLabel.substring(diffIdx+1)
+  //101
   for(let i = 0; i<Math.floor((lamda-1)/2); i++){
-    const pair = neighbor.substring(neighbor.length-2*i)
+    const pair = neighborLabel.substring(reverseIdx(2*i+1),reverseIdx(2*i-1))//01
+    console.log("neighbor", neighborLabel)
+    console.log("pair",pair)
     switch(pair){
       case '01':
-        neighbor = neighbor.substring(0, reverseIdx(2*i+1))+ '11' + neighbor.substring(reverseIdx(2*i-1))
+        neighborLabel = neighborLabel.substring(0, reverseIdx(2*i+1))+ '11' + neighborLabel.substring(reverseIdx(2*i-1))
         break;
       case '11':
-        neighbor = neighbor.substring(0, reverseIdx(2*i+1))+ '01' + neighbor.substring(reverseIdx(2*i-1))
+        neighborLabel = neighborLabel.substring(0, reverseIdx(2*i+1))+ '01' + neighborLabel.substring(reverseIdx(2*i-1))
         break;
     }
   }
-  return neighbor
+  return neighborLabel
 }
 
 export const getEdgeByDimension = (graph:Graph, dimension:number , node?:string) =>{
