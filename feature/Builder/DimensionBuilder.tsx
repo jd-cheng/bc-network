@@ -12,7 +12,10 @@ import {
   Box, 
   Popover, 
   PopoverTrigger, 
-  PopoverAnchor } from '@chakra-ui/react'
+  PopoverAnchor,
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent} from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import ColorPicker from './ColorPicker'
 
@@ -81,11 +84,20 @@ export default function DimensionBuilder({dimension}:IProp) {
             <Box as="button" bg={color} w="32px" h="32px"  />
           </PopoverTrigger>
           <Text>{dimension}-dimension</Text>
-          <IconButton aria-label='' icon={isRendered?<ViewIcon/>: <ViewOffIcon/>} onClick={handleIsRendered}/>
+          <IconButton 
+            aria-label='' 
+            icon={isRendered?<ViewIcon/>: <ViewOffIcon/>} 
+            onClick={handleIsRendered}
+            variant="outline"
+          />
         </Stack>
       </PopoverAnchor>
-
-      <ColorPicker color={color} setColor={handleColor}/>
+      <PopoverContent w='auto'>
+        <PopoverArrow/>
+        <PopoverBody >
+          <ColorPicker color={color} setColor={handleColor}/>
+        </PopoverBody>
+      </PopoverContent>
     </Popover>
 
   )

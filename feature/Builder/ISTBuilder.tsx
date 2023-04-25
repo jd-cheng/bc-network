@@ -1,4 +1,4 @@
-import { getISTByIndex, getNodeLabel } from '@/lib/network'
+import { getISTByIndex } from '@/lib/network'
 import { renderIST } from '@/lib/sigma'
 import { IEdge } from '@/store/edges'
 import { graphs, useNetworkStore } from '@/store/networks'
@@ -20,9 +20,13 @@ import {
   Button,
   ButtonGroup,
   Collapse,
-  useDisclosure} from '@chakra-ui/react'
+  useDisclosure,
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent} from '@chakra-ui/react'
 import Graph from 'graphology'
 import React, { useEffect, useState } from 'react'
+import ColorPicker from './ColorPicker'
 
 
 interface IProp {
@@ -37,12 +41,16 @@ export default function ISTBuilder({index}:IProp) {
   const [color, setColor] = useState(randomHexColor)
   const [tree, setTree] = useState<IEdge[]>([])
   const [pointer, setPointer] = useState<number>(-1)
-  const { isOpen, onToggle } = useDisclosure()
+  const { isOpen, onToggle, onClose } = useDisclosure()
+  const [isRendered, setIsRenderd] = useState<boolean>(false)
 
   const handleColor = (nextColor:string) =>{
     console.log('handle color')
     if(!network) {return}
-    
+    const graph = graphs.get(network.key) as Graph
+    for(const edge of tree.slice(0,pointer+1)){
+      graph.setEdgeAttribute(edge.key,"color",nextColor)
+    }
     setColor(nextColor)
   }
 
@@ -50,7 +58,7 @@ export default function ISTBuilder({index}:IProp) {
     if(!network || !node) return
     const graph = graphs.get(network.key) as Graph
     console.log(pointer)
-    graph.setEdgeAttribute(tree[pointer+1],"color",color)
+    graph.setEdgeAttribute(tree[pointer+1].key,"color",color)
 
     setPointer(pointer+1)
   }
@@ -59,9 +67,17 @@ export default function ISTBuilder({index}:IProp) {
     if(!network || !node) return
     const graph = graphs.get(network.key) as Graph
     console.log(pointer)
-    graph.setEdgeAttribute(tree[pointer],"color","")
+    graph.setEdgeAttribute(tree[pointer].key,"color","")
 
     setPointer(pointer-1)
+  }
+
+  const handleIsRendered = ()=>{
+    if(!network || !node) return
+    renderIST(network.key, node.key, index, !isRendered?color:undefined)
+    setPointer(!isRendered?tree.length-1: -1)
+    setIsRenderd(!isRendered)
+
   }
 
   useEffect(()=>{
@@ -78,6 +94,10 @@ export default function ISTBuilder({index}:IProp) {
     return ()=>{
       console.log('unmount IST builder')
       tree.length && renderIST(network.key,node.key,index)
+      onClose()
+      setTree([])
+      setPointer(-1)
+      setIsRenderd(false)
     }
 
   }, [node])
@@ -103,18 +123,19 @@ export default function ISTBuilder({index}:IProp) {
           />
         </Stack>
       </PopoverAnchor>
-      <Collapse in={isOpen} animateOpacity>
-            <ButtonGroup isAttached variant='outline'>
+      <Collapse in={isOpen} animateOpacity >
+            <ButtonGroup isAttached variant='outline' w="224px">
               <IconButton
                   aria-label=""
                   icon={<ArrowBackIcon/>}
                   isDisabled={pointer<0}
                   onClick={hanldeBack}
                 />
-                <Button>
-                  {network && node && tree.length && pointer&& 
+                <Button onClick={handleIsRendered} flexGrow="1">
+                  {!isRendered?"Render":"Clear"}
+                  {/* {network && node && tree.length && pointer&& 
                     getNodeLabel(network?.key,tree[pointer].source).join(" - ").join(getNodeLabel(network?.key,tree[pointer].target))
-                  }
+                  } */}
                 </Button>
                 <IconButton
                   aria-label=""
@@ -124,7 +145,12 @@ export default function ISTBuilder({index}:IProp) {
                 />
             </ButtonGroup>
           </Collapse>
+          <PopoverContent w='auto'>
+            <PopoverArrow/>
+            <PopoverBody >
+              <ColorPicker color={color} setColor={handleColor}/>
+            </PopoverBody>
+          </PopoverContent>
     </Popover>
-
   )
 }

@@ -42,7 +42,7 @@ export const renderIST = (network:string, root:string, index:number,color?:strin
   const graph = graphs.get(network) as Graph
 
   const tree = getISTByIndex(network,root,index) as string[]
-
+  console.log(tree)
   for(const edge of tree){
     graph.updateEdgeAttribute(edge,"color",oldColor=>color)
   }

@@ -13,12 +13,6 @@ interface IProp{
 export default function ColorPicker({color, setColor}: IProp) {
 
   return (
-    <PopoverContent w='auto'>
-      <PopoverArrow/>
-      <PopoverBody >
-        <HexColorPicker color={color} onChange={setColor} />
-      </PopoverBody>
-    </PopoverContent>
-
+    <HexColorPicker color={color} onChange={setColor} />
   )
 }
