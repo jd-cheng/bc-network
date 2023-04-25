@@ -122,7 +122,6 @@ export const getMissingEdges=(network:string)=>{
   const nodeLabels = createNodeLabels(dimension)
   nodeLabels.forEach((nodeLabel)=>{
     const neighborLabels = createNeighborLabels(type,dimension,nodeLabel)
-    console.log("neighborLabels", nodeLabel, neighborLabels)
     neighborLabels.forEach((neighborLabel)=>{
       const edgeLabel = nodeLabel+" - "+ neighborLabel
       const rEdgeLabel = neighborLabel+" - "+ nodeLabel
@@ -139,15 +138,7 @@ export const getMissingEdges=(network:string)=>{
     edges.delete(edgeLabel)
     edges.delete(rEdgeLabel)
   })
-  console.log("all missing edges",edges)
   return Array.from(edges)
-}
-
-
-
-export const isValidLabel = (network:string, label:string)=>{
-  const graph = graphs.get(network) as Graph
-  const dimension = graph.getAttribute("dimension")
 }
 
 

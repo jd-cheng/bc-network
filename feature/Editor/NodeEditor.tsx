@@ -18,7 +18,7 @@ export default function NodeEditor() {
   
   const network = useNetworkStore((state)=>state.selected)
   const [node,updateNode,deleteNode] = useNodeStore((state)=>[state.selected,state.updateNode,state.deleteNode])
-  const {register, watch, setValue, handleSubmit } = useForm<Partial<NodeAttributes>>({
+  const {register, watch, setValue } = useForm<Partial<NodeAttributes>>({
     mode:"onChange"
   })
 

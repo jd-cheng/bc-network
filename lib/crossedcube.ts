@@ -55,8 +55,6 @@ export const createNeighborLabel = (nodeLabel: string, dimension: number)=>{
   //101
   for(let i = 0; i<Math.floor((lamda-1)/2); i++){
     const pair = neighborLabel.substring(reverseIdx(2*i+1),reverseIdx(2*i-1))//01
-    console.log("neighbor", neighborLabel)
-    console.log("pair",pair)
     switch(pair){
       case '01':
         neighborLabel = neighborLabel.substring(0, reverseIdx(2*i+1))+ '11' + neighborLabel.substring(reverseIdx(2*i-1))

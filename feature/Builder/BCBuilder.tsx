@@ -11,12 +11,18 @@ import React, { useEffect, useState } from 'react'
 
 export default function BCBuilder() {
   
-  const [network,updateNetwork] = useNetworkStore((state)=>[state.selected, state.updateNetwork])
-  const [nodes] = useNodeStore((state)=>[state.nodes])
+  const [network] = useNetworkStore((state)=>[state.selected])
+  const [nodes,node,updateNode] = useNodeStore((state)=>[state.nodes,state.selected,state.updateNode])
   const [missingNodes, setMissingNodes] = useState<string[]>([])
   const [missingEdges, setMissingEdges] = useState<string[]>([])
   // const [redundantNodes]
 
+  const handleClickMissingNode = (label:string)=>{
+    if(!network || !node) return
+    
+    updateNode(network.key, node.key,{label})
+
+  }
   
   useEffect(()=>{
     if(!network) return
@@ -53,6 +59,7 @@ export default function BCBuilder() {
                 colorScheme='red'
                 borderRadius="full"
                 _hover={{"cursor":"pointer"}}
+                onClick={()=>handleClickMissingNode(node)}
               >
                 {node}
               </Badge>
