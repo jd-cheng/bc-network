@@ -6,7 +6,7 @@ import ISTBuilder from './ISTBuilder'
 export default function ISTList() {
 
   const network = useNetworkStore((state)=>state.selected)
-  const [indexs, setIndexs] = useState<number[]>([])
+  const [orders, setOrders] = useState<number[]>([])
 
   useEffect(()=>{
     if(!network) { return }
@@ -14,10 +14,10 @@ export default function ISTList() {
 
     const index = network.attributes.dimension
     const newIndexs = Array.from({length: index}, (value, index)=>{
-      return index
+      return index+1
     })
     console.log(newIndexs)
-    setIndexs(newIndexs)
+    setOrders(newIndexs)
 
   }, [network])
   
@@ -27,8 +27,8 @@ export default function ISTList() {
       align='center' 
       justify='space-between' 
     >
-      {indexs.map((index)=>(
-        <ISTBuilder key={index} index={index} />
+      {orders.map((order)=>(
+        <ISTBuilder key={order} order={order} />
       ))}
     </Stack>
   )

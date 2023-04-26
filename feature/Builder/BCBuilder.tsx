@@ -1,4 +1,4 @@
-import { getMissingEdges, getMissingNodes } from '@/lib/network'
+import { buildEdges, getMissingEdges, getMissingNodes } from '@/lib/network'
 import { 
   NetworkType, 
   networkTypes, 
@@ -70,11 +70,11 @@ export default function BCBuilder() {
 
       <Flex align="center" justify="space-between">
         <Text size="sm" fontWeight="semibold">Edges</Text>
-        <Badge mx="1" colorScheme={missingNodes.length?"red":"green"}>
-            {missingNodes.length?"missing": "Valid"}
+        <Badge mx="1" colorScheme={missingEdges.length?"red":"green"}>
+            {missingEdges.length?"missing": "Valid"}
           </Badge>
           <Spacer/>
-        <Tag size="sm" variant='subtle'>
+        <Tag size="sm" variant='subtle' _hover={{"cursor":"pointer"}} onClick={()=>!missingNodes.length&&network&&buildEdges(network?.key)}>
             <TagLeftIcon  as={AddIcon} />
             <TagLabel>Add</TagLabel>
           </Tag>

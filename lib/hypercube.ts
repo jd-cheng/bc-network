@@ -43,7 +43,7 @@ export const buildHypercube= (graph:Graph, dimension: number, start?:string)=>{
   //connect nodes
   graph.forEachNode((node,{label})=>{
 
-    const neighborLabel = new Set(Array.from({length:dimension},(_, key)=>generateNeighborLabel(label,key+1)))
+    const neighborLabel = new Set(Array.from({length:dimension},(_, key)=>createNeighborLabel(label,key+1)))
     console.log('neighborLabel', neighborLabel)
     const neighbors = graph.filterNodes((node, {label})=>{
       return neighborLabel.has(label)
@@ -60,7 +60,7 @@ export const buildHypercube= (graph:Graph, dimension: number, start?:string)=>{
 }
 
 
-export const generateNeighborLabel = (label: string, dimension: number) =>{
+export const createNeighborLabel = (label: string, dimension: number) =>{
   if(dimension<1 || dimension>label.length){
     return ''
   }
@@ -71,6 +71,7 @@ export const generateNeighborLabel = (label: string, dimension: number) =>{
   return label.substring(0,diffIndex)+(diffBit ^ 1)+label.substring(diffIndex+1)
 
 }
+
 
 export const getEdgeByDimension = (graph:Graph, dimension:number , node?:string) =>{
 
@@ -94,105 +95,43 @@ export const isEdgeByDimension = (labelX:string, labelY:string, dimension:number
 }
 
 export const getNeighborByDimension = (graph: Graph, node:string, dimension:number)=>{
+  console.log(node)
   const nodeLabel = graph.getNodeAttribute(node,"label")
-  const neighborLabel = generateNeighborLabel(nodeLabel,dimension)
+  const neighborLabel = createNeighborLabel(nodeLabel,dimension)
   return graph.findNeighbor(node, (neighbour,{label})=>{
     return neighborLabel === label
   })
 }
 
-export const getISTs = (graph:Graph, root:string)=>{
 
+export const getISTByOrder = (graph:Graph, root:string, order:number)=>{
   const dimension  = graph.getAttribute("dimension")
-  const trees:any = []
-  const arrs = [
-    [1,2,3,4],
-    [2,3,4,1],
-    [3,4,1,2],
-    [4,1,2,3],
+  // const arrs = [
+  //   [2,3,4,1], //(j+1)%3
+  //   [3,4,1,2],
+  //   [4,1,2,3],
+  //   [1,2,3,4], //(j+1)%4
+  // ]
+  //
+  const arr = Array.from({length:dimension},(value,index)=>{
+    return index+1
+  })  
 
-  ]
+  const round = order%4
+  for(let k = 0; k< round;k++){
+    const head = arr.shift() as number
+    arr.push(head)
+  }
 
-
-  arrs.forEach((arr,index)=>{
-    const tree = []
-    const queue = [getNeighborByDimension(graph,root,index+1)]
-    for(let i = 0; i< dimension; i++){
-      const d = queue.length
-      for(let j = 0;j < d;j++){
-        const source = queue[j] as string
-        const target = getNeighborByDimension(graph,source,arr[i])
-        queue.push(target)
-        tree.push([graph.getNodeAttribute(source,"label"),graph.getNodeAttribute(target,"label")])
-      }
-    }
-
-    trees.push(tree)
-  })
-
-  console.log(trees)
-  return trees
-}
-
-export const getISTWithEdges = (graph:Graph, root:string, index:number)=>{
-
-  const dimension  = graph.getAttribute("dimension")
-  const trees:any = []
-  const arrs = [
-
-    [2,3,4,1], //(j+1)%3
-    [3,4,1,2],
-    [4,1,2,3],
-    [1,2,3,4], //(j+1)%4
-  ]
-
-
-  arrs.forEach((arr,index)=>{
-    const tree = []
-    const queue = [getNeighborByDimension(graph,root,index+1)]
-    for(let i = 0; i< dimension; i++){
-      const d = queue.length
-      for(let j = 0;j < d;j++){
-        const source = queue[j] as string
-        const target = getNeighborByDimension(graph,source,arr[i])
-        queue.push(target)
-        tree.push(graph.findEdge((edge)=>{
-          return graph.hasExtremity(edge,source) && graph.hasExtremity(edge,target)
-        }))
-      }
-    }
-    trees.push(tree)
-  })
-
-  return trees[index]
-}
-
-
-export const getISTByIndex = (graph:Graph, root:string, index:number)=>{
-  const dimension  = graph.getAttribute("dimension")
-  const arrs = [
-    [2,3,4,1], //(j+1)%3
-    [3,4,1,2],
-    [4,1,2,3],
-    [1,2,3,4], //(j+1)%4
-  ]
-  // const arr = Array.from({length:dimension},(value,index)=>{
-  //   return index+1
-  // })  
-
-  // for(let k = 0; k< index;k++){
-  //   const head = arrs[index].shift() as number
-  //   arrs[index].push(head)
-  // }
-  // console.log(arrs[index])
+  console.log('circle order',arr)
 
   const tree:string[] = []
-  const queue = [getNeighborByDimension(graph,root,index+1)]
+  const queue = [getNeighborByDimension(graph,root,order)]
   for(let i = 0; i< dimension; i++){
     const d = queue.length
     for(let j = 0;j < d;j++){
       const source = queue[j] as string
-      const target = getNeighborByDimension(graph,source,arrs[index][i])
+      const target = getNeighborByDimension(graph,source,arr[i])
       queue.push(target)
       tree.push(graph.findEdge((edge)=>{
         return graph.hasExtremity(edge,source) && graph.hasExtremity(edge,target)

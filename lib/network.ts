@@ -6,9 +6,10 @@ import {
   createNeighborLabel as generateCrossedNeighborLabel, 
   isEdgeByDimension as isCrossedEdgeByDimension, } from "./crossedcube";
 import { 
-  generateNeighborLabel as generateHyperNeighborLabel,
-  isEdgeByDimension as isHyperEdgeByDimension,
-  getISTByIndex as getHyperISTByIndex } from "./hypercube";
+  createNeighborLabel as generateHyperNeighborLabel,
+  isEdgeByDimension as isHyperEdgeByDimension } from "./hypercube";
+
+
 
 export const getEdgeByDimension = (network:string, dimension: number, node?:string)=>{
   console.log('get edges by dimension')
@@ -33,12 +34,16 @@ export const getEdgeByDimension = (network:string, dimension: number, node?:stri
   })
 }
 
+
+
 export const createNodeLabels = (dimension:number) =>{
   return Array.from({length: Math.pow(2,dimension)}, (_, key)=>{
     let label:string = key.toString(2)
     return '0'.repeat(dimension-label.length)+ label
   })
 }
+
+
 
 export const createNeighborLabels = (type:NetworkType, dimension:number, label:string) =>{
   return Array.from({length:dimension},(_, key)=>{
@@ -50,6 +55,7 @@ export const createNeighborLabels = (type:NetworkType, dimension:number, label:s
     }
   })
 }
+
 
 
 export const buildNetwork = (network:string, type: NetworkType, start?:string) =>{
@@ -99,6 +105,7 @@ export const buildNetwork = (network:string, type: NetworkType, start?:string) =
 }
 
 
+
 export const getMissingNodes = (network:string)=>{
   const graph = graphs.get(network) as Graph
   const dimension = graph.getAttribute("dimension")
@@ -112,6 +119,8 @@ export const getMissingNodes = (network:string)=>{
 
   return Array.from(labels)
 }
+
+
 
 export const getMissingEdges=(network:string)=>{
   const graph = graphs.get(network) as Graph
@@ -142,16 +151,117 @@ export const getMissingEdges=(network:string)=>{
 }
 
 
-export const getISTByIndex =(network:string, root:string, index:number)=>{
+
+export const createNeighborLabelByDimension = (networkType:NetworkType ,nodeLabel:string, dimension:number)=>{
+  switch(networkType){
+    case NetworkType.HYPER:
+      return generateHyperNeighborLabel(nodeLabel, dimension)
+    case NetworkType.CROSSED:
+      return generateCrossedNeighborLabel(nodeLabel, dimension)
+  }
+}
+
+
+
+export const getNeighborByDimension = (network:string, node:string, dimension:number)=>{
+  console.log(node)
+  const graph = graphs.get(network) as Graph
+  const { type } = graph.getAttributes()
+  const nodeLabel = graph.getNodeAttribute(node,"label")
+
+  let neighborLabel= createNeighborLabelByDimension(type,nodeLabel,dimension)
+
+  return graph.findNeighbor(node, (neighbour,{label})=>{
+    return neighborLabel === label
+  })
+}
+
+
+
+
+export const getISTByOrder =(network:string, root:string, order:number)=>{
   console.log('getISTByIndex')
   const graph = graphs.get(network) as Graph
-  const type = graph.getAttribute("type")
-  let tree:string[] = []
-  switch(type){
-    case NetworkType.HYPER:
-      tree = getHyperISTByIndex(graph,root,index)
-      break;
+  const {dimension} = graph.getAttributes()
+
+
+  const arr = Array.from({length:dimension},(value,index)=>{
+    return index+1
+  })  
+
+  const round = order%4
+  for(let k = 0; k< round;k++){
+    const head = arr.shift() as number
+    arr.push(head)
+  }
+
+  const tree:string[] = []
+  const queue = [getNeighborByDimension(network,root,order)]
+  for(let i = 0; i< dimension; i++){
+    const d = queue.length
+    for(let j = 0;j < d;j++){
+      const source = queue[j] as string
+      const target = getNeighborByDimension(network,source,arr[i])
+      queue.push(target)
+      tree.push(graph.findEdge((edge)=>{
+        return graph.hasExtremity(edge,source) && graph.hasExtremity(edge,target)
+      })as string)
+    }
   }
   return tree
 }
 
+
+
+
+export const buildeNodes = (network:string)=>{
+  const graph = graphs.get(network) as Graph
+  const {dimension} = graph.getAttributes()
+
+  const nodeLabels = new Set(createNodeLabels(dimension))
+
+  nodeLabels.forEach((nodeLabel)=>{
+    const node = graph.findNode((node,{label})=>{
+      //normal convert
+      //
+      if(nodeLabel.length>label.length && nodeLabel.substring(nodeLabel.length-label.length) === label){
+        graph.setNodeAttribute(node,"label",nodeLabel)
+      }
+
+      if(nodeLabel.length<label.length && "0".repeat(nodeLabel.length-label.length).concat(nodeLabel) === label)
+        graph.setNodeAttribute(node,"label",nodeLabel)
+    })
+  })
+
+  graph.forEachNode((node,{label})=>{
+    if(!label){
+
+    }
+  })
+
+}
+
+
+
+export const buildEdges = (network:string) =>{
+
+  const graph = graphs.get(network) as Graph
+  const {type, dimension} = graph.getAttributes()
+
+  //assume nodes are valid
+  //connect nodes
+  graph.forEachNode((node,{label})=>{
+    const neighborLabel = new Set(createNeighborLabels(type,dimension,label))
+
+    const neighbors = graph.filterNodes((node, {label})=>{
+      return neighborLabel.has(label)
+    })
+
+    for(const neighbor of neighbors){
+      if(graph.hasEdge(node, neighbor) || graph.hasEdge(neighbor, node)){
+        continue
+      }
+      graph.addEdge(node, neighbor,{size:5})
+    }
+  })
+}

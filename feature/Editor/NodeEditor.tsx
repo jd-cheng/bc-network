@@ -27,6 +27,9 @@ export default function NodeEditor() {
   useEffect(()=>{
     if(!node) return
     setValue("label",node.attributes.label)
+    return ()=>{
+      setValue("label",undefined)
+    }
   }, [node?.key])
 
 

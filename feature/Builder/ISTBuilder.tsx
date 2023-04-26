@@ -1,4 +1,4 @@
-import { getISTByIndex } from '@/lib/network'
+import { getISTByOrder } from '@/lib/network'
 import { renderIST } from '@/lib/sigma'
 import { IEdge } from '@/store/edges'
 import { graphs, useNetworkStore } from '@/store/networks'
@@ -30,11 +30,11 @@ import ColorPicker from './ColorPicker'
 
 
 interface IProp {
-  index: number
+  order: number
 }
 
 
-export default function ISTBuilder({index}:IProp) {
+export default function ISTBuilder({order}:IProp) {
 
   const network = useNetworkStore((state)=>state.selected)
   const node = useNodeStore((state)=>state.selected)
@@ -74,7 +74,7 @@ export default function ISTBuilder({index}:IProp) {
 
   const handleIsRendered = ()=>{
     if(!network || !node) return
-    renderIST(network.key, node.key, index, !isRendered?color:undefined)
+    renderIST(network.key, node.key, order, !isRendered?color:undefined)
     setPointer(!isRendered?tree.length-1: -1)
     setIsRenderd(!isRendered)
 
@@ -83,7 +83,7 @@ export default function ISTBuilder({index}:IProp) {
   useEffect(()=>{
     if(!network || !node) { return }
 
-    const tree = getISTByIndex(network.key,node.key,index).map((edge)=>{
+    const tree = getISTByOrder(network.key,node.key,order).map((edge)=>{
       const graph = graphs.get(network.key) as Graph
       return{key:edge, source:graph.source(edge), target:graph.target(edge)}
     })
@@ -94,7 +94,7 @@ export default function ISTBuilder({index}:IProp) {
 
     return ()=>{
       console.log('unmount IST builder')
-      tree.length && renderIST(network.key,node.key,index)
+      tree.length && renderIST(network.key,node.key,order)
     }
 
   }, [node?.key])
@@ -110,7 +110,7 @@ export default function ISTBuilder({index}:IProp) {
           <PopoverTrigger>
             <Box as="button" bg={color} w="32px" h="32px"  />
           </PopoverTrigger>
-          <Text >{index+1}th-IST</Text>
+          <Text fontWeight="semibold" >{order}th-IST</Text>
           <IconButton 
             aria-label='' 
             icon={isOpen?<ViewIcon/>:<ViewOffIcon/>} 

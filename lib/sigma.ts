@@ -1,12 +1,13 @@
 import { graphs } from "@/store/networks";
 import Graph from "graphology";
 import { Coordinates } from "sigma/types";
-import { getEdgeByDimension, getISTByIndex } from "./network";
+import { getEdgeByDimension, getISTByOrder } from "./network";
 
 
 export const renderSetting = {
   defaultNodeSize: 10
 }
+
 
 
 export const renderSelectedNode = (network:string, nextNode?: string, preNode?: string)=> {
@@ -22,6 +23,7 @@ export const renderSelectedNode = (network:string, nextNode?: string, preNode?: 
 }
 
 
+
 export const renderDimension = (network:string, dimension: number, color:string | null, node?: string) => {
   console.log('render dimension')
   const graph = graphs.get(network) as Graph
@@ -31,6 +33,8 @@ export const renderDimension = (network:string, dimension: number, color:string 
 }
 
 
+
+
 export const renderDragNode = (network:string, node:string, coordinates:Coordinates ) =>{
   const graph = graphs.get(network) as Graph
   graph.setNodeAttribute(node, 'x',coordinates.x)
@@ -38,21 +42,14 @@ export const renderDragNode = (network:string, node:string, coordinates:Coordina
 }
 
 
+
+
 export const renderIST = (network:string, root:string, index:number,color?:string) =>{
   const graph = graphs.get(network) as Graph
 
-  const tree = getISTByIndex(network,root,index) as string[]
+  const tree = getISTByOrder(network,root,index) as string[]
   console.log(tree)
   for(const edge of tree){
     graph.updateEdgeAttribute(edge,"color",oldColor=>color)
   }
-
-  // const trees = getISTs(graph, root) as any[][]
-  // tree[index].forEach(([nodeSource,nodeTarget])=>{
-  //   const edge = graph.findEdge((edge)=>{
-  //     return graph.hasExtremity(edge, nodeSource) && graph.hasExtremity(edge,nodeTarget)
-  //   })
-  //   graph.updateEdgeAttribute(edge,"color",olvC=>"#B30000")
-  // })
-
 }
