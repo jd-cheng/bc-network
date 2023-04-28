@@ -3,12 +3,16 @@ import {
   NetworkType } from "@/store/networks";
 import Graph from "graphology";
 import {
-  createNeighborLabel as generateCrossedNeighborLabel, 
+  createNeighborLabel as createCrossedNeighborLabel, 
   isEdgeByDimension as isCrossedEdgeByDimension, } from "./crossedcube";
 import { 
-  createNeighborLabel as generateHyperNeighborLabel,
+  createNeighborLabel as createHyperNeighborLabel,
   isEdgeByDimension as isHyperEdgeByDimension } from "./hypercube";
 
+
+export const isEdgeByDimension = (labelX:string, labelY:string, dimension:number)=>{
+  return Math.floor(Math.log2(parseInt(labelX,2) ^ parseInt(labelY,2)))+1 === dimension
+}
 
 
 export const getEdgeByDimension = (network:string, dimension: number, node?:string)=>{
@@ -25,12 +29,7 @@ export const getEdgeByDimension = (network:string, dimension: number, node?:stri
     const labelX = graph.getNodeAttribute(nodeX, 'label')
     const labelY = graph.getNodeAttribute(nodeY, 'label')
 
-    switch(type) {
-      case NetworkType.HYPER:
-        return isHyperEdgeByDimension(labelX, labelY, dimension)
-      case NetworkType.CROSSED:
-        return isCrossedEdgeByDimension(labelX, labelY, dimension)
-    }
+    return isEdgeByDimension(labelX, labelY, dimension)
   })
 }
 
@@ -49,9 +48,9 @@ export const createNeighborLabels = (type:NetworkType, dimension:number, label:s
   return Array.from({length:dimension},(_, key)=>{
     switch(type){
       case NetworkType.HYPER:
-        return generateHyperNeighborLabel(label,key+1)
+        return createHyperNeighborLabel(label,key+1)
       case NetworkType.CROSSED:
-        return generateCrossedNeighborLabel(label, key+1)
+        return createCrossedNeighborLabel(label, key+1)
     }
   })
 }
@@ -155,9 +154,9 @@ export const getMissingEdges=(network:string)=>{
 export const createNeighborLabelByDimension = (networkType:NetworkType ,nodeLabel:string, dimension:number)=>{
   switch(networkType){
     case NetworkType.HYPER:
-      return generateHyperNeighborLabel(nodeLabel, dimension)
+      return createHyperNeighborLabel(nodeLabel, dimension)
     case NetworkType.CROSSED:
-      return generateCrossedNeighborLabel(nodeLabel, dimension)
+      return createCrossedNeighborLabel(nodeLabel, dimension)
   }
 }
 
