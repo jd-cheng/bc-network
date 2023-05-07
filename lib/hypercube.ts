@@ -1,4 +1,3 @@
-import { graphs, INetwork } from "@/store/networks"
 import { sin45 } from "@/utils/degree"
 import Graph from "graphology"
 

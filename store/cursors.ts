@@ -5,6 +5,7 @@ export enum CursorType {
   SELECT,
   DRAG,
   ADDNODE,
+  ADDEDGE,
 }
 
 interface CursorState {

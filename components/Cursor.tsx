@@ -1,5 +1,6 @@
 import { CursorType, useCursorStore } from '@/store/cursors';
 import { useNetworkStore } from '@/store/networks';
+import { ArrowForwardIcon as EdgeIcon } from '@chakra-ui/icons';
 import { ButtonGroup, Card, IconButton } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { BiPointer as SelectIcon, BiCircle as NodeIcon } from "react-icons/bi"
@@ -10,7 +11,7 @@ const cursors = [
   {type:CursorType.SELECT, icon:<SelectIcon/>},
   {type:CursorType.DRAG, icon:<DragIcon/>},
   {type:CursorType.ADDNODE, icon:<NodeIcon/>},
-
+  {type:CursorType.ADDEDGE, icon:<EdgeIcon/>}
 ]
 
 export default function Pointer() {
@@ -22,7 +23,7 @@ export default function Pointer() {
   },[network?.key])
 
 
-  return (
+  return network &&(  
     <Card position='fixed' bottom="16px" left="50%" transform="translateX(-50%)" >
       <ButtonGroup isAttached>
         {cursors.map((cursor)=>
@@ -36,5 +37,5 @@ export default function Pointer() {
         )}
       </ButtonGroup>
     </Card>
-  )
+  )  
 }

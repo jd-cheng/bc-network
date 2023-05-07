@@ -3,7 +3,7 @@ import { renderDragNode, renderSelectedNode } from '@/lib/sigma'
 import { useCursorStore, CursorType } from '@/store/cursors'
 import { graphs, useNetworkStore } from '@/store/networks'
 import { INode, useNodeStore } from '@/store/nodes'
-import { Box } from '@chakra-ui/react'
+import { Box, Text } from '@chakra-ui/react'
 import Graph from 'graphology'
 import React, { useEffect, useRef } from 'react'
 import Sigma from 'sigma'
@@ -91,7 +91,7 @@ export default function Network() {
     //init renderer
     if(!containerRef.current) return
   
-    const renderer = new Sigma(new Graph(), containerRef.current)
+    const renderer = new Sigma(new Graph(), containerRef.current,{allowInvalidContainer:true})
     rendererRef.current = renderer
 
     return ()=>{
@@ -149,6 +149,10 @@ export default function Network() {
   }, [network?.key,node?.key,cursor])
 
   return (
+    <>
     <Box top='0' left='0' w='100%' h='100%' ref={containerRef}></Box>
+    {!network&&<Text position="fixed" top="50%" left="50%" transform="translate(-50%,-80%)" fontWeight="semibold" fontSize="2xl">Select Network...</Text>}
+    </>
+
   )
 }

@@ -9,7 +9,6 @@ export const renderSetting = {
 }
 
 
-
 export const renderSelectedNode = (network:string, nextNode?: string, preNode?: string)=> {
   
   console.log('render selected node', nextNode, preNode)
@@ -23,7 +22,6 @@ export const renderSelectedNode = (network:string, nextNode?: string, preNode?: 
 }
 
 
-
 export const renderDimension = (network:string, dimension: number, color:string | null, node?: string) => {
   console.log('render dimension')
   const graph = graphs.get(network) as Graph
@@ -33,15 +31,11 @@ export const renderDimension = (network:string, dimension: number, color:string 
 }
 
 
-
-
 export const renderDragNode = (network:string, node:string, coordinates:Coordinates ) =>{
   const graph = graphs.get(network) as Graph
   graph.setNodeAttribute(node, 'x',coordinates.x)
   graph.setNodeAttribute(node, 'y', coordinates.y)
 }
-
-
 
 
 export const renderIST = (network:string, root:string, index:number,color?:string) =>{
