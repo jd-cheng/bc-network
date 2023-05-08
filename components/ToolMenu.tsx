@@ -20,7 +20,7 @@ export default function ToolMenu() {
   const { isOpen, onToggle, onOpen, onClose } = useDisclosure()
 
   useEffect(()=>{
-    network&&onOpen()
+    network?onOpen():onClose()
   },[network])
 
   return (

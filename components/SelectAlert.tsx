@@ -2,7 +2,7 @@ import { useNetworkStore } from '@/store/networks'
 import { Alert, AlertIcon, AlertTitle, Box, CloseButton, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
 
-export default function AlertPanel() {
+export default function SelectAlert() {
   const network = useNetworkStore((state)=>state.selected)
   
   return !network?(

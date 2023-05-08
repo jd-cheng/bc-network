@@ -9,9 +9,11 @@ import {
   FormLabel, 
   IconButton, 
   Input, 
-  Select } from '@chakra-ui/react'
+  Select, 
+  useDisclosure} from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import DeleteAlert from './DeleteAlert'
 import { NumberField } from './NumberField'
 
 export default function NetworkEditor() {
@@ -21,6 +23,7 @@ export default function NetworkEditor() {
   const { control, register, watch ,formState:{errors}, setValue } = useForm<Partial<NetworkAttributes>>({
     mode:"onChange",
   })
+  const {isOpen, onClose, onOpen} = useDisclosure()
 
   const dimension = watch("dimension")
   const type = watch("type")
@@ -50,36 +53,40 @@ export default function NetworkEditor() {
 
 
   return (
-    <form>
-      <FormControl>
-        <FormLabel display="flex" mr="0" alignItems="center" justifyContent="space-between">
-          Name
-          <IconButton
-            aria-label=''
-            icon={<DeleteIcon/>}
-            size="xs"
-            variant="outline"
-            colorScheme="red"
-            isDisabled={!network}
-            onClick={()=>network&&deleteNetwork(network.key)}
-          />
-        </FormLabel>
-        <Input {...register('name')}/>
-      </FormControl>
+    <>
+        <form>
+          <FormControl>
+            <FormLabel display="flex" mr="0" alignItems="center" justifyContent="space-between">
+              Name
+              <IconButton
+                aria-label=''
+                icon={<DeleteIcon/>}
+                size="xs"
+                variant="outline"
+                colorScheme="red"
+                isDisabled={!network}
+                onClick={onOpen}
+              />
+            </FormLabel>
+            <Input {...register('name')}/>
+          </FormControl>
 
-      <FormControl>
-        <FormLabel>Type</FormLabel>
-        <Select {...register("type")}>
-          {networkTypes.map((type)=>(
-            <option key={type.value} value={type.value}>{type.text}</option>
-          ))}
-        </Select>
-      </FormControl>
+          <FormControl>
+            <FormLabel>Type</FormLabel>
+            <Select {...register("type")}>
+              {networkTypes.map((type)=>(
+                <option key={type.value} value={type.value}>{type.text}</option>
+              ))}
+            </Select>
+          </FormControl>
 
-      <FormControl>
-        <FormLabel>Dimension</FormLabel>
-        <NumberField control={control} name="dimension"/>
-      </FormControl>
-    </form>
+          <FormControl>
+            <FormLabel>Dimension</FormLabel>
+            <NumberField control={control} name="dimension"/>
+          </FormControl>
+        </form>
+        <DeleteAlert isOpen={isOpen} onClose={onClose}/>
+    </>
+
   )
 }
