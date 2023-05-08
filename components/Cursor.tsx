@@ -23,7 +23,7 @@ export default function Pointer() {
   },[network?.key])
 
 
-  return network &&(  
+  return network?(  
     <Card position='fixed' bottom="16px" left="50%" transform="translateX(-50%)" >
       <ButtonGroup isAttached>
         {cursors.map((cursor)=>
@@ -37,5 +37,7 @@ export default function Pointer() {
         )}
       </ButtonGroup>
     </Card>
+  ):(
+    <></>
   )  
 }

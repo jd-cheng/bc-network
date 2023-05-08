@@ -149,10 +149,6 @@ export default function Network() {
   }, [network?.key,node?.key,cursor])
 
   return (
-    <>
     <Box top='0' left='0' w='100%' h='100%' ref={containerRef}></Box>
-    {!network&&<Text position="fixed" top="50%" left="50%" transform="translate(-50%,-80%)" fontWeight="semibold" fontSize="2xl">Select Network...</Text>}
-    </>
-
   )
 }
