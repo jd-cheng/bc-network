@@ -13,7 +13,7 @@ import {
   useDisclosure} from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import DeleteAlert from './DeleteAlert'
+import NetworkDeleteAlert from './NetworkDeleteAlert'
 import { NumberField } from './NumberField'
 
 export default function NetworkEditor() {
@@ -85,7 +85,7 @@ export default function NetworkEditor() {
             <NumberField control={control} name="dimension"/>
           </FormControl>
         </form>
-        <DeleteAlert isOpen={isOpen} onClose={onClose}/>
+        <NetworkDeleteAlert isOpen={isOpen} onClose={onClose}/>
     </>
 
   )

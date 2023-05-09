@@ -2,7 +2,7 @@ import { useNetworkStore } from '@/store/networks'
 import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useDisclosure, UseDisclosureProps, useToast } from '@chakra-ui/react'
 import React, { useRef } from 'react'
 
-export default function DeleteAlert({isOpen, onClose}:Required<Pick<UseDisclosureProps, "isOpen"|"onClose">>) {
+export default function NetworkDeleteAlert({isOpen, onClose}:Required<Pick<UseDisclosureProps, "isOpen"|"onClose">>) {
 
 
   const cancelRef = useRef(null)

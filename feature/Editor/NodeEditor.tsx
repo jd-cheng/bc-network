@@ -10,9 +10,11 @@ import {
   IconButton, 
   Input, 
   Select, 
-  Stack } from '@chakra-ui/react'
+  Stack, 
+  useDisclosure} from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import NodeDeleteAlert from './NodeDeleteAlert'
 
 export default function NodeEditor() {
   
@@ -21,6 +23,7 @@ export default function NodeEditor() {
   const {register, watch, setValue } = useForm<Partial<NodeAttributes>>({
     mode:"onChange"
   })
+  const {isOpen, onClose, onOpen} = useDisclosure()
 
   const label = watch("label")
 
@@ -40,22 +43,25 @@ export default function NodeEditor() {
   }, [label])
 
   return (
-    <form>
-      <FormControl>
-        <FormLabel display="flex" mr="0" alignItems="center" justifyContent="space-between">
-            Label
-            <IconButton
-              aria-label=''
-              icon={<DeleteIcon/>}
-              size="xs"
-              variant="outline"
-              colorScheme="red"
-              onClick={()=>network&&node&&deleteNode(network.key,node.key)}
-              isDisabled={!node}
-            />
-          </FormLabel>
-        <Input {...register('label')}/>
-      </FormControl>
-    </form>
+    <>
+      <form>
+        <FormControl>
+          <FormLabel display="flex" mr="0" alignItems="center" justifyContent="space-between">
+              Label
+              <IconButton
+                aria-label=''
+                icon={<DeleteIcon/>}
+                size="xs"
+                variant="outline"
+                colorScheme="red"
+                onClick={()=>network&&node&&onOpen()}
+                isDisabled={!node}
+              />
+            </FormLabel>
+          <Input {...register('label')}/>
+        </FormControl>
+      </form>
+      <NodeDeleteAlert isOpen={isOpen} onClose={onClose}/>
+    </>
   )
 }
