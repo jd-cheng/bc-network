@@ -46,13 +46,13 @@ export const createNeighborLabel = (nodeLabel: string, dimension: number)=>{
     return ''
   }
 
-  const diffIdx = nodeLabel.length-dimension //0
-  const lamda = reverseIdx(diffIdx-1)//3
-  let neighborLabel = nodeLabel //001
+  const diffIdx = nodeLabel.length-dimension
+  const lamda = reverseIdx(diffIdx-1)
+  let neighborLabel = nodeLabel 
 
 
   neighborLabel = nodeLabel.substring(0,diffIdx)+(parseInt(nodeLabel[diffIdx]) ^ 1).toString(2)+nodeLabel.substring(diffIdx+1)
-  //101
+
   for(let i = 0; i<Math.floor((lamda-1)/2); i++){
     const pair = neighborLabel.substring(reverseIdx(2*i+1),reverseIdx(2*i-1))//01
     switch(pair){

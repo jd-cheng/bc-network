@@ -55,7 +55,6 @@ export default function Network() {
 
   const downNode = ({node: nextNode}: SigmaNodeEventPayload) =>{
     if(!network || cursor !== CursorType.DRAG) {return}
-    console.log('down node', nextNode)
     isDragging = true;
     renderSelectedNode(network.key,nextNode,node?.key)
     setNode(nextNode)
@@ -75,7 +74,6 @@ export default function Network() {
   }
 
   const mouseUp = ()=>{
-    console.log('mouse up')
     isDragging = false;
   }
 
