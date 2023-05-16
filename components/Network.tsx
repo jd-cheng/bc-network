@@ -26,7 +26,11 @@ export default function Network() {
   const clickNode = ({node: nextNode}: SigmaNodeEventPayload ) => {
     if(!network) { return } 
     console.log("select:",nextNode)
-  
+
+    if(cursor === CursorType.ADDEDGE && node && nextNode){
+      const graph = graphs.get(network.key) as Graph
+      graph.addEdge(node.key,nextNode,{size:5})
+    } 
     renderSelectedNode(network.key,nextNode,node?.key)
     setNode(nextNode)
 
@@ -89,7 +93,10 @@ export default function Network() {
     //init renderer
     if(!containerRef.current) return
   
-    const renderer = new Sigma(new Graph(), containerRef.current,{allowInvalidContainer:true})
+    const renderer = new Sigma(new Graph(), containerRef.current,{
+      allowInvalidContainer:true,
+      enableEdgeClickEvents:true,
+    })
     rendererRef.current = renderer
 
     return ()=>{

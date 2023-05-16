@@ -125,7 +125,6 @@ export const getMissingEdges=(network:string)=>{
   const graph = graphs.get(network) as Graph
   const { type, dimension } = graph.getAttributes()
 
-  //asusme valid nodes
   const edges = new Set<string>()
   const nodeLabels = createNodeLabels(dimension)
   nodeLabels.forEach((nodeLabel)=>{
@@ -188,19 +187,15 @@ export const getISTByOrder =(network:string, root:string, order:number)=>{
     return index+1
   })  
 
-  const round = order%4
-  for(let k = 0; k< round;k++){
-    const head = arr.shift() as number
-    arr.push(head)
-  }
 
   const tree:string[] = []
   const queue = [getNeighborByDimension(network,root,order)]
   for(let i = 0; i< dimension; i++){
     const d = queue.length
     for(let j = 0;j < d;j++){
+      const index = (order+i)%dimension
       const source = queue[j] as string
-      const target = getNeighborByDimension(network,source,arr[i])
+      const target = getNeighborByDimension(network,source,arr[index])
       queue.push(target)
       tree.push(graph.findEdge((edge)=>{
         return graph.hasExtremity(edge,source) && graph.hasExtremity(edge,target)
