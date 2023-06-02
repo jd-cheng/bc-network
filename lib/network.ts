@@ -178,15 +178,12 @@ export const getNeighborByDimension = (network:string, node:string, dimension:nu
 
 
 export const getISTByOrder =(network:string, root:string, order:number)=>{
-  console.log('getISTByIndex')
   const graph = graphs.get(network) as Graph
   const {dimension} = graph.getAttributes()
-
 
   const arr = Array.from({length:dimension},(value,index)=>{
     return index+1
   })  
-
 
   const tree:string[] = []
   const queue = [getNeighborByDimension(network,root,order)]

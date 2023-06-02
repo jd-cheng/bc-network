@@ -1,6 +1,7 @@
 import { NodeAttributes } from '@/lib/graph'
-import { renderDragNode, renderSelectedNode } from '@/lib/sigma'
+import { renderDragNode, renderSelectedEdge, renderSelectedNode } from '@/lib/sigma'
 import { useCursorStore, CursorType } from '@/store/cursors'
+import { useEdgeStore } from '@/store/edges'
 import { graphs, useNetworkStore } from '@/store/networks'
 import { INode, useNodeStore } from '@/store/nodes'
 import { Box, Text } from '@chakra-ui/react'
@@ -8,6 +9,7 @@ import Graph from 'graphology'
 import React, { useEffect, useRef } from 'react'
 import Sigma from 'sigma'
 import { 
+  SigmaEdgeEventPayload,
   SigmaNodeEventPayload, 
   SigmaStageEventPayload } from 'sigma/sigma'
 import { MouseCoords } from 'sigma/types'
@@ -21,19 +23,36 @@ export default function Network() {
   const containerRef = useRef<HTMLDivElement>(null)
   const network = useNetworkStore((state) =>state.selected)
   const cursor = useCursorStore((state)=>state.cursor)
-  const [node, setNode, setNodes, addNode] = useNodeStore((state) => [ state.selected, state.setSelected, state.setNodes,state.addNode])
-
+  const [node, setNode, setNodes, addNode,deleteNode] = useNodeStore((state) => [ state.selected, state.setSelected, state.setNodes,state.addNode,state.deleteNode])
+  const [edge, setEdge] = useEdgeStore((state)=>[state.selected,state.setSelected])
+  
   const clickNode = ({node: nextNode}: SigmaNodeEventPayload ) => {
     if(!network) { return } 
     console.log("select:",nextNode)
 
-    if(cursor === CursorType.ADDEDGE && node && nextNode){
-      const graph = graphs.get(network.key) as Graph
-      graph.addEdge(node.key,nextNode,{size:5})
-    } 
-    renderSelectedNode(network.key,nextNode,node?.key)
-    setNode(nextNode)
+    if(cursor === CursorType.DELETE && nextNode){
+      deleteNode(network.key, nextNode)
+    } else{
 
+      if(cursor === CursorType.ADDEDGE && node && nextNode){
+        const graph = graphs.get(network.key) as Graph
+        graph.addEdge(node.key,nextNode,{size:5})
+      } 
+  
+      renderSelectedNode(network.key,nextNode,node?.key)
+      setNode(nextNode)
+    }
+
+  }
+
+  const clickEdge = ({edge:nextEdge}: SigmaEdgeEventPayload)=>{
+    if(!network) { return } 
+    console.log("select:",nextEdge)
+
+    if(cursor === CursorType.DELETE&& nextEdge){
+      const graph = graphs.get(network.key) as Graph
+        graph.dropEdge(nextEdge)
+    }
   }
 
   const clickStage = ({event:{x, y}}: SigmaStageEventPayload)=>{
@@ -45,7 +64,7 @@ export default function Network() {
       newNode.key = uuidv4()
       newNode.attributes = {
         ...coordinates,
-        size:10,
+        size:20,
         color:"#B30000",
       }
       addNode(network.key, newNode)
@@ -135,6 +154,7 @@ export default function Network() {
     const renderer = rendererRef.current
     const mouseCaptor = renderer.getMouseCaptor()
     renderer.on("clickNode", clickNode);
+    renderer.on("clickEdge", clickEdge);
     renderer.on("clickStage",clickStage);
     renderer.on("downNode", downNode)
     mouseCaptor.on('mousemovebody', mouseMoveBody)

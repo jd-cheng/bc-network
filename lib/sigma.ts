@@ -21,6 +21,17 @@ export const renderSelectedNode = (network:string, nextNode?: string, preNode?: 
 
 }
 
+export const renderSelectedEdge = (network:string, nextEdge?: string, preEdge?: string)=> {
+  
+  console.log('render selected edge', nextEdge, preEdge)
+  const graph = graphs.get(network) as Graph
+
+  //clear previously seleced elements effect
+  preEdge && graph.setEdgeAttribute(preEdge, 'color', "#B30000")
+  //render currently selected element
+  nextEdge && graph.setEdgeAttribute(nextEdge, 'color', "#B30000")
+
+}
 
 export const renderDimension = (network:string, dimension: number, color:string | null, node?: string) => {
   console.log('render dimension')

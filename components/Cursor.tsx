@@ -1,6 +1,6 @@
 import { CursorType, useCursorStore } from '@/store/cursors';
 import { useNetworkStore } from '@/store/networks';
-import { ArrowForwardIcon as EdgeIcon } from '@chakra-ui/icons';
+import { ArrowForwardIcon as EdgeIcon, DeleteIcon } from '@chakra-ui/icons';
 import { ButtonGroup, Card, IconButton } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { BiPointer as SelectIcon, BiCircle as NodeIcon } from "react-icons/bi"
@@ -11,7 +11,8 @@ const cursors = [
   {type:CursorType.SELECT, icon:<SelectIcon/>},
   {type:CursorType.DRAG, icon:<DragIcon/>},
   {type:CursorType.ADDNODE, icon:<NodeIcon/>},
-  {type:CursorType.ADDEDGE, icon:<EdgeIcon/>}
+  {type:CursorType.ADDEDGE, icon:<EdgeIcon/>},
+  {type:CursorType.DELETE,icon:<DeleteIcon/>}
 ]
 
 export default function Pointer() {
